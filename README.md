@@ -1,12 +1,17 @@
-# Title
+# IMAP/POP3-Watcher for E-Documents
 
 [![Latest Stable Version](https://poser.pugx.org/horstoeko/zugferdmail/v/stable.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![Total Downloads](https://poser.pugx.org/horstoeko/zugferdmail/downloads.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![Latest Unstable Version](https://poser.pugx.org/horstoeko/zugferdmail/v/unstable.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![License](https://poser.pugx.org/horstoeko/zugferdmail/license.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/horstoeko/zugferdmail)
 
-[![CI (Ant, PHP 7.3)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php73.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php73.ant.yml) [![CI (Ant, PHP 7.4)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php74.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php74.ant.yml) [![CI (PHP 8.0)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php80.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php80.ant.yml) [![CI (PHP 8.1)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php81.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php81.ant.yml)
+[![CI (Ant, PHP 7.3)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php73.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php73.ant.yml)
+[![CI (Ant, PHP 7.4)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php74.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php74.ant.yml)
+[![CI (PHP 8.0)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php80.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php80.ant.yml)
+[![CI (PHP 8.1)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php81.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php81.ant.yml)
+[![CI (PHP 8.2)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php82.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php82.ant.yml)
+[![CI (PHP 8.3)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php83.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php83.ant.yml)
 
 ## Table of Contents
 
-- [Title](#title)
+- [IMAP/POP3-Watcher for E-Documents](#imappop3-watcher-for-e-documents)
   - [Table of Contents](#table-of-contents)
   - [Note](#note)
   - [License](#license)
@@ -22,7 +27,7 @@
 ## Note
 
 > [!CAUTION]
-> This library is currently still considered experimental and should therefore be used with caution. I would be happy for an issue to be posted if bugs are found. 
+> This library is currently still considered experimental and should therefore be used with caution. I would be happy for an issue to be posted if bugs are found.
 
 ## License
 
