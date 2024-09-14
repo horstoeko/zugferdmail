@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * This file is a part of horstoeko/zugferdmail.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace horstoeko\zugferdmail\config;
+
+use InvalidArgumentException;
+use Webklex\PHPIMAP\ClientManager;
+use horstoeko\zugferdmail\handlers\ZugferdMailHandlerInterface;
+
+/**
+ * Class representing the config for the Zugferd MailReader
+ *
+ * @category ZugferdMailReader
+ * @package  ZugferdMailReader
+ * @author   D. Erling <horstoeko@erling.com.de>
+ * @license  https://opensource.org/licenses/MIT MIT
+ * @link     https://github.com/horstoeko/zugferdmail
+ */
+class ZugferdMailConfig
+{
+    /**
+     * The date format to use
+     *
+     * @var string
+     */
+    protected $dateFormat = "d-M-Y";
+
+    /**
+     * List of defined accounts
+     *
+     * @var array<ZugferdMailAccount>
+     */
+    protected $accounts = [];
+
+    /**
+     * Get the date format to use
+     *
+     * @return string
+     */
+    public function getDateFormat(): string
+    {
+        return $this->dateFormat;
+    }
+
+    /**
+     * Set the date format to use
+     *
+     * @param  string $dateFormat
+     * @return ZugferdMailConfig
+     * @throws InvalidArgumentException
+     */
+    public function setDateFormat(string $dateFormat): ZugferdMailConfig
+    {
+        if (!in_array($dateFormat, ["d-M-Y", "d-M-y", "d M y"])) {
+            throw new InvalidArgumentException(sprintf("%s is not a valid date format", $dateFormat));
+        }
+
+        $this->dateFormat = $dateFormat;
+
+        return $this;
+    }
+
+    /**
+     * Add an account definition
+     *
+     * @param  string        $identifier
+     * @param  string        $host
+     * @param  integer       $port
+     * @param  string        $protocol
+     * @param  string|false  $encryption
+     * @param  boolean       $validateCert
+     * @param  string        $username
+     * @param  string        $password
+     * @param  string|null   $authentication
+     * @param  integer       $timeout
+     * @param  array<string> $foldersToWatch
+     * @param  array<string> $mimeTypesToWatch
+     * @return ZugferdMailAccount
+     */
+    public function addAccount(string $identifier, string $host, int $port, string $protocol, $encryption, bool $validateCert, string $username, string $password, ?string $authentication = null, int $timeout = 30, array $foldersToWatch = [], array $mimeTypesToWatch = []): ZugferdMailAccount
+    {
+        $account = new ZugferdMailAccount();
+
+        $account->setIdentifier($identifier);
+        $account->setHost($host);
+        $account->setPort($port);
+        $account->setProtocol($protocol);
+        $account->setEncryption($encryption);
+        $account->setValidateCert($validateCert);
+        $account->setUsername($username);
+        $account->setPassword($password);
+        $account->setAuthentication($authentication);
+        $account->setTimeout($timeout);
+        $account->setFoldersToWatch($foldersToWatch);
+        $account->setMmimeTypesToWatch($mimeTypesToWatch);
+
+        $this->accounts[] = $account;
+
+        return $account;
+    }
+
+    /**
+     * Remove an account definition by it's identifier
+     *
+     * @param  string $identifier
+     * @return ZugferdMailConfig
+     */
+    public function removeAccount(string $identifier): ZugferdMailConfig
+    {
+        $this->accounts = array_filter(
+            $this->accounts,
+            function ($account) use ($identifier) {
+                return strcasecmp($account->getIdentifier(), $identifier) != 0;
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Get the list of defined accounts
+     *
+     * @return array<ZugferdMailAccount>
+     */
+    public function getAccounts()
+    {
+        return $this->accounts;
+    }
+
+    /**
+     * Build the client manager
+     *
+     * @return ClientManager
+     */
+    public function getClientManager(): ClientManager
+    {
+        $config = [];
+
+        $config['date_format'] = $this->getDateFormat();
+        $config['default'] = false;
+
+        foreach ($this->accounts as $account) {
+            $config['accounts'][$account->getIdentifier()] = $account->getAccountDefinition();
+        }
+
+        return new ClientManager($config);
+    }
+}
