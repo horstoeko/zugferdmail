@@ -1,6 +1,8 @@
 # IMAP/POP3-Watcher for E-Documents
 
-[![Latest Stable Version](https://poser.pugx.org/horstoeko/zugferdmail/v/stable.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![Total Downloads](https://poser.pugx.org/horstoeko/zugferdmail/downloads.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![Latest Unstable Version](https://poser.pugx.org/horstoeko/zugferdmail/v/unstable.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![License](https://poser.pugx.org/horstoeko/zugferdmail/license.png)](https://packagist.org/packages/horstoeko/zugferdmail) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/horstoeko/zugferdmail)
+[![Latest Stable Version](https://img.shields.io/packagist/v/horstoeko/zugferdmail.svg?style=plastic)](https://packagist.org/packages/horstoeko/zugferdmail)
+[![PHP version](https://img.shields.io/packagist/php-v/horstoeko/zugferdmail.svg?style=plastic)](https://packagist.org/packages/horstoeko/zugferdmail)
+[![License](https://img.shields.io/packagist/l/horstoeko/zugferdmail.svg?style=plastic)](https://packagist.org/packages/horstoeko/zugferdmail)
 
 [![CI (Ant, PHP 7.3)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php73.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php73.ant.yml)
 [![CI (Ant, PHP 7.4)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php74.ant.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.php74.ant.yml)
