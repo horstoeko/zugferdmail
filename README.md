@@ -44,6 +44,7 @@ With this library it is possible to monitor mail accounts (IMAP and POP3) and to
 This package makes use of
 
 * [horstoeko/zugferd](https://github.com/horstoeko/zugferd)
+* [horstoeko/zugferdublbridge](https://github.com/horstoeko/zugferdublbridge)
 * [Webklex/php-imap](https://github.com/Webklex/php-imap)
 
 ## Installation

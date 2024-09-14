@@ -30,6 +30,7 @@
     "require": {
         "php": "^7.3|^7.4|^8",
         "horstoeko/zugferd": "^1.0",
+        "horstoeko/zugferdublbridge": "^1.0",
         "symfony/console": "^5.4",
         "webklex/php-imap": "^4.1"
     },

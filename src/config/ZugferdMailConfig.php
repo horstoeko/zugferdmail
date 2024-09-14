@@ -11,7 +11,6 @@ namespace horstoeko\zugferdmail\config;
 
 use InvalidArgumentException;
 use Webklex\PHPIMAP\ClientManager;
-use horstoeko\zugferdmail\handlers\ZugferdMailHandlerInterface;
 
 /**
  * Class representing the config for the Zugferd MailReader

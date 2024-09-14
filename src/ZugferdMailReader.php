@@ -19,6 +19,7 @@ use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferd\ZugferdDocumentPdfReader;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use horstoeko\zugferdublbridge\XmlConverterUblToCii;
 
 /**
  * Class representing the mail reader
@@ -153,7 +154,13 @@ class ZugferdMailReader
                 $document = ZugferdDocumentReader::readAndGuessFromContent($attachment->getContent());
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document);
             } catch (Throwable $e) {
-                // Do nothing
+                try {
+                    $xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
+                    $document = ZugferdDocumentReader::readAndGuessFromContent($xml);
+                    $this->triggerHandlers($account, $folder, $message, $attachment, $document);
+                } catch (Throwable $e) {
+                    // Do nothing
+                }
             }
         }
     }
