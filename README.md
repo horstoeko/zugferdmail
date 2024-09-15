@@ -97,18 +97,14 @@ $reader->checkAllAccounts();
 
 ### Predefined handlers
 
-* ZugferdMailHandlerNull
-  _Does not perform any operations_
-* ZugferdMailHandlerCli
-  _Displays brief information about the e-invoice document found on the console_
-* ZugferdMailHandlerCopyMessage
-  _Copies the message to another (different) directory_
-* ZugferdMailHandlerMoveMessage
-  _Moves the message to another (different) directory_
-* ZugferdMailHandlerDeleteMessage
-  _Deletes the message_
-* ZugferdMailHandlerSaveToFile
-  _Saves the E-Document to a specified directory, optionally with a different filename_
+| Class | Description |
+| :------ | :------ |
+| ZugferdMailHandlerNull | _Does not perform any operations_ |
+| ZugferdMailHandlerCli | _Displays brief information about the e-invoice document found on the console_ |
+| ZugferdMailHandlerCopyMessage | _Copies the message to another (different) directory_ |
+| ZugferdMailHandlerMoveMessage| _Moves the message to another (different) directory_ |
+| ZugferdMailHandlerDeleteMessage | _Deletes the message_ |
+| ZugferdMailHandlerSaveToFile | _Saves the E-Document to a specified directory, optionally with a different filename_ |
 
 ### Implement your own handler
 
