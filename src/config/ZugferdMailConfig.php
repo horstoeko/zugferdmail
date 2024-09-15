@@ -31,6 +31,13 @@ class ZugferdMailConfig
     protected $dateFormat = "d-M-Y";
 
     /**
+     * UBL support enabled (using horstoeko/zugferdublbridge)
+     *
+     * @var boolean
+     */
+    protected $ublSupportEnabled = false;
+
+    /**
      * List of defined accounts
      *
      * @var array<ZugferdMailAccount>
@@ -61,6 +68,53 @@ class ZugferdMailConfig
         }
 
         $this->dateFormat = $dateFormat;
+
+        return $this;
+    }
+
+    /**
+     * Returns true if the UBL-Syntax support is enabled
+     *
+     * @return boolean
+     */
+    public function getUblSupportEnabled(): bool
+    {
+        return $this->ublSupportEnabled;
+    }
+
+    /**
+     * Activate or deactivate support for UBL-Syntax
+     *
+     * @param  boolean $ublSupportEnabled
+     * @return ZugferdMailConfig
+     */
+    public function setUblSupportEnabled(bool $ublSupportEnabled): ZugferdMailConfig
+    {
+        $this->ublSupportEnabled = $ublSupportEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Activate the UBL-Syntax support
+     *
+     * @return ZugferdMailConfig
+     */
+    public function activateUblSupport(): ZugferdMailConfig
+    {
+        $this->setUblSupportEnabled(true);
+
+        return $this;
+    }
+
+    /**
+     * Deactivate the UBL-Syntax support
+     *
+     * @return ZugferdMailConfig
+     */
+    public function deactivateUblSupport(): ZugferdMailConfig
+    {
+        $this->setUblSupportEnabled(false);
 
         return $this;
     }

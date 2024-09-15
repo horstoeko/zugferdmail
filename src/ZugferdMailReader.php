@@ -155,9 +155,11 @@ class ZugferdMailReader
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document);
             } catch (Throwable $e) {
                 try {
-                    //$xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
-                    //$document = ZugferdDocumentReader::readAndGuessFromContent($xml);
-                    //$this->triggerHandlers($account, $folder, $message, $attachment, $document);
+                    if ($this->config->getUblSupportEnabled() === true) {
+                        $xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
+                        $document = ZugferdDocumentReader::readAndGuessFromContent($xml);
+                        $this->triggerHandlers($account, $folder, $message, $attachment, $document);
+                    }
                 } catch (Throwable $e) {
                     // Do nothing
                 }
