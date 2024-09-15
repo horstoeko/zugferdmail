@@ -101,9 +101,22 @@ class ZugferdMailConfig
         $account->setFoldersToWatch($foldersToWatch);
         $account->setMmimeTypesToWatch($mimeTypesToWatch);
 
-        $this->accounts[] = $account;
+        $this->addAccountObject($account);
 
         return $account;
+    }
+
+    /**
+     * Add an mail account object
+     *
+     * @param  ZugferdMailAccount $account
+     * @return ZugferdMailConfig
+     */
+    public function addAccountObject(ZugferdMailAccount $account): ZugferdMailConfig
+    {
+        $this->accounts[] = $account;
+
+        return $this;
     }
 
     /**
@@ -177,7 +190,7 @@ class ZugferdMailConfig
         $config = new ZugferdMailConfig;
         $config->setDateFormat($jsonObject->dateFormat);
 
-        collect($jsonObject->accounts)->each(function ($accountDefinition) {
+        foreach ($jsonObject->accounts as $accountDefinition) {
             $account = new ZugferdMailAccount();
             $account->setIdentifier($accountDefinition->identifier);
             $account->setHost($accountDefinition->host);
@@ -191,11 +204,14 @@ class ZugferdMailConfig
             $account->setTimeout($accountDefinition->timeout);
             $account->setFoldersToWatch($accountDefinition->foldersToWatch);
             $account->setMmimeTypesToWatch($accountDefinition->mimeTypesToWatch);
-            collect($accountDefinition->handlers)->each(function ($accountHandlerDefinition) use ($account) {
+
+            foreach ($accountDefinition->handlers as $accountHandlerDefinition) {
                 $reflection = new \ReflectionClass($accountHandlerDefinition->classname);
                 $account->addHandler($reflection->newInstanceArgs(array_values(get_object_vars($accountHandlerDefinition->properties))));
-            });
-        });
+            }
+
+            $config->addAccountObject($account);
+        }
 
         return $config;
     }
@@ -212,7 +228,7 @@ class ZugferdMailConfig
         $jsonObject->dateFormat = $this->getDateFormat();
         $jsonObject->accounts = [];
 
-        collect($this->getAccounts())->each(function ($account) use ($jsonObject) {
+        foreach ($this->getAccounts() as $account) {
             $jsonAccountObject = new stdClass;
             $jsonAccountObject->identifier = $account->getIdentifier();
             $jsonAccountObject->host = $account->getHost();
@@ -228,7 +244,7 @@ class ZugferdMailConfig
             $jsonAccountObject->mimeTypesToWatch = $account->getMmimeTypesToWatch();
             $jsonAccountObject->handlers = [];
 
-            collect($account->getHandlers())->each(function ($handler) use ($jsonAccountObject) {
+            foreach ($account->getHandlers() as $handler) {
                 $jsonAccountHandlerObject = new stdClass;
                 $jsonAccountHandlerObject->classname = get_class($handler);
                 $jsonAccountHandlerObject->properties = new stdClass;
@@ -236,26 +252,24 @@ class ZugferdMailConfig
                 $reflection = new \ReflectionClass($handler);
                 $reflectionConstructor = $reflection->getConstructor();
 
-                if (is_null($reflectionConstructor)) {
-                    return true;
+                if (!is_null($reflectionConstructor)) {
+                    foreach ($reflectionConstructor->getParameters() as $reflectionConstructorParameter) {
+                        $argumentName = $reflectionConstructorParameter->getName();
+                        $argumentSetterMethodName = "get" . ucFirst($argumentName);
+
+                        if (!$reflection->hasMethod($argumentSetterMethodName)) {
+                            throw new RuntimeException(sprintf("No method %s for property %s found", $argumentSetterMethodName, $argumentName));
+                        }
+
+                        $jsonAccountHandlerObject->properties->$argumentName = $handler->$argumentSetterMethodName();
+                    };
                 }
 
-                collect($reflectionConstructor->getParameters())->each(function ($reflectionConstructorParameter)  use ($reflection, $jsonAccountHandlerObject, $handler) {
-                    $argumentName = $reflectionConstructorParameter->getName();
-                    $argumentSetterMethodName = "get" . ucFirst($argumentName);
-
-                    if (!$reflection->hasMethod($argumentSetterMethodName)) {
-                        throw new RuntimeException(sprintf("No method %s for property %s found", $argumentSetterMethodName, $argumentName));
-                    }
-
-                    $jsonAccountHandlerObject->properties->$argumentName = $handler->$argumentSetterMethodName();
-                });
-
                 $jsonAccountObject->handlers[] = $jsonAccountHandlerObject;
-            });
+            }
 
             $jsonObject->accounts[] = $jsonAccountObject;
-        });
+        }
 
         if (file_put_contents($filename, json_encode($jsonObject, JSON_PRETTY_PRINT)) === false) {
             throw new RuntimeException(sprintf("Cannot save to file %s.", $filename));
