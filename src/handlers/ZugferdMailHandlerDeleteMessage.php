@@ -29,7 +29,7 @@ class ZugferdMailHandlerDeleteMessage implements ZugferdMailHandlerInterface
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document)
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         $message->delete();
     }

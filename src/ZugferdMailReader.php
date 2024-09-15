@@ -20,6 +20,7 @@ use horstoeko\zugferd\ZugferdDocumentPdfReader;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use horstoeko\zugferdublbridge\XmlConverterUblToCii;
+use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
 
 /**
  * Class representing the mail reader
@@ -148,17 +149,17 @@ class ZugferdMailReader
 
         try {
             $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
-            $this->triggerHandlers($account, $folder, $message, $attachment, $document);
+            $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF);
         } catch (Throwable $e) {
             try {
                 $document = ZugferdDocumentReader::readAndGuessFromContent($attachment->getContent());
-                $this->triggerHandlers($account, $folder, $message, $attachment, $document);
+                $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML);
             } catch (Throwable $e) {
                 try {
                     if ($this->config->getUblSupportEnabled() === true) {
                         $xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
                         $document = ZugferdDocumentReader::readAndGuessFromContent($xml);
-                        $this->triggerHandlers($account, $folder, $message, $attachment, $document);
+                        $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                     }
                 } catch (Throwable $e) {
                     // Do nothing
@@ -176,10 +177,10 @@ class ZugferdMailReader
      * @param  ZugferdDocument    $document
      * @return void
      */
-    protected function triggerHandlers(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocument $document): void
+    protected function triggerHandlers(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocument $document, int $recognitionType): void
     {
         foreach ($account->getHandlers() as $handler) {
-            $handler->handleDocument($account, $folder, $message, $attachment, $document);
+            $handler->handleDocument($account, $folder, $message, $attachment, $document, $recognitionType);
         }
     }
 }
