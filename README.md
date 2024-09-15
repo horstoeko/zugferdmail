@@ -124,6 +124,13 @@ public function handleDocument(
 An example:
 
 ```php
+
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Webklex\PHPIMAP\Attachment;
+use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Message;
+
 class MyOwnHandler implements ZugferdMailHandlerInterface
 {
     public function handleDocument(
