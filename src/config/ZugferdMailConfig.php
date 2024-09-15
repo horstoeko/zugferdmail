@@ -29,7 +29,6 @@ class ZugferdMailConfig
      * The date format to use
      *
      * @var string
-     * @Type("string")
      */
     protected $dateFormat = "d-M-Y";
 
@@ -37,7 +36,6 @@ class ZugferdMailConfig
      * List of defined accounts
      *
      * @var array<ZugferdMailAccount>
-     * @Type("array<horstoeko\zugferdmail\config\ZugferdMailAccount>")
      */
     protected $accounts = [];
 
