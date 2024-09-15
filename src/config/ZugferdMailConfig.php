@@ -10,6 +10,8 @@
 namespace horstoeko\zugferdmail\config;
 
 use InvalidArgumentException;
+use RuntimeException;
+use stdClass;
 use Webklex\PHPIMAP\ClientManager;
 
 /**
@@ -27,6 +29,7 @@ class ZugferdMailConfig
      * The date format to use
      *
      * @var string
+     * @Type("string")
      */
     protected $dateFormat = "d-M-Y";
 
@@ -34,6 +37,7 @@ class ZugferdMailConfig
      * List of defined accounts
      *
      * @var array<ZugferdMailAccount>
+     * @Type("array<horstoeko\zugferdmail\config\ZugferdMailAccount>")
      */
     protected $accounts = [];
 
@@ -137,7 +141,7 @@ class ZugferdMailConfig
      *
      * @return ClientManager
      */
-    public function getClientManager(): ClientManager
+    public function makeClientManager(): ClientManager
     {
         $config = [];
 
@@ -149,5 +153,116 @@ class ZugferdMailConfig
         }
 
         return new ClientManager($config);
+    }
+
+    /**
+     * Loads a configuration from a file.
+     * The file must exist.
+     *
+     * @param  string $filename
+     * @return ZugferdMailConfig
+     */
+    public static function loadFromFile(string $filename): ZugferdMailConfig
+    {
+        if (!is_file($filename)) {
+            throw new InvalidArgumentException(sprintf("The file %s does not exist.", $filename));
+        }
+
+        $jsonString = file_get_contents($filename);
+
+        if ($jsonString === false) {
+            throw new RuntimeException(sprintf("Cannot read the file %s.", $filename));
+        }
+
+        $jsonObject = json_decode($jsonString);
+
+        $config = new ZugferdMailConfig;
+        $config->setDateFormat($jsonObject->dateFormat);
+
+        collect($jsonObject->accounts)->each(function ($accountDefinition) {
+            $account = new ZugferdMailAccount();
+            $account->setIdentifier($accountDefinition->identifier);
+            $account->setHost($accountDefinition->host);
+            $account->setPort($accountDefinition->port);
+            $account->setProtocol($accountDefinition->protocol);
+            $account->setEncryption($accountDefinition->encryption);
+            $account->setValidateCert($accountDefinition->validateCert);
+            $account->setUsername($accountDefinition->username);
+            $account->setPassword($accountDefinition->password);
+            $account->setAuthentication($accountDefinition->authentication);
+            $account->setTimeout($accountDefinition->timeout);
+            $account->setFoldersToWatch($accountDefinition->foldersToWatch);
+            $account->setMmimeTypesToWatch($accountDefinition->mimeTypesToWatch);
+            collect($accountDefinition->handlers)->each(function ($accountHandlerDefinition) use ($account) {
+                $reflection = new \ReflectionClass($accountHandlerDefinition->classname);
+                $account->addHandler($reflection->newInstanceArgs(array_values(get_object_vars($accountHandlerDefinition->properties))));
+            });
+        });
+
+        return $config;
+    }
+
+    /**
+     * Save the configuration to a file
+     *
+     * @param  string $filename
+     * @return ZugferdMailConfig
+     */
+    public function saveToFile(string $filename): ZugferdMailConfig
+    {
+        $jsonObject = new stdClass;
+        $jsonObject->dateFormat = $this->getDateFormat();
+        $jsonObject->accounts = [];
+
+        collect($this->getAccounts())->each(function ($account) use ($jsonObject) {
+            $jsonAccountObject = new stdClass;
+            $jsonAccountObject->identifier = $account->getIdentifier();
+            $jsonAccountObject->host = $account->getHost();
+            $jsonAccountObject->port = $account->getPort();
+            $jsonAccountObject->protocol = $account->getProtocol();
+            $jsonAccountObject->encryption = $account->getEncryption();
+            $jsonAccountObject->validateCert = $account->getValidateCert();
+            $jsonAccountObject->username = $account->getUsername();
+            $jsonAccountObject->password = $account->getPassword();
+            $jsonAccountObject->authentication = $account->getAuthentication();
+            $jsonAccountObject->timeout = $account->getTimeout();
+            $jsonAccountObject->foldersToWatch = $account->getFoldersTowatch();
+            $jsonAccountObject->mimeTypesToWatch = $account->getMmimeTypesToWatch();
+            $jsonAccountObject->handlers = [];
+
+            collect($account->getHandlers())->each(function ($handler) use ($jsonAccountObject) {
+                $jsonAccountHandlerObject = new stdClass;
+                $jsonAccountHandlerObject->classname = get_class($handler);
+                $jsonAccountHandlerObject->properties = new stdClass;
+
+                $reflection = new \ReflectionClass($handler);
+                $reflectionConstructor = $reflection->getConstructor();
+
+                if (is_null($reflectionConstructor)) {
+                    return true;
+                }
+
+                collect($reflectionConstructor->getParameters())->each(function ($reflectionConstructorParameter)  use ($reflection, $jsonAccountHandlerObject, $handler) {
+                    $argumentName = $reflectionConstructorParameter->getName();
+                    $argumentSetterMethodName = "get" . ucFirst($argumentName);
+
+                    if (!$reflection->hasMethod($argumentSetterMethodName)) {
+                        throw new RuntimeException(sprintf("No method %s for property %s found", $argumentSetterMethodName, $argumentName));
+                    }
+
+                    $jsonAccountHandlerObject->properties->$argumentName = $handler->$argumentSetterMethodName();
+                });
+
+                $jsonAccountObject->handlers[] = $jsonAccountHandlerObject;
+            });
+
+            $jsonObject->accounts[] = $jsonAccountObject;
+        });
+
+        if (file_put_contents($filename, json_encode($jsonObject, JSON_PRETTY_PRINT)) === false) {
+            throw new RuntimeException(sprintf("Cannot save to file %s.", $filename));
+        }
+
+        return $this;
     }
 }

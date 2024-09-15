@@ -54,7 +54,7 @@ class ZugferdMailReader
     public function __construct(ZugferdMailConfig $config)
     {
         $this->config = $config;
-        $this->clientManager = $this->config->getClientManager();
+        $this->clientManager = $this->config->makeClientManager();
     }
 
     /**
@@ -155,9 +155,9 @@ class ZugferdMailReader
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document);
             } catch (Throwable $e) {
                 try {
-                    $xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
-                    $document = ZugferdDocumentReader::readAndGuessFromContent($xml);
-                    $this->triggerHandlers($account, $folder, $message, $attachment, $document);
+                    //$xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
+                    //$document = ZugferdDocumentReader::readAndGuessFromContent($xml);
+                    //$this->triggerHandlers($account, $folder, $message, $attachment, $document);
                 } catch (Throwable $e) {
                     // Do nothing
                 }
