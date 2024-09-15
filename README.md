@@ -111,7 +111,7 @@ $reader->checkAllAccounts();
 It is quite easy to implement your own action (handler). To do this, define your own class which implements the interface ```ZugferdMailHandlerInterface```. This interface defines a single method ```handleDocument```, which is passed information about the folder, message, attachment and the e-invoice document:
 
 ```php
-public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document);
+public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType);
 ```
 
 An example:
@@ -119,9 +119,17 @@ An example:
 ```php
 class MyOwnHandler implements ZugferdMailHandlerInterface
 {
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document)
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         // Do some stuff
     }
 }
 ```
+
+The parameter $recognitionType is one of the constants from ```ZugferdMailReaderRecognitionType```
+
+| Name | Vakue | Description |
+| :------ | :------ | :------ |
+| ZFMAIL_RECOGNITION_TYPE_PDF | 0 | The document was recognized from a ZUGFeRD/Factur-X PDF attachment
+| ZFMAIL_RECOGNITION_TYPE_XML | 1 | The document was recognized from a ZUGFeRD/Factur-X XML attachment
+| ZFMAIL_RECOGNITION_TYPE_XML_UBL | 2 | The document was recognized from a ZUGFeRD/Factur-X XML attachment (in UBL-Syntax)
