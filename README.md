@@ -111,7 +111,14 @@ $reader->checkAllAccounts();
 It is quite easy to implement your own action (handler). To do this, define your own class which implements the interface ```ZugferdMailHandlerInterface```. This interface defines a single method ```handleDocument```, which is passed information about the folder, message, attachment and the e-invoice document:
 
 ```php
-public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType);
+public function handleDocument(
+    ZugferdMailAccount $account,
+    Folder $folder,
+    Message $message,
+    Attachment $attachment,
+    ZugferdDocumentReader $document,
+    int $recognitionType
+);
 ```
 
 An example:
@@ -119,7 +126,13 @@ An example:
 ```php
 class MyOwnHandler implements ZugferdMailHandlerInterface
 {
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
+    public function handleDocument(
+        ZugferdMailAccount $account,
+        Folder $folder,
+        Message $message,
+        Attachment $attachment,
+        ZugferdDocumentReader $document,
+        int $recognitionType)
     {
         // Do some stuff
     }
