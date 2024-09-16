@@ -52,7 +52,6 @@ _ReSharper*/
 *.png
 *.bmp
 *.gif
-cgi-bin
 _backup*
 *.zip
 *.tar
@@ -83,3 +82,4 @@ _backup*
 /composer.lock
 
 /examples/Example1.php
+!/src/bin

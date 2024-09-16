@@ -48,7 +48,7 @@ class ZugferdMailHandlerSaveToFile implements ZugferdMailHandlerInterface
      * @param string      $filePath
      * @param string|null $fileName
      */
-    public function __construct(string $filePath, ?string $fileName)
+    public function __construct(string $filePath, ?string $fileName = null)
     {
         $this->setFilePath($filePath);
         $this->setFileName($fileName);

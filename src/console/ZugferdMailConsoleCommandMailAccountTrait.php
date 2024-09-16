@@ -1,0 +1,136 @@
+<?php
+
+/**
+ * This file is a part of horstoeko/zugferdmail.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace horstoeko\zugferdmail\console;
+
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Symfony\Component\Console\Output\OutputInterface;
+
+/**
+ * Trait representing the general console options to configure a mail account
+ *
+ * @category ZugferdMailReader
+ * @package  ZugferdMailReader
+ * @author   D. Erling <horstoeko@erling.com.de>
+ * @license  https://opensource.org/licenses/MIT MIT
+ * @link     https://github.com/horstoeko/zugferdmail
+ */
+trait ZugferdMailConsoleCommandMailAccountTrait
+{
+    /**
+     * Add console options with all needed options for creating a mail account
+     *
+     * @return static
+     */
+    protected function configureMailAccountOptions()
+    {
+        $this->addOption('host', null, InputOption::VALUE_REQUIRED, 'The host to contact', '')
+            ->addOption('port', null, InputOption::VALUE_REQUIRED, 'The port on the host to contact', 993)
+            ->addOption('protocol', null, InputOption::VALUE_REQUIRED, 'The protocol to use. Must be one of imap, legacy-imap, pop3 or nntp, imap', 'imap')
+            ->addOption('encryption', null, InputOption::VALUE_REQUIRED, 'The encryption to use. Must be one of none, ssl, tls, starttls, notls', 'ssl')
+            ->addOption('validateCert', null, InputOption::VALUE_NONE, 'SSL certificates must be valid')
+            ->addOption('username', null, InputOption::VALUE_REQUIRED, 'The username to use for authentication', '')
+            ->addOption('password', null, InputOption::VALUE_REQUIRED, 'The password to use for authentication', '')
+            ->addOption('authentication', null, InputOption::VALUE_REQUIRED, 'The authentication method to use. Must be one of none, oauth', 'none')
+            ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'Connection timeout in seconds', 30);
+
+        return $this;
+    }
+
+    /**
+     * Create a mail account from console options
+     *
+     * @param  InputInterface $input
+     * @return ZugferdMailAccount
+     */
+    protected function createMailAccountFromOptions(InputInterface $input): ZugferdMailAccount
+    {
+        $account = new ZugferdMailAccount();
+        $account->setIdentifier("account");
+        $account->setHost($input->getOption('host'));
+        $account->setPort($input->getOption('port'));
+        $account->setProtocol($input->getOption('protocol'));
+        $account->setEncryption(strcasecmp($input->getOption('encryption'), "none") === 0 ? false : $input->getOption('encryption'));
+        $account->setValidateCert($input->getOption('validateCert'));
+        $account->setUsername($input->getOption('username'));
+        $account->setPassword($input->getOption('password'));
+        $account->setAuthentication(strcasecmp($input->getOption('authentication'), "none") === 0 ? null : $input->getOption('authentication'));
+        $account->setTimeout($input->getOption('timeout'));
+
+        return $account;
+    }
+
+    /**
+     * Writes account information
+     *
+     * @param  OutputInterface    $output
+     * @param  ZugferdMailAccount $account
+     * @return void
+     */
+    protected function writeAccountInformation(OutputInterface $output, ZugferdMailAccount $account): void
+    {
+        $table = new Table($output);
+        $table->setStyle('box');
+        $table->setHeaders(['ID', 'Host', 'Port', 'Protocol', 'Encryption', 'ValidateCert', 'Authentication', 'Username']);
+        $table->setRows(
+            [
+            [
+                $account->getIdentifier(),
+                $account->getHost(),
+                $account->getPort(),
+                $account->getProtocol(),
+                $account->getEncryption(),
+                $account->getValidateCert() === true ? "Yes" : "No",
+                $account->getAuthentication() === null ? "None" : $account->getAuthentication(),
+                $account->getUsername(),
+            ],
+            ]
+        );
+        $table->render();
+    }
+
+    /**
+     * Write account's folders to watch
+     *
+     * @param  OutputInterface    $output
+     * @param  ZugferdMailAccount $account
+     * @return void
+     */
+    protected function writeAccountFoldersToWatch(OutputInterface $output, ZugferdMailAccount $account): void
+    {
+        $table = new Table($output);
+        $table->setStyle('box');
+        $table->setHeaders(['Folder']);
+        foreach ($account->getFoldersTowatch() as $folderToWatch) {
+            $table->addRow([$folderToWatch]);
+        }
+        $table->render();
+    }
+
+    /**
+     * Write account's mimetypes to watch
+     *
+     * @param  OutputInterface    $output
+     * @param  ZugferdMailAccount $account
+     * @return void
+     */
+    protected function writeAccountMimeTypesToWatch(OutputInterface $output, ZugferdMailAccount $account): void
+    {
+        $table = new Table($output);
+        $table->setStyle('box');
+        $table->setHeaders(['MimeTypes']);
+        foreach ($account->getMmimeTypesToWatch() as $mimeTypeToWatch) {
+            $table->addRow([$mimeTypeToWatch]);
+        }
+        $table->render();
+    }
+}

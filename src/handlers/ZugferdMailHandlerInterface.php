@@ -21,12 +21,12 @@ interface ZugferdMailHandlerInterface
      * The method will be call when a document was found. This method can perform
      * anything you want
      *
-     * @param ZugferdMailAccount $account
-     * @param Folder $folder
-     * @param Message $message
-     * @param Attachment $attachment
-     * @param ZugferdDocumentReader $document
-     * @param integer $recognitionType
+     * @param  ZugferdMailAccount    $account
+     * @param  Folder                $folder
+     * @param  Message               $message
+     * @param  Attachment            $attachment
+     * @param  ZugferdDocumentReader $document
+     * @param  integer               $recognitionType
      * @return void
      */
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType);

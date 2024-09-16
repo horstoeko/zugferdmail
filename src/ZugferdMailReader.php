@@ -55,7 +55,26 @@ class ZugferdMailReader
     public function __construct(ZugferdMailConfig $config)
     {
         $this->config = $config;
-        $this->clientManager = $this->config->makeClientManager();
+        $this->clientManager = $config->makeClientManager();
+    }
+
+    /**
+     * List available folders for each defined account
+     *
+     * @return array
+     */
+    public function getAllAvailableRootFolders(): array
+    {
+        $result = [];
+
+        foreach ($this->config->getAccounts() as $account) {
+            $result[] = [
+                "account" => $account->getIdentifier(),
+                "folders" => $this->clientManager->account($account->getIdentifier())->connect()->getFolders()->toArray(),
+            ];
+        }
+
+        return $result;
     }
 
     /**
