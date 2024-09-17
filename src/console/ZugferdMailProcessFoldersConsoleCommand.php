@@ -39,12 +39,13 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
     {
         $this
             ->setName('zfmail:processmailboxfolders')
-            ->setDescription('Lists mailboxes for an account')
-            ->setHelp('Lists mailboxes for an account')
+            ->setDescription('Process mails and their attachments')
+            ->setHelp('Process mails and their attachments')
             ->configureMailAccountOptions()
             ->addOption('folder', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A folder to look into')
             ->addOption('mimetype', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid mimetype for an message attachment')
-            ->addOption('handler', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid handler class');
+            ->addOption('handler', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid handler class')
+            ->addOption('enableublsupport', null, InputOption::VALUE_NONE, 'Enable UBL support');
     }
 
     /**
@@ -79,10 +80,9 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
         $this->writeAccountFoldersToWatch($output, $account);
         $this->writeAccountMimeTypesToWatch($output, $account);
 
-        $output->writeln('');
-
         $config = new ZugferdMailConfig();
         $config->addAccountObject($account);
+        $config->setUblSupportEnabled($input->getOption('enableublsupport'));
 
         $reader = new ZugferdMailReader($config);
         $reader->checkAllAccounts();
