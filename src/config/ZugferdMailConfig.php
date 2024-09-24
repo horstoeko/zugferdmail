@@ -9,6 +9,8 @@
 
 namespace horstoeko\zugferdmail\config;
 
+use stdClass;
+use RuntimeException;
 use InvalidArgumentException;
 use Webklex\PHPIMAP\ClientManager;
 
@@ -216,5 +218,119 @@ class ZugferdMailConfig
         }
 
         return new ClientManager($config);
+    }
+
+    /**
+     * Loads a configuration from a file.
+     * The file must exist.
+     *
+     * @param  string $filename
+     * @return ZugferdMailConfig
+     */
+    public static function loadFromFile(string $filename): ZugferdMailConfig
+    {
+        if (!is_file($filename)) {
+            throw new InvalidArgumentException(sprintf("The file %s does not exist.", $filename));
+        }
+
+        $jsonString = file_get_contents($filename);
+
+        if ($jsonString === false) {
+            throw new RuntimeException(sprintf("Cannot read the file %s.", $filename));
+        }
+
+        $jsonObject = json_decode($jsonString);
+
+        $config = new ZugferdMailConfig;
+        $config->setDateFormat($jsonObject->dateFormat);
+        $config->setUblSupportEnabled($jsonObject->ublSupportEnabled);
+
+        foreach ($jsonObject->accounts as $accountDefinition) {
+            $account = new ZugferdMailAccount();
+            $account->setIdentifier($accountDefinition->identifier);
+            $account->setHost($accountDefinition->host);
+            $account->setPort($accountDefinition->port);
+            $account->setProtocol($accountDefinition->protocol);
+            $account->setEncryption($accountDefinition->encryption);
+            $account->setValidateCert($accountDefinition->validateCert);
+            $account->setUsername($accountDefinition->username);
+            $account->setPassword($accountDefinition->password);
+            $account->setAuthentication($accountDefinition->authentication);
+            $account->setTimeout($accountDefinition->timeout);
+            $account->setFoldersToWatch($accountDefinition->foldersToWatch);
+            $account->setMmimeTypesToWatch($accountDefinition->mimeTypesToWatch);
+
+            foreach ($accountDefinition->handlers as $accountHandlerDefinition) {
+                $reflection = new \ReflectionClass($accountHandlerDefinition->classname);
+                $account->addHandler($reflection->newInstanceArgs(array_values(get_object_vars($accountHandlerDefinition->properties))));
+            }
+
+            $config->addAccountObject($account);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Save the configuration to a file
+     *
+     * @param  string $filename
+     * @return ZugferdMailConfig
+     */
+    public function saveToFile(string $filename): ZugferdMailConfig
+    {
+        $jsonObject = new stdClass;
+        $jsonObject->dateFormat = $this->getDateFormat();
+        $jsonObject->ublSupportEnabled = $this->getUblSupportEnabled();
+        $jsonObject->accounts = [];
+
+        foreach ($this->getAccounts() as $account) {
+            $jsonAccountObject = new stdClass;
+            $jsonAccountObject->identifier = $account->getIdentifier();
+            $jsonAccountObject->host = $account->getHost();
+            $jsonAccountObject->port = $account->getPort();
+            $jsonAccountObject->protocol = $account->getProtocol();
+            $jsonAccountObject->encryption = $account->getEncryption();
+            $jsonAccountObject->validateCert = $account->getValidateCert();
+            $jsonAccountObject->username = $account->getUsername();
+            $jsonAccountObject->password = $account->getPassword();
+            $jsonAccountObject->authentication = $account->getAuthentication();
+            $jsonAccountObject->timeout = $account->getTimeout();
+            $jsonAccountObject->foldersToWatch = $account->getFoldersTowatch();
+            $jsonAccountObject->mimeTypesToWatch = $account->getMmimeTypesToWatch();
+            $jsonAccountObject->handlers = [];
+
+            foreach ($account->getHandlers() as $handler) {
+                $jsonAccountHandlerObject = new stdClass;
+                $jsonAccountHandlerObject->classname = get_class($handler);
+                $jsonAccountHandlerObject->properties = new stdClass;
+
+                $reflection = new \ReflectionClass($handler);
+                $reflectionConstructor = $reflection->getConstructor();
+
+                if (!is_null($reflectionConstructor)) {
+                    foreach ($reflectionConstructor->getParameters() as $reflectionConstructorParameter) {
+                        $argumentName = $reflectionConstructorParameter->getName();
+                        $argumentGetterMethodName = "get" . ucFirst($argumentName);
+
+                        if (!$reflection->hasMethod($argumentGetterMethodName)) {
+                            throw new RuntimeException(sprintf("No method %s for property %s found", $argumentGetterMethodName, $argumentName));
+                        }
+
+                        $jsonAccountHandlerObject->properties->$argumentName = $handler->$argumentGetterMethodName();
+                    };
+                }
+
+                $jsonAccountObject->handlers[] = $jsonAccountHandlerObject;
+            }
+
+            $jsonObject->accounts[] = $jsonAccountObject;
+        }
+
+        if (file_put_contents($filename, json_encode($jsonObject, JSON_PRETTY_PRINT)) === false) {
+            throw new RuntimeException(sprintf("Cannot save to file %s.", $filename));
+        }
+
+        return $this;
     }
 }
