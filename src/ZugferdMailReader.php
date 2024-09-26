@@ -25,8 +25,8 @@ use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
 /**
  * Class representing the mail reader
  *
- * @category ZugferdMailReader
- * @package  ZugferdMailReader
+ * @category ZugferdMail
+ * @package  ZugferdMail
  * @author   D. Erling <horstoeko@erling.com.de>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail

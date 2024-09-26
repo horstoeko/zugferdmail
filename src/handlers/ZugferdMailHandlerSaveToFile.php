@@ -20,8 +20,8 @@ use InvalidArgumentException;
  * Class representing a handler which saves the attachment (the invoice document)
  * to a file
  *
- * @category ZugferdMailReader
- * @package  ZugferdMailReader
+ * @category ZugferdMail
+ * @package  ZugferdMail
  * @author   D. Erling <horstoeko@erling.com.de>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail

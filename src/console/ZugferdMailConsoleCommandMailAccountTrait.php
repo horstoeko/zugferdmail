@@ -18,8 +18,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Trait representing the general console options to configure a mail account
  *
- * @category ZugferdMailReader
- * @package  ZugferdMailReader
+ * @category ZugferdMail
+ * @package  ZugferdMail
  * @author   D. Erling <horstoeko@erling.com.de>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail

@@ -17,8 +17,8 @@ use Webklex\PHPIMAP\ClientManager;
 /**
  * Class representing the config for the Zugferd MailReader
  *
- * @category ZugferdMailReader
- * @package  ZugferdMailReader
+ * @category ZugferdMail
+ * @package  ZugferdMail
  * @author   D. Erling <horstoeko@erling.com.de>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail

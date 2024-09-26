@@ -15,8 +15,8 @@ use horstoeko\zugferdmail\handlers\ZugferdMailHandlerInterface;
 /**
  * Class representing the mail account definition for the Zugferd MailReader
  *
- * @category ZugferdMailReader
- * @package  ZugferdMailReader
+ * @category ZugferdMail
+ * @package  ZugferdMail
  * @author   D. Erling <horstoeko@erling.com.de>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail

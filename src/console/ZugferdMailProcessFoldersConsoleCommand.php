@@ -21,8 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class representing a console command for processing messages in folders of an email account
  *
- * @category ZugferdMailReader
- * @package  ZugferdMailReader
+ * @category ZugferdMail
+ * @package  ZugferdMail
  * @author   D. Erling <horstoeko@erling.com.de>
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
