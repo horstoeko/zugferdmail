@@ -10,13 +10,18 @@
 namespace horstoeko\zugferdmail\handlers;
 
 use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
+use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 
-interface ZugferdMailHandlerInterface
+abstract class ZugferdMailHandlerAbstract
 {
+    use ZugferdMailSendsMessagesToMessageBag,
+        ZugferdMailReceivesMessagesFromMessageBag;
+
     /**
      * The method will be call when a document was found. This method can perform
      * anything you want
@@ -29,5 +34,5 @@ interface ZugferdMailHandlerInterface
      * @param  integer               $recognitionType
      * @return void
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType);
+    abstract public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType);
 }

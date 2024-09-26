@@ -108,7 +108,7 @@ $reader->checkAllAccounts();
 
 ### Implement your own handler
 
-It is quite easy to implement your own action (handler). To do this, define your own class which implements the interface ```ZugferdMailHandlerInterface```. This interface defines a single method ```handleDocument```, which is passed information about the folder, message, attachment and the e-invoice document:
+It is quite easy to implement your own action (handler). To do this, define your own class which extends a class from  ```ZugferdMailHandlerAbstract```. This abstract class defines a single method ```handleDocument```, which is passed information about the folder, message, attachment and the e-invoice document:
 
 ```php
 public function handleDocument(
@@ -131,7 +131,7 @@ use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 
-class MyOwnHandler implements ZugferdMailHandlerInterface
+class MyOwnHandler extends ZugferdMailHandlerAbstract
 {
     public function handleDocument(
         ZugferdMailAccount $account,

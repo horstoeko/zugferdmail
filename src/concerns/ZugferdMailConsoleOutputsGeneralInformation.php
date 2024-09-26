@@ -7,12 +7,21 @@
  * file that was distributed with this source code.
  */
 
-namespace horstoeko\zugferdmail\console;
+namespace horstoeko\zugferdmail\concerns;
 
 use Composer\InstalledVersions as ComposerInstalledVersions;
 use Symfony\Component\Console\Output\OutputInterface;
 
-trait ZugferdMailConsoleCommandGeneralOutputTrait
+/**
+ * Trait representing the output of general informations to the console
+ *
+ * @category ZugferdMail
+ * @package  ZugferdMail
+ * @author   D. Erling <horstoeko@erling.com.de>
+ * @license  https://opensource.org/licenses/MIT MIT
+ * @link     https://github.com/horstoeko/zugferdmail
+ */
+trait ZugferdMailConsoleOutputsGeneralInformation
 {
     /**
      * Writes a heading

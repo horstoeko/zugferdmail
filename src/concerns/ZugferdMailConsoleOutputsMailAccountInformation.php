@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace horstoeko\zugferdmail\console;
+namespace horstoeko\zugferdmail\concerns;
 
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Trait representing the general console options to configure a mail account
+ * Trait representing the output of mail account informations to the console
  *
  * @category ZugferdMail
  * @package  ZugferdMail
@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-trait ZugferdMailConsoleCommandMailAccountTrait
+trait ZugferdMailConsoleOutputsMailAccountInformation
 {
     /**
      * Add console options with all needed options for creating a mail account

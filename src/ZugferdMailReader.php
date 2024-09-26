@@ -10,17 +10,19 @@
 namespace horstoeko\zugferdmail;
 
 use Throwable;
-use Webklex\PHPIMAP\Folder;
-use Webklex\PHPIMAP\Message;
+use horstoeko\zugferd\ZugferdDocument;
+use horstoeko\zugferd\ZugferdDocumentPdfReader;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
+use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use horstoeko\zugferdmail\config\ZugferdMailConfig;
+use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
+use horstoeko\zugferdublbridge\XmlConverterUblToCii;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\ClientManager;
-use horstoeko\zugferd\ZugferdDocument;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferd\ZugferdDocumentPdfReader;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use horstoeko\zugferdublbridge\XmlConverterUblToCii;
-use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
+use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Message;
 
 /**
  * Class representing the mail reader
@@ -33,6 +35,9 @@ use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
  */
 class ZugferdMailReader
 {
+    use ZugferdMailSendsMessagesToMessageBag,
+        ZugferdMailReceivesMessagesFromMessageBag;
+
     /**
      * The config
      *

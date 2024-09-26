@@ -10,7 +10,7 @@
 namespace horstoeko\zugferdmail\config;
 
 use InvalidArgumentException;
-use horstoeko\zugferdmail\handlers\ZugferdMailHandlerInterface;
+use horstoeko\zugferdmail\handlers\ZugferdMailHandlerAbstract;
 
 /**
  * Class representing the mail account definition for the Zugferd MailReader
@@ -110,7 +110,7 @@ class ZugferdMailAccount
     /**
      * Handler for found documents
      *
-     * @var array<ZugferdMailHandlerInterface>
+     * @var array<ZugferdMailHandlerAbstract>
      */
     protected $handlers = [];
 
@@ -456,7 +456,7 @@ class ZugferdMailAccount
     /**
      * Returns the handler when a document was found
      *
-     * @return array<ZugferdMailHandlerInterface>
+     * @return array<ZugferdMailHandlerAbstract>
      */
     public function getHandlers(): array
     {
@@ -466,7 +466,7 @@ class ZugferdMailAccount
     /**
      * Sets multiuple handlers to run when a document was found
      *
-     * @param  array<ZugferdMailHandlerInterface> $handlers
+     * @param  array<ZugferdMailHandlerAbstract> $handlers
      * @return ZugferdMailAccount
      */
     public function setHandlers(array $handlers): ZugferdMailAccount
@@ -479,10 +479,10 @@ class ZugferdMailAccount
     /**
      * Sets the handler to execute when a document was found
      *
-     * @param  ZugferdMailHandlerInterface $handler
+     * @param  ZugferdMailHandlerAbstract $handler
      * @return ZugferdMailAccount
      */
-    public function addHandler(?ZugferdMailHandlerInterface $handler): ZugferdMailAccount
+    public function addHandler(?ZugferdMailHandlerAbstract $handler): ZugferdMailAccount
     {
         $this->handlers[] = $handler;
 

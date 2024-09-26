@@ -9,11 +9,11 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
-use Webklex\PHPIMAP\Folder;
-use Webklex\PHPIMAP\Message;
-use Webklex\PHPIMAP\Attachment;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Webklex\PHPIMAP\Attachment;
+use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Message;
 
 /**
  * Class representing a handler that outputs information to CLI
@@ -24,7 +24,7 @@ use horstoeko\zugferdmail\config\ZugferdMailAccount;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-class ZugferdMailHandlerCli implements ZugferdMailHandlerInterface
+class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
 {
     /**
      * @inheritDoc

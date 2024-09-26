@@ -9,12 +9,12 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
-use Webklex\PHPIMAP\Folder;
-use Webklex\PHPIMAP\Message;
-use Webklex\PHPIMAP\Attachment;
+use InvalidArgumentException;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use InvalidArgumentException;
+use Webklex\PHPIMAP\Attachment;
+use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Message;
 
 /**
  * Class representing a handler which saves the attachment (the invoice document)
@@ -26,7 +26,7 @@ use InvalidArgumentException;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-class ZugferdMailHandlerSaveToFile implements ZugferdMailHandlerInterface
+class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
 {
     /**
      * The path to store the attachment (the invoice document)

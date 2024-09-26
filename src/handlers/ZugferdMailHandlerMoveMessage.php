@@ -9,12 +9,12 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
-use Webklex\PHPIMAP\Folder;
-use Webklex\PHPIMAP\Message;
 use InvalidArgumentException;
-use Webklex\PHPIMAP\Attachment;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Webklex\PHPIMAP\Attachment;
+use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Message;
 
 /**
  * Class representing a handler that moves a message to another folder
@@ -25,7 +25,7 @@ use horstoeko\zugferdmail\config\ZugferdMailAccount;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-class ZugferdMailHandlerMoveMessage implements ZugferdMailHandlerInterface
+class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
 {
     /**
      * The folder to move the message to
