@@ -114,6 +114,36 @@ trait ZugferdMailReceivesMessagesFromMessageBag
     }
 
     /**
+     * Returns an array of all success messages
+     *
+     * @return array
+     */
+    public function getSuccessMessages(): array
+    {
+        return ZugferdMailMessageBag::factory()->getSuccessMessages();
+    }
+
+    /**
+     * Returns true if __no__ success messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasNoSuccessMessages(): bool
+    {
+        return ZugferdMailMessageBag::factory()->hasNoSuccessMessages();
+    }
+
+    /**
+     * Returns true if success messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasSuccessMessages(): bool
+    {
+        return ZugferdMailMessageBag::factory()->hasSuccessMessages();
+    }
+
+    /**
      * Returns all messages from message container
      *
      * @return array

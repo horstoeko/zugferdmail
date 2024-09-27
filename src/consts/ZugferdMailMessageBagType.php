@@ -31,4 +31,11 @@ class ZugferdMailMessageBagType
      * @var string
      */
     public const MESSAGETYPE_ERROR = "error";
+
+    /**
+     * Identifier for a message of type __success__
+     *
+     * @var string
+     */
+    public const MESSAGETYPE_SUCCESS = "success";
 }

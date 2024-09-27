@@ -13,6 +13,7 @@ use Throwable;
 use horstoeko\zugferd\ZugferdDocument;
 use horstoeko\zugferd\ZugferdDocumentPdfReader;
 use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\concerns\ZugferdMailClearsMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
@@ -36,7 +37,8 @@ use Webklex\PHPIMAP\Message;
 class ZugferdMailReader
 {
     use ZugferdMailSendsMessagesToMessageBag,
-        ZugferdMailReceivesMessagesFromMessageBag;
+        ZugferdMailReceivesMessagesFromMessageBag,
+        ZugferdMailClearsMessageBag;
 
     /**
      * The config
@@ -89,6 +91,8 @@ class ZugferdMailReader
      */
     public function checkAllAccounts(): ZugferdMailReader
     {
+        $this->clearMessageBag();
+
         foreach ($this->config->getAccounts() as $account) {
             $this->checkSingleAccount($account);
         }
@@ -171,25 +175,44 @@ class ZugferdMailReader
             return;
         }
 
+        $messageAdditionalData = [
+            "account" => $account,
+            "folder" => $folder,
+            "message" => $message,
+            "attachment" => $attachment,
+        ];
+
         try {
+            $this->addLogMessage('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
             $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
-            $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF);
+            $this->addSuccessMessage('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
+            $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
         } catch (Throwable $e) {
             try {
+                $this->addWarningMessage("No ZUGFeRD compatible PDF found", $messageAdditionalData);
+                $this->addLogMessage('Checking for ZUGFeRD compatible XML', $messageAdditionalData);
                 $document = ZugferdDocumentReader::readAndGuessFromContent($attachment->getContent());
-                $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML);
+                $this->addSuccessMessage('Mail contains a ZUGFeRD compatible XML', $messageAdditionalData);
+                $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
             } catch (Throwable $e) {
                 try {
+                    $this->addWarningMessage("No ZUGFeRD compatible XML found", $messageAdditionalData);
                     if ($this->config->getUblSupportEnabled() === true) {
+                        $this->addLogMessage('Checking for UBL compatible XML', $messageAdditionalData);
                         $xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
                         $document = ZugferdDocumentReader::readAndGuessFromContent($xml);
+                        $this->addSuccessMessage('Mail contains a UBL compatible XML', $messageAdditionalData);
                         $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
+                    } else {
+                        $this->addWarningMessage("UBL support disabled", $messageAdditionalData);
                     }
                 } catch (Throwable $e) {
-                    // Do nothing
+                    $this->addWarningMessage("No UNL compatible XML found", $messageAdditionalData);
                 }
             }
         }
+
+        $this->addLogMessage('');
     }
 
     /**

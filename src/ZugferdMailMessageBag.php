@@ -70,6 +70,18 @@ class ZugferdMailMessageBag
     }
 
     /**
+     * Clear the message bag
+     *
+     * @return ZugferdMailMessageBag
+     */
+    public function clear(): ZugferdMailMessageBag
+    {
+        $this->messageContainer = [];
+
+        return $this;
+    }
+
+    /**
      * Add a messsage with type, message text and additional data
      * to internal message container
      *
@@ -224,6 +236,36 @@ class ZugferdMailMessageBag
     public function hasErrorMessages(): bool
     {
         return !$this->hasNoErrorMessages();
+    }
+
+    /**
+     * Returns an array of all success messages
+     *
+     * @return array
+     */
+    public function getSuccessMessages(): array
+    {
+        return $this->getMessageBagFilteredByType(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS);
+    }
+
+    /**
+     * Returns true if __no__ success messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasNoSuccessMessages(): bool
+    {
+        return empty($this->getSuccessMessages());
+    }
+
+    /**
+     * Returns true if success messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasSuccessMessages(): bool
+    {
+        return !$this->hasNoSuccessMessages();
     }
 
     /**

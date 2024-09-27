@@ -14,12 +14,12 @@ class ZugferdMailReaderRecognitionType
     /**
      * Recognized from a ZUGFeRD/Factur-X PDF
      */
-    public const ZFMAIL_RECOGNITION_TYPE_PDF = 0;
+    public const ZFMAIL_RECOGNITION_TYPE_PDF_CII = 0;
 
     /**
      * Recognized from a XRechnung or EN16931-compatible XML
      */
-    public const ZFMAIL_RECOGNITION_TYPE_XML = 1;
+    public const ZFMAIL_RECOGNITION_TYPE_XML_CII = 1;
 
     /**
      * Recognized from a XRechnung or EN16931-compatible XML in UBL-Syntax

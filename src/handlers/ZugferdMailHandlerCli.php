@@ -46,19 +46,6 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
             $effectiveSpecifiedPeriod
         );
 
-        $this->writeln("Found an invoice...");
-        $this->writeln(sprintf(" - Invoice No. ............. %s", $documentno));
-        $this->writeln(sprintf(" - Invoice Date ............ %s", $documentdate->format("d.m.Y")));
-    }
-
-    /**
-     * Write to screen with CR at the end
-     *
-     * @param  string $str
-     * @return void
-     */
-    protected function writeln(string $str): void
-    {
-        echo sprintf("%s\n", $str);
+        $this->addLogMessage(sprintf("Found an invoice with number %s by date %s", $documentno, $documentdate->format("d.m.Y")));
     }
 }

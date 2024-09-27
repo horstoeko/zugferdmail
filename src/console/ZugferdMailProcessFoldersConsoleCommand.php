@@ -90,6 +90,8 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
         $reader = new ZugferdMailReader($config);
         $reader->checkAllAccounts();
 
+        $this->outputMessagesAsTableToCli($output);
+
         return Command::SUCCESS;
     }
 }

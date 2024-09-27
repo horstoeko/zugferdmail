@@ -79,7 +79,22 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addErrorMessage(string $message, array $additionalData = [])
     {
-        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_WARN, $message, $additionalData);
+        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding a success entry to message bag
+     *
+     * @param  string $type
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return static
+     */
+    protected function addSuccessMessage(string $message, array $additionalData = [])
+    {
+        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $message, $additionalData);
 
         return $this;
     }
