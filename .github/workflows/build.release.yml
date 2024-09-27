@@ -95,7 +95,7 @@ jobs:
 
       - name: Run Tests (PHPUnit)
         run: |
-          vendor/bin/phpunit --stop-on-failure --configuration="build/phpunit.xml"
+          vendor/bin/phpunit --configuration="build/phpunit.xml"
         env:
           XDEBUG_MODE: coverage
 
