@@ -59,6 +59,11 @@ jobs:
         run: |
           composer config -g github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer install
+          
+      - name: Show current directory
+        run: |
+          pwd
+          echo "currentworkingdirectory=$(pwd)" >> $GITHUB_OUTPUT
 
       - name: Prepare Directories
         run: |
