@@ -4,6 +4,9 @@
         <testsuite name="Basic">
             <file>../tests/testcases/BasicTest.php</file>
         </testsuite>
+        <testsuite name="MailAccount">
+            <file>../tests/testcases/MailAccountTest.php</file>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
