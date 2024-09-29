@@ -33,10 +33,10 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
      *
      * @return void
      */
-    protected function outputMessagesToCli(OutputInterface $output): void
+    protected function outputMessagesFromMessageBagToCli(OutputInterface $output): void
     {
-        foreach ($this->getAllMessages() as $message) {
-            $output->writeln($this->formatMessage($message));
+        foreach ($this->getAllMessagesFromMessageBag() as $message) {
+            $output->writeln($this->formatMessageBagMessage($message));
         }
     }
 
@@ -45,9 +45,9 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
      *
      * @return void
      */
-    protected function outputMessagesAsTableToCli(OutputInterface $output): void
+    protected function outputMessagesFromMessageBagAsTableToCli(OutputInterface $output): void
     {
-        $messages = collect($this->getAllMessages());
+        $messages = collect($this->getAllMessagesFromMessageBag());
 
         $messages = $messages->map(
             function ($message, int $messageKey) use ($messages) {
@@ -58,7 +58,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
                         $result = [new TableSeparator()];
                     }
                 } else {
-                    $result = [$this->formatMessage($message)];
+                    $result = [$this->formatMessageBagMessage($message)];
                 }
 
                 return $result;
@@ -78,7 +78,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
      * @param  array $message
      * @return string
      */
-    private function formatMessage(array $message): string
+    private function formatMessageBagMessage(array $message): string
     {
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_LOG) {
             return sprintf("%s", $message["message"]);

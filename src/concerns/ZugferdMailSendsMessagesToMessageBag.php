@@ -33,7 +33,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      * @param  array  $additionalData
      * @return static
      */
-    protected function addMessage(string $type, string $message, array $additionalData = [])
+    protected function addMessageToMessageBag(string $type, string $message, array $additionalData = [])
     {
         ZugferdMailMessageBag::factory()->addMessage($type, static::class, $message, $additionalData);
 
@@ -47,9 +47,9 @@ trait ZugferdMailSendsMessagesToMessageBag
      * @param  array  $additionalData
      * @return static
      */
-    protected function addLogMessage(string $message, array $additionalData = [])
+    protected function addLogMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_LOG, $message, $additionalData);
+        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_LOG, $message, $additionalData);
 
         return $this;
     }
@@ -61,9 +61,9 @@ trait ZugferdMailSendsMessagesToMessageBag
      * @param  array  $additionalData
      * @return static
      */
-    protected function addWarningMessage(string $message, array $additionalData = [])
+    protected function addWarningMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_WARN, $message, $additionalData);
+        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_WARN, $message, $additionalData);
 
         return $this;
     }
@@ -75,9 +75,9 @@ trait ZugferdMailSendsMessagesToMessageBag
      * @param  array  $additionalData
      * @return static
      */
-    protected function addErrorMessage(string $message, array $additionalData = [])
+    protected function addErrorMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $message, $additionalData);
+        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $message, $additionalData);
 
         return $this;
     }
@@ -89,9 +89,9 @@ trait ZugferdMailSendsMessagesToMessageBag
      * @param  array  $additionalData
      * @return static
      */
-    protected function addSuccessMessage(string $message, array $additionalData = [])
+    protected function addSuccessMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $message, $additionalData);
+        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $message, $additionalData);
 
         return $this;
     }
@@ -103,7 +103,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      * @param  array     $additionalData
      * @return static
      */
-    protected function addThrowable(Throwable $throwable, array $additionalData = [])
+    protected function addThrowableToMessageBag(Throwable $throwable, array $additionalData = [])
     {
         ZugferdMailMessageBag::factory()->addThrowable($throwable, static::class, $additionalData);
 

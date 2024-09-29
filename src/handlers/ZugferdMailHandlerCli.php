@@ -46,16 +46,16 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
             $effectiveSpecifiedPeriod
         );
 
-        $this->addLogMessage(sprintf("Found an document (%s) with number %s by date %s", $documenttypecode, $documentno, $documentdate->format("d.m.Y")));
+        $this->addLogMessageToMessageBag(sprintf("Found an document (%s) with number %s by date %s", $documenttypecode, $documentno, $documentdate->format("d.m.Y")));
 
-        $this->addLogMessage(sprintf(" - Profile            %s", $document->getProfileDefinitionParameter('name')));
-        $this->addLogMessage(sprintf(" - Invoice currency   %s", $invoiceCurrency));
-        $this->addLogMessage(sprintf(" - Tay currency       %s", $taxCurrency));
-        $this->addLogMessage(sprintf(" - Document name      %s", $documentname));
-        $this->addLogMessage(sprintf(" - Document language  %s", $documentlanguage));
+        $this->addLogMessageToMessageBag(sprintf(" - Profile            %s", $document->getProfileDefinitionParameter('name')));
+        $this->addLogMessageToMessageBag(sprintf(" - Invoice currency   %s", $invoiceCurrency));
+        $this->addLogMessageToMessageBag(sprintf(" - Tay currency       %s", $taxCurrency));
+        $this->addLogMessageToMessageBag(sprintf(" - Document name      %s", $documentname));
+        $this->addLogMessageToMessageBag(sprintf(" - Document language  %s", $documentlanguage));
 
         if ($effectiveSpecifiedPeriod) {
-            $this->addLogMessage(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
+            $this->addLogMessageToMessageBag(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
         }
     }
 }

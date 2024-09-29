@@ -28,7 +28,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return array
      */
-    public function getLogMessages(): array
+    public function getLogMessagesFromMessageBag(): array
     {
         return ZugferdMailMessageBag::factory()->getLogMessages();
     }
@@ -38,7 +38,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasNoLogMessages(): bool
+    public function hasNoLogMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasNoLogMessages();
     }
@@ -48,7 +48,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasLogMessages(): bool
+    public function hasLogMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasLogMessages();
     }
@@ -58,7 +58,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return array
      */
-    public function getWarningMessages(): array
+    public function getWarningMessagesFromMessageBag(): array
     {
         return ZugferdMailMessageBag::factory()->getWarningMessages();
     }
@@ -68,7 +68,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasNoWarningMessages(): bool
+    public function hasNoWarningMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasNoWarningMessages();
     }
@@ -78,7 +78,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasWarningMessages(): bool
+    public function hasWarningMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasWarningMessages();
     }
@@ -88,7 +88,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return array
      */
-    public function getErrorMessages(): array
+    public function getErrorMessagesFromMessageBag(): array
     {
         return ZugferdMailMessageBag::factory()->getErrorMessages();
     }
@@ -98,7 +98,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasNoErrorMessages(): bool
+    public function hasNoErrorMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasNoErrorMessages();
     }
@@ -108,7 +108,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasErrorMessages(): bool
+    public function hasErrorMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasErrorMessages();
     }
@@ -118,7 +118,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return array
      */
-    public function getSuccessMessages(): array
+    public function getSuccessMessagesFromMessageBag(): array
     {
         return ZugferdMailMessageBag::factory()->getSuccessMessages();
     }
@@ -128,7 +128,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasNoSuccessMessages(): bool
+    public function hasNoSuccessMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasNoSuccessMessages();
     }
@@ -138,7 +138,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return boolean
      */
-    public function hasSuccessMessages(): bool
+    public function hasSuccessMessagesInMessageBag(): bool
     {
         return ZugferdMailMessageBag::factory()->hasSuccessMessages();
     }
@@ -148,7 +148,7 @@ trait ZugferdMailReceivesMessagesFromMessageBag
      *
      * @return array
      */
-    public function getAllMessages(): array
+    public function getAllMessagesFromMessageBag(): array
     {
         return ZugferdMailMessageBag::factory()->getAllMessages();
     }

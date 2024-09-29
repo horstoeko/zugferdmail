@@ -185,51 +185,51 @@ class ZugferdMailReader
 
         $document = null;
 
-        $this->addLogMessage(sprintf("Checking mail %s, Subject: %s, Sender: %s", $message->getUid(), $message->getSubject(), $message->getFrom()));
+        $this->addLogMessageToMessageBag(sprintf("Checking mail %s, Subject: %s, Sender: %s", $message->getUid(), $message->getSubject(), $message->getFrom()));
 
         if (is_null($document)) {
             try {
-                $this->addLogMessage('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
+                $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
                 $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
                 $this->runtimeExceptionIf(is_null($document), "No document returned");
-                $this->addSuccessMessage('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
+                $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
             } catch (Throwable $e) {
-                $this->addWarningMessage(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
+                $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
             }
         }
 
         if (is_null($document)) {
             try {
-                $this->addLogMessage('Checking for ZUGFeRD compatible XML', $messageAdditionalData);
+                $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible XML', $messageAdditionalData);
                 $document = ZugferdDocumentReader::readAndGuessFromContent($attachment->getContent());
                 $this->runtimeExceptionIf(is_null($document), "No document returned");
-                $this->addSuccessMessage('Mail contains a ZUGFeRD compatible XML', $messageAdditionalData);
+                $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible XML', $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
             } catch (Throwable $e) {
-                $this->addWarningMessage(sprintf("No ZUGFeRD compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
+                $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
             }
         }
 
         if (is_null($document)) {
             if ($this->config->getUblSupportEnabled() === true) {
                 try {
-                    $this->addLogMessage('Checking for UBL compatible XML', $messageAdditionalData);
+                    $this->addLogMessageToMessageBag('Checking for UBL compatible XML', $messageAdditionalData);
                     $document = ZugferdDocumentReader::readAndGuessFromContent(
                         XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString()
                     );
                     $this->runtimeExceptionIf(is_null($document), "No document returned");
-                    $this->addSuccessMessage('Mail contains a UBL compatible XML', $messageAdditionalData);
+                    $this->addSuccessMessageToMessageBag('Mail contains a UBL compatible XML', $messageAdditionalData);
                     $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                 } catch (Throwable $e) {
-                    $this->addWarningMessage(sprintf("No UBL compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
+                    $this->addWarningMessageToMessageBag(sprintf("No UBL compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
                 }
             } else {
-                $this->addWarningMessage("UBL support disabled", $messageAdditionalData);
+                $this->addWarningMessageToMessageBag("UBL support disabled", $messageAdditionalData);
             }
         }
 
-        $this->addLogMessage('');
+        $this->addLogMessageToMessageBag('');
     }
 
     /**
@@ -247,7 +247,7 @@ class ZugferdMailReader
             try {
                 $handler->handleDocument($account, $folder, $message, $attachment, $document, $recognitionType);
             } catch (Throwable $e) {
-                $this->addThrowable($e);
+                $this->addThrowableToMessageBag($e);
             }
         }
     }
