@@ -87,7 +87,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
             return sprintf("<comment>%s</comment>", $message["message"]);
         }
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_ERROR) {
-            if ($message["type"] == ZugferdMailMessageBagType::MESSAGETYPE_ERROR && isset($message["additionalData"]["errno"])) {
+            if (isset($message["additionalData"]["errno"])) {
                 return sprintf("<error>%s in %s:%s</error>", $message["message"], $message["additionalData"]["errfile"], $message["additionalData"]["errline"]);
             } else {
                 return sprintf("<error>%s</error>", $message["message"]);

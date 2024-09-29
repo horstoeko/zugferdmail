@@ -203,7 +203,6 @@ class ZugferdMailReader
             try {
                 $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible XML', $messageAdditionalData);
                 $document = ZugferdDocumentReader::readAndGuessFromContent($attachment->getContent());
-                $this->runtimeExceptionIf(is_null($document), "No document returned");
                 $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible XML', $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
             } catch (Throwable $e) {
@@ -218,7 +217,6 @@ class ZugferdMailReader
                     $document = ZugferdDocumentReader::readAndGuessFromContent(
                         XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString()
                     );
-                    $this->runtimeExceptionIf(is_null($document), "No document returned");
                     $this->addSuccessMessageToMessageBag('Mail contains a UBL compatible XML', $messageAdditionalData);
                     $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                 } catch (Throwable $e) {
