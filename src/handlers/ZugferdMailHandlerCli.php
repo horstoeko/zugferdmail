@@ -51,6 +51,8 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
         $this->addLogMessage(sprintf(" - Tay currency       %s", $taxCurrency));
         $this->addLogMessage(sprintf(" - Document name      %s", $documentname));
         $this->addLogMessage(sprintf(" - Document language  %s", $documentlanguage));
-        $this->addLogMessage(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
+        if ($effectiveSpecifiedPeriod) {
+            $this->addLogMessage(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
+        }
     }
 }
