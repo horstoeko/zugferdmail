@@ -172,7 +172,7 @@ class ZugferdMailReader
      */
     protected function checkSingleMessageAttachment(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment): void
     {
-        if (!in_array($attachment->getMimeType(), $account->getMmimeTypesToWatch())) {
+        if (!in_array($attachment->getMimeType(), $account->getMimeTypesToWatch())) {
             return;
         }
 

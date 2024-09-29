@@ -153,7 +153,7 @@ class ZugferdMailConfig
         $account->setAuthentication($authentication);
         $account->setTimeout($timeout);
         $account->setFoldersToWatch($foldersToWatch);
-        $account->setMmimeTypesToWatch($mimeTypesToWatch);
+        $account->setMimeTypesToWatch($mimeTypesToWatch);
 
         $this->addAccountObject($account);
 
@@ -258,7 +258,7 @@ class ZugferdMailConfig
             $account->setAuthentication($accountDefinition->authentication);
             $account->setTimeout($accountDefinition->timeout);
             $account->setFoldersToWatch($accountDefinition->foldersToWatch);
-            $account->setMmimeTypesToWatch($accountDefinition->mimeTypesToWatch);
+            $account->setMimeTypesToWatch($accountDefinition->mimeTypesToWatch);
 
             foreach ($accountDefinition->handlers as $accountHandlerDefinition) {
                 $reflection = new \ReflectionClass($accountHandlerDefinition->classname);
@@ -297,7 +297,7 @@ class ZugferdMailConfig
             $jsonAccountObject->authentication = $account->getAuthentication();
             $jsonAccountObject->timeout = $account->getTimeout();
             $jsonAccountObject->foldersToWatch = $account->getFoldersTowatch();
-            $jsonAccountObject->mimeTypesToWatch = $account->getMmimeTypesToWatch();
+            $jsonAccountObject->mimeTypesToWatch = $account->getMimeTypesToWatch();
             $jsonAccountObject->handlers = [];
 
             foreach ($account->getHandlers() as $handler) {

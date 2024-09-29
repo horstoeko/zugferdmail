@@ -345,7 +345,7 @@ class ZugferdMailAccount
      */
     public function setAuthentication(?string $authentication): ZugferdMailAccount
     {
-        if (!in_array($authentication, [null, "oauth"])) {
+        if (!is_null($authentication) && $authentication != "oauth") {
             throw new InvalidArgumentException("The authentication method must be one of null (NUL), oauth");
         }
 
@@ -399,7 +399,7 @@ class ZugferdMailAccount
      */
     public function setFoldersToWatch(array $folders): ZugferdMailAccount
     {
-        $this->foldersToWatch = $folders;
+        $this->foldersToWatch = array_filter($folders);
 
         return $this;
     }
@@ -412,6 +412,10 @@ class ZugferdMailAccount
      */
     public function addFolderToWatch(string $folderPath): ZugferdMailAccount
     {
+        if (empty($folderPath)) {
+            throw new InvalidArgumentException("Path must not be empty");
+        }
+
         $this->foldersToWatch[] = $folderPath;
 
         return $this;
@@ -422,7 +426,7 @@ class ZugferdMailAccount
      *
      * @return array<string>
      */
-    public function getMmimeTypesToWatch(): array
+    public function getMimeTypesToWatch(): array
     {
         return $this->mimeTypesToWatch;
     }
@@ -433,9 +437,9 @@ class ZugferdMailAccount
      * @param  array<string> $mimeTypesToWatch
      * @return ZugferdMailAccount
      */
-    public function setMmimeTypesToWatch(array $mimeTypesToWatch): ZugferdMailAccount
+    public function setMimeTypesToWatch(array $mimeTypesToWatch): ZugferdMailAccount
     {
-        $this->mimeTypesToWatch = $mimeTypesToWatch;
+        $this->mimeTypesToWatch = array_filter($mimeTypesToWatch);
 
         return $this;
     }
@@ -446,8 +450,12 @@ class ZugferdMailAccount
      * @param  string $mimeTypesToWatch
      * @return ZugferdMailAccount
      */
-    public function addMmimeTypeToWatch(string $mimeTypesToWatch): ZugferdMailAccount
+    public function addMimeTypeToWatch(string $mimeTypesToWatch): ZugferdMailAccount
     {
+        if (empty($mimeTypesToWatch)) {
+            throw new InvalidArgumentException("Mimetype must not be empty");
+        }
+
         $this->mimeTypesToWatch[] = $mimeTypesToWatch;
 
         return $this;
@@ -471,7 +479,11 @@ class ZugferdMailAccount
      */
     public function setHandlers(array $handlers): ZugferdMailAccount
     {
-        $this->handlers = $handlers;
+        $this->handlers = array_filter(
+            $handlers, function ($handler) {
+                return $handler instanceof ZugferdMailHandlerAbstract;
+            }
+        );
 
         return $this;
     }

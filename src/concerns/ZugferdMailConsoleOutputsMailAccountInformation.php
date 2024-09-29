@@ -128,7 +128,7 @@ trait ZugferdMailConsoleOutputsMailAccountInformation
         $table = new Table($output);
         $table->setStyle('box');
         $table->setHeaders(['MimeTypes']);
-        foreach ($account->getMmimeTypesToWatch() as $mimeTypeToWatch) {
+        foreach ($account->getMimeTypesToWatch() as $mimeTypeToWatch) {
             $table->addRow([$mimeTypeToWatch]);
         }
         $table->render();

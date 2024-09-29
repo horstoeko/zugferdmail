@@ -65,7 +65,7 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
         }
 
         foreach ($input->getOption('mimetype') as $mimeTypeToWatch) {
-            $account->addMmimeTypeToWatch($mimeTypeToWatch);
+            $account->addMimeTypeToWatch($mimeTypeToWatch);
         }
 
         foreach ($input->getOption('handler') as $handlerClassName) {
