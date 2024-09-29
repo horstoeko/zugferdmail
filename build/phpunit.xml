@@ -13,14 +13,13 @@
             <directory suffix=".php">../src</directory>
         </include>
         <exclude>
+            <file>../src/bin/ZugferdMailConsole.php</file>
         </exclude>
         <report>
-            <!--
             <xml outputDirectory="coverage"/>
             <html outputDirectory="coverage-html"/>
             <clover outputFile="logs/clover.xml"/>
             <crap4j outputFile="logs/crap4j.xml" threshold="50"/>
-            -->
         </report>
     </coverage>
     <logging>
