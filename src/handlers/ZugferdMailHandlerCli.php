@@ -46,6 +46,11 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
             $effectiveSpecifiedPeriod
         );
 
-        $this->addLogMessage(sprintf("Found an invoice with number %s by date %s", $documentno, $documentdate->format("d.m.Y")));
+        $this->addLogMessage(sprintf("Found an document (%s) with number %s by date %s", $documenttypecode, $documentno, $documentdate->format("d.m.Y")));
+        $this->addLogMessage(sprintf(" - Invoice currency   %s", $invoiceCurrency));
+        $this->addLogMessage(sprintf(" - Tay currency       %s", $taxCurrency));
+        $this->addLogMessage(sprintf(" - Document name      %s", $documentname));
+        $this->addLogMessage(sprintf(" - Document language  %s", $documentlanguage));
+        $this->addLogMessage(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
     }
 }

@@ -20,6 +20,7 @@ use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
 use horstoeko\zugferdublbridge\XmlConverterUblToCii;
+use RuntimeException;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Folder;
@@ -185,6 +186,7 @@ class ZugferdMailReader
         try {
             $this->addLogMessage('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
             $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
+            $this->runtimeExceptionIf(is_null($document));
             $this->addSuccessMessage('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
             $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
         } catch (Throwable $e) {
@@ -197,10 +199,11 @@ class ZugferdMailReader
             } catch (Throwable $e) {
                 try {
                     $this->addWarningMessage("No ZUGFeRD compatible XML found", $messageAdditionalData);
-                    if ($this->config->getUblSupportEnabled() === true) {
+                    if ($this->config->getUblSupportEnabled() !== true) {
                         $this->addLogMessage('Checking for UBL compatible XML', $messageAdditionalData);
-                        $xml = XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString();
-                        $document = ZugferdDocumentReader::readAndGuessFromContent($xml);
+                        $document = ZugferdDocumentReader::readAndGuessFromContent(
+                            XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString()
+                        );
                         $this->addSuccessMessage('Mail contains a UBL compatible XML', $messageAdditionalData);
                         $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                     } else {
@@ -218,16 +221,30 @@ class ZugferdMailReader
     /**
      * Internal trigger when attachment was found
      *
-     * @param  ZugferdMailAccount $account
-     * @param  Folder             $folder
-     * @param  Message            $message
-     * @param  ZugferdDocument    $document
+     * @param  ZugferdMailAccount    $account
+     * @param  Folder                $folder
+     * @param  Message               $message
+     * @param  ZugferdDocumentReader $document
      * @return void
      */
-    protected function triggerHandlers(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocument $document, int $recognitionType): void
+    protected function triggerHandlers(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
     {
         foreach ($account->getHandlers() as $handler) {
             $handler->handleDocument($account, $folder, $message, $attachment, $document, $recognitionType);
+        }
+    }
+
+    /**
+     * Raise exception if $condition is evaludated to trze
+     *
+     * @param  boolean $condidition
+     * @param  string  $message
+     * @return void
+     */
+    protected function runtimeExceptionIf(bool $condidition, string $message = ""): void
+    {
+        if ($condidition === true) {
+            throw new RuntimeException($message);
         }
     }
 }

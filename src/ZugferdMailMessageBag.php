@@ -28,7 +28,7 @@ class ZugferdMailMessageBag
      *
      * @var ZugferdMailMessageBag
      */
-    private static $instance = null;
+    protected static $instance = null;
 
     /**
      * Message container
@@ -95,6 +95,7 @@ class ZugferdMailMessageBag
     {
         $this->messageContainer[] = [
             "type" => $type,
+            "source" => $source,
             "message" => $message,
             "additionalData" => $additionalData
         ];

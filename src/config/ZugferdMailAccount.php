@@ -185,7 +185,7 @@ class ZugferdMailAccount
      * @param  integer $port
      * @return ZugferdMailAccount
      */
-    public function setPort(string $port): ZugferdMailAccount
+    public function setPort(int $port): ZugferdMailAccount
     {
         if ($port < 0 || $port > 65535) {
             throw new InvalidArgumentException("The port must be between 0 and 65535");

@@ -42,7 +42,6 @@ trait ZugferdMailSendsMessagesToMessageBag
     /**
      * Helper function for adding a log entry to message bag
      *
-     * @param  string $type
      * @param  string $message
      * @param  array  $additionalData
      * @return static
@@ -57,7 +56,6 @@ trait ZugferdMailSendsMessagesToMessageBag
     /**
      * Helper function for adding a warning entry to message bag
      *
-     * @param  string $type
      * @param  string $message
      * @param  array  $additionalData
      * @return static
@@ -72,7 +70,6 @@ trait ZugferdMailSendsMessagesToMessageBag
     /**
      * Helper function for adding a error entry to message bag
      *
-     * @param  string $type
      * @param  string $message
      * @param  array  $additionalData
      * @return static
@@ -87,7 +84,6 @@ trait ZugferdMailSendsMessagesToMessageBag
     /**
      * Helper function for adding a success entry to message bag
      *
-     * @param  string $type
      * @param  string $message
      * @param  array  $additionalData
      * @return static

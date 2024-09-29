@@ -85,6 +85,7 @@ jobs:
         continue-on-error: true
         run: |
           vendor/bin/phpmd src xml build/phpmd.xml --reportfile build/logs/pmd.xml --exclude src/entities/
+          vendor/bin/phpmd src github build/phpmd.xml --exclude src/entities/
 
       - name: Run PHPCS
         continue-on-error: true

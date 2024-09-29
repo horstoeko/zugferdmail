@@ -64,8 +64,12 @@ class ZugferdMailListFoldersConsoleCommand extends Command
         $folders = $reader->getAllAvailableRootFolders();
         $folders = array_map(
             function (Folder $folder) {
-                return [$folder->full_name, $folder->messages()->all()->count()];
-            }, $folders[0]["folders"]
+                return [
+                    $folder->full_name,
+                    $folder->messages()->all()->count()
+                ];
+            },
+            $folders[0]["folders"]
         );
 
         $table = new Table($output);

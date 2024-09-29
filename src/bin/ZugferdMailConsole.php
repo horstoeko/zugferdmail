@@ -1,9 +1,9 @@
 <?php
 
-use Symfony\Component\Console\Application;
 use Composer\InstalledVersions as ComposerInstalledVersions;
 use horstoeko\zugferdmail\console\ZugferdMailListFoldersConsoleCommand;
 use horstoeko\zugferdmail\console\ZugferdMailProcessFoldersConsoleCommand;
+use Symfony\Component\Console\Application;
 
 $autoloadFiles = [
     __DIR__ . '/../../vendor/autoload.php',
