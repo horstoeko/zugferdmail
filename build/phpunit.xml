@@ -5,6 +5,7 @@
             <file>../tests/testcases/BasicTest.php</file>
         </testsuite>
         <testsuite name="MailAccount">
+            <file>../tests/testcases/MailConfigTest.php</file>
             <file>../tests/testcases/MailAccountTest.php</file>
         </testsuite>
     </testsuites>

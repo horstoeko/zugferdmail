@@ -7,7 +7,6 @@ use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
 use horstoeko\zugferdmail\handlers\ZugferdMailHandlerCli;
 use horstoeko\zugferdmail\handlers\ZugferdMailHandlerNull;
 use horstoeko\zugferdmail\tests\TestCase;
-use horstoeko\zugferdmail\ZugferdMailReader;
 use InvalidArgumentException;
 
 class MailAccountTest extends TestCase
@@ -17,7 +16,8 @@ class MailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
 
         $this->assertNotNull($mailAccount);
-        $this->assertEquals("", $mailAccount->getIdentifier());
+        $this->assertNotEmpty($mailAccount->getIdentifier());
+        $this->assertTrue(preg_match("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier()) === 1);
         $this->assertEquals("", $mailAccount->getHost());
         $this->assertEquals(0, $mailAccount->getPort());
         $this->assertEquals("imap", $mailAccount->getProtocol());

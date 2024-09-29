@@ -115,6 +115,24 @@ class ZugferdMailAccount
     protected $handlers = [];
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->identifier = sprintf(
+            '%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(16384, 20479),
+            mt_rand(32768, 49151),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535)
+        );
+    }
+
+    /**
      * Returns the account identifier
      *
      * @return string
@@ -480,7 +498,8 @@ class ZugferdMailAccount
     public function setHandlers(array $handlers): ZugferdMailAccount
     {
         $this->handlers = array_filter(
-            $handlers, function ($handler) {
+            $handlers,
+            function ($handler) {
                 return $handler instanceof ZugferdMailHandlerAbstract;
             }
         );
