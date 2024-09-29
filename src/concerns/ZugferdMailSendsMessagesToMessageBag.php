@@ -9,6 +9,7 @@
 
 namespace horstoeko\zugferdmail\concerns;
 
+use Throwable;
 use horstoeko\zugferdmail\ZugferdMailMessageBag;
 use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
 
@@ -91,6 +92,20 @@ trait ZugferdMailSendsMessagesToMessageBag
     protected function addSuccessMessage(string $message, array $additionalData = [])
     {
         $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding an throwable (Exception) to message bag
+     *
+     * @param  Throwable $throwable
+     * @param  array     $additionalData
+     * @return static
+     */
+    protected function addThrowable(Throwable $throwable, array $additionalData = [])
+    {
+        ZugferdMailMessageBag::factory()->addThrowable($throwable, static::class, $additionalData);
 
         return $this;
     }

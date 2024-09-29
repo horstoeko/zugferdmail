@@ -244,7 +244,11 @@ class ZugferdMailReader
     protected function triggerHandlers(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
     {
         foreach ($account->getHandlers() as $handler) {
-            $handler->handleDocument($account, $folder, $message, $attachment, $document, $recognitionType);
+            try {
+                $handler->handleDocument($account, $folder, $message, $attachment, $document, $recognitionType);
+            } catch (Throwable $e) {
+                $this->addThrowable($e);
+            }
         }
     }
 
