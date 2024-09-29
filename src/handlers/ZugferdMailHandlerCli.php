@@ -54,8 +54,8 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
         $this->addLogMessage(sprintf(" - Document name      %s", $documentname));
         $this->addLogMessage(sprintf(" - Document language  %s", $documentlanguage));
 
-        //if ($effectiveSpecifiedPeriod) {
+        if ($effectiveSpecifiedPeriod) {
             $this->addLogMessage(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
-        //}
+        }
     }
 }
