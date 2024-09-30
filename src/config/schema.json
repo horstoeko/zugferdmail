@@ -1,0 +1,128 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+        "dateFormat",
+        "ublSupportEnabled",
+        "accounts"
+    ],
+    "properties": {
+        "dateFormat": {
+            "type": "string"
+        },
+        "ublSupportEnabled": {
+            "type": "boolean"
+        },
+        "accounts": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "type": "string"
+                    },
+                    "host": {
+                        "type": "string"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximu,": 65535
+                    },
+                    "protocol": {
+                        "type": "string",
+                        "oneOf": [
+                            {
+                                "const": "imap"
+                            },
+                            {
+                                "const": "legacy-imap"
+                            },
+                            {
+                                "const": "pop3"
+                            },
+                            {
+                                "const": "nntp"
+                            }
+                        ]
+                    },
+                    "encryption": {
+                        "type": [
+                            "string",
+                            "boolean"
+                        ],
+                        "oneOf": [
+                            {
+                                "const": false
+                            },
+                            {
+                                "const": "ssl"
+                            },
+                            {
+                                "const": "tls"
+                            },
+                            {
+                                "const": "starttls"
+                            },
+                            {
+                                "const": "notls"
+                            }
+                        ]
+                    },
+                    "validateCert": {
+                        "type": "boolean"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "authentication": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "oneOf": [
+                            {
+                                "const": null
+                            },
+                            {
+                                "const": "oauth"
+                            }
+                        ]
+                    },
+                    "timeout": {
+                        "type": "integer"
+                    },
+                    "foldersToWatch": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "mimeTypesToWatch": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "handlers": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "classname": {
+                                    "type": "string"
+                                },
+                                "properties": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

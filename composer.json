@@ -31,6 +31,7 @@
         "php": "^7.3|^7.4|^8",
         "horstoeko/zugferd": "^1",
         "horstoeko/zugferdublbridge": "^1",
+        "swaggest/json-schema": "^0.12.42",
         "symfony/console": "^5|^6|^7",
         "webklex/php-imap": "^4|^5"
     },

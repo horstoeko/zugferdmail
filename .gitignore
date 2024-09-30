@@ -82,4 +82,5 @@ _backup*
 /composer.lock
 
 /examples/Example1.php
+/examples/config.json
 !/src/bin

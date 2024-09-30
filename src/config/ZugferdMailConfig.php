@@ -9,9 +9,12 @@
 
 namespace horstoeko\zugferdmail\config;
 
-use stdClass;
-use RuntimeException;
 use InvalidArgumentException;
+use ReflectionException;
+use RuntimeException;
+use stdClass;
+use Swaggest\JsonSchema\Schema;
+use Throwable;
 use Webklex\PHPIMAP\ClientManager;
 
 /**
@@ -221,11 +224,13 @@ class ZugferdMailConfig
     }
 
     /**
-     * Loads a configuration from a file.
-     * The file must exist.
+     * Loads a configuration from a file. The file must exist.
      *
-     * @param  string $filename
+     * @param string $filename
      * @return ZugferdMailConfig
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws ReflectionException
      */
     public static function loadFromFile(string $filename): ZugferdMailConfig
     {
@@ -236,10 +241,18 @@ class ZugferdMailConfig
         $jsonString = file_get_contents($filename);
 
         if ($jsonString === false) {
-            throw new RuntimeException(sprintf("Cannot read the file %s.", $filename));
+            throw new RuntimeException(sprintf("Cannot read the configuration file %s.", $filename));
         }
 
         $jsonObject = json_decode($jsonString);
+
+        if (is_null($jsonObject)) {
+            throw new RuntimeException(sprintf("The file %s does not seem to be a valid json.", $filename));
+        }
+
+        if (!static::validateConfig($jsonObject)) {
+            throw new RuntimeException(sprintf("The file %s does not seem to be a valid json.", $filename));
+        }
 
         $config = new ZugferdMailConfig;
         $config->setDateFormat($jsonObject->dateFormat);
@@ -274,8 +287,9 @@ class ZugferdMailConfig
     /**
      * Save the configuration to a file
      *
-     * @param  string $filename
+     * @param string $filename
      * @return ZugferdMailConfig
+     * @throws RuntimeException
      */
     public function saveToFile(string $filename): ZugferdMailConfig
     {
@@ -327,10 +341,39 @@ class ZugferdMailConfig
             $jsonObject->accounts[] = $jsonAccountObject;
         }
 
+        if (!static::validateConfig($jsonObject)) {
+            throw new RuntimeException(sprintf("The content of file %s is not valid.", $filename));
+        }
+
         if (file_put_contents($filename, json_encode($jsonObject, JSON_PRETTY_PRINT)) === false) {
             throw new RuntimeException(sprintf("Cannot save to file %s.", $filename));
         }
 
         return $this;
+    }
+
+    /**
+     * Validates a config file
+     *
+     * @param object $jsonObject
+     * @return bool
+     */
+    protected static function validateConfig($jsonObject): bool
+    {
+        $result = true;
+
+        $schemaJson = file_get_contents(dirname(__FILE__) . "/schema.json");
+
+        try {
+            Schema::import(
+                json_decode($schemaJson),
+            )->in(
+                $jsonObject,
+            );
+        } catch (Throwable $e) {
+            $result = false;
+        }
+
+        return $result;
     }
 }
