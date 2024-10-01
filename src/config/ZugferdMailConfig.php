@@ -226,7 +226,7 @@ class ZugferdMailConfig
     /**
      * Loads a configuration from a file. The file must exist.
      *
-     * @param string $filename
+     * @param  string $filename
      * @return ZugferdMailConfig
      * @throws InvalidArgumentException
      * @throws RuntimeException
@@ -287,7 +287,7 @@ class ZugferdMailConfig
     /**
      * Save the configuration to a file
      *
-     * @param string $filename
+     * @param  string $filename
      * @return ZugferdMailConfig
      * @throws RuntimeException
      */
@@ -342,7 +342,7 @@ class ZugferdMailConfig
         }
 
         if (!static::validateConfig($jsonObject)) {
-            throw new RuntimeException(sprintf("The content of file %s is not valid.", $filename));
+            throw new RuntimeException("The content of the generated config is not valid.");
         }
 
         if (file_put_contents($filename, json_encode($jsonObject, JSON_PRETTY_PRINT)) === false) {
@@ -355,7 +355,7 @@ class ZugferdMailConfig
     /**
      * Validates a config file
      *
-     * @param object $jsonObject
+     * @param  object $jsonObject
      * @return bool
      */
     protected static function validateConfig($jsonObject): bool

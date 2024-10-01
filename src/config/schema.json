@@ -17,6 +17,21 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "required": [
+                    "identifier",
+                    "host",
+                    "port",
+                    "protocol",
+                    "encryption",
+                    "validateCert",
+                    "username",
+                    "password",
+                    "authentication",
+                    "timeout",
+                    "foldersToWatch",
+                    "mimeTypesToWatch",
+                    "handlers"
+                ],
                 "properties": {
                     "identifier": {
                         "type": "string"
