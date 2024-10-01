@@ -29,6 +29,8 @@
     - [Check mail accounts for matching mails:](#check-mail-accounts-for-matching-mails)
     - [Predefined handlers](#predefined-handlers)
     - [Implement your own handler](#implement-your-own-handler)
+    - [Console](#console)
+      - [Start monitoring a mailbox](#start-monitoring-a-mailbox)
 
 ## Note
 
@@ -157,3 +159,21 @@ The parameter $recognitionType is one of the constants from ```ZugferdMailReader
 | ZFMAIL_RECOGNITION_TYPE_PDF | 0 | The document was recognized from a ZUGFeRD/Factur-X PDF attachment
 | ZFMAIL_RECOGNITION_TYPE_XML | 1 | The document was recognized from a ZUGFeRD/Factur-X XML attachment
 | ZFMAIL_RECOGNITION_TYPE_XML_UBL | 2 | The document was recognized from a ZUGFeRD/Factur-X XML attachment (in UBL-Syntax)
+
+### Console
+
+This library also includes a console application with which it is possible to carry out corresponding operations via shell. To get an overview of the existing commands from the “zfmail” namespace, use:
+
+```sh
+./vendor/bin/ZugferdMailConsole list
+```
+
+#### Start monitoring a mailbox
+
+The command ``zfmail:processmailboxfolders`` is available for monitoring a mailbox via shell:
+
+```sh
+./vendor/bin/ZugferdMailConsole zfmail:processmailboxfolders [options]
+```
+
+This has the following parameters:
