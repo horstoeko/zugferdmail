@@ -206,6 +206,6 @@ Example usage
   --mimetype=application/pdf \
   --mimetype=text/xml \
   --handler="horstoeko\zugferdmail\handlers\ZugferdMailHandlerCli" \
-  --handler="horstoeko\zugferdmail\handlers\ZugferdMailHandlerSaveToFile,/tmp \
+  --handler="horstoeko\zugferdmail\handlers\ZugferdMailHandlerSaveToFile,/tmp" \
   --enableublsupport
 ```
