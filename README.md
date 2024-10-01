@@ -177,3 +177,35 @@ The command ``zfmail:processmailboxfolders`` is available for monitoring a mailb
 ```
 
 This has the following parameters:
+
+| Parameter | Description | Default | Multiple |
+| :-------- | :---------- | :------ | :------: |
+| host | The IP or hostname | | :x: |
+| port | The port on the host | 993 | :x: |
+| protocol | The protocol to use | imap | :x: |
+| encryption | The encryption method to use | ssl | :x: |
+| validateCert | If given the SSL certificates will note be validated | false | :x: |
+| username | The username to use for login | | :x: |
+| password | The password to use for login | | :x: |
+| authentication | The authentication method to use | | :x: |
+| timeout | The connection timeout | 30 | :x: |
+| folder | A folder to look into | | :heavy_check_mark: |
+| mimetype | An attachment mimetype to check | | :heavy_check_mark: |
+| handler | A handler to use | | :heavy_check_mark: |
+| enableublsupport | If given the applicatio will check for UBL syntax too | false | :x: |
+
+Example usage
+
+```bash
+./vendor/bin/ZugferdMailConsole zfmail:processmailboxfolders \
+  --host 127.0.0.1 \
+  --port 993 \
+  --username demouser \
+  --password demopassword \
+  --folder=Accounts/invoice@somehost.domain \
+  --mimetype=application/pdf \
+  --mimetype=text/xml \
+  --handler="horstoeko\zugferdmail\handlers\ZugferdMailHandlerCli" \
+  --handler="horstoeko\zugferdmail\handlers\ZugferdMailHandlerSaveToFile,/tmp \
+  --enableublsupport
+```
