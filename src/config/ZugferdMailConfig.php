@@ -9,12 +9,12 @@
 
 namespace horstoeko\zugferdmail\config;
 
-use InvalidArgumentException;
-use ReflectionException;
-use RuntimeException;
 use stdClass;
-use Swaggest\JsonSchema\Schema;
 use Throwable;
+use RuntimeException;
+use ReflectionException;
+use InvalidArgumentException;
+use Swaggest\JsonSchema\Schema;
 use Webklex\PHPIMAP\ClientManager;
 
 /**

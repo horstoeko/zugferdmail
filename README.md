@@ -192,7 +192,7 @@ This has the following parameters:
 | folder | A folder to look into | | :heavy_check_mark: |
 | mimetype | An attachment mimetype to check | | :heavy_check_mark: |
 | handler | A handler to use | | :heavy_check_mark: |
-| enableublsupport | If given the applicatio will check for UBL syntax too | false | :x: |
+| enableublsupport | If given the application will check for UBL syntax too | false | :x: |
 
 Example usage
 
@@ -202,7 +202,7 @@ Example usage
   --port 993 \
   --username demouser \
   --password demopassword \
-  --folder=Accounts/invoice@somehost.domain \
+  --folder=INBOX \
   --mimetype=application/pdf \
   --mimetype=text/xml \
   --handler="horstoeko\zugferdmail\handlers\ZugferdMailHandlerCli" \
