@@ -1,4 +1,4 @@
-name: Build (Documentation only)
+name: Documentation
 
 on:
   workflow_dispatch:

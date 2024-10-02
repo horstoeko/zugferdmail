@@ -1,4 +1,4 @@
-name: CI (Matrix Build)
+name: Continuous Integration
 
 on:
   push:

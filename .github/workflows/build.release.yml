@@ -1,4 +1,4 @@
-name: Release (Matrix Build)
+name: Release
 
 on:
   push:
