@@ -107,9 +107,7 @@ jobs:
       - name: Deploy
         continue-on-error: true
         run: |
-          zip -r build/dist/builddoc.zip build
           zip -r build/dist/doc.zip build/doc
-          zip -r build/dist/src.zip src
 
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -123,4 +121,3 @@ jobs:
           prerelease: false
           files: |
             build/dist/doc.zip
-            build/dist/builddoc.zip

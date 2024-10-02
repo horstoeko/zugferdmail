@@ -47,15 +47,4 @@ jobs:
       - name: Deploy
         continue-on-error: true
         run: |
-          echo "----------------------"
-          echo "-- Step 1"
-          echo "----------------------"
-          zip -r build/dist/builddoc.zip build
-          echo "----------------------"
-          echo "-- Step 2"
-          echo "----------------------"
           zip -r build/dist/doc.zip build/doc
-          echo "----------------------"
-          echo "-- Step 3"
-          echo "----------------------"
-          zip -r build/dist/src.zip src
