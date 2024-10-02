@@ -14,6 +14,7 @@
 -->
 
 [![Build Status](https://github.com/horstoeko/zugferdmail/actions/workflows/build.ci.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.ci.yml)
+[![Release Status](https://github.com/horstoeko/zugferdmail/actions/workflows/build.release.yml/badge.svg)](https://github.com/horstoeko/zugferdmail/actions/workflows/build.release.yml)
 
 ## Table of Contents
 
