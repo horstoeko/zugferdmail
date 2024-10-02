@@ -1,0 +1,37 @@
+name: Build (Documentation only)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: "ubuntu-24.04"
+
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v4
+
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, intl, gd, exif, iconv, imagick, json, xdebug
+          coverage: xdebug
+
+      - name: Documentation
+        continue-on-error: true
+        run: |
+          wget $PHPDOCUMENTORURL -O $PHPDOCUMENTORFILENAME
+          chmod +x $PHPDOCUMENTORFILENAME
+          cd build
+          php ../$PHPDOCUMENTORFILENAME
+          cd ..
+          rm -f $PHPDOCUMENTORFILENAME
+
+      - name: Deploy
+        continue-on-error: true
+        run: |
+          zip -r build/dist/builddoc.zip build
+          zip -r build/dist/doc.zip build/doc
+          zip -r build/dist/src.zip src
