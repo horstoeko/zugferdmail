@@ -185,7 +185,7 @@ This has the following parameters:
 | port | The port on the host | 993 | :x: |
 | protocol | The protocol to use | imap | :x: |
 | encryption | The encryption method to use | ssl | :x: |
-| validateCert | If given the SSL certificates will note be validated | false | :x: |
+| validateCert | If given the SSL certificates will be validated | false | :x: |
 | username | The username to use for login | | :x: |
 | password | The password to use for login | | :x: |
 | authentication | The authentication method to use | | :x: |
