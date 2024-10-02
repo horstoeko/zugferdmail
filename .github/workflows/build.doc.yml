@@ -3,6 +3,10 @@ name: Build (Documentation only)
 on:
   workflow_dispatch:
 
+env:
+  PHPDOCUMENTORURL: https://phpdoc.org/phpDocumentor.phar
+  PHPDOCUMENTORFILENAME: phpDocumentor.phar
+
 jobs:
   build:
     permissions: write-all
