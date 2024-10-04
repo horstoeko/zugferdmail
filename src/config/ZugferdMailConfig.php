@@ -359,7 +359,7 @@ class ZugferdMailConfig
         }
 
         if (!static::validateConfig($jsonObject)) {
-            throw new RuntimeException(sprintf("The file %s does not seem to be a valid json.", $filename));
+            throw new RuntimeException(sprintf("The file %s could not be identified as a valid JSON file", $filename));
         }
 
         $config = new ZugferdMailConfig;

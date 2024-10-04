@@ -2,12 +2,15 @@
 
 namespace horstoeko\zugferdmail\tests\testcases;
 
-use Webklex\PHPIMAP\Client;
 use InvalidArgumentException;
-use Webklex\PHPIMAP\ClientManager;
-use horstoeko\zugferdmail\tests\TestCase;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
+use RuntimeException;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use horstoeko\zugferdmail\config\ZugferdMailConfig;
+use horstoeko\zugferdmail\handlers\ZugferdMailHandlerCopyMessage;
+use horstoeko\zugferdmail\handlers\ZugferdMailHandlerNull;
+use horstoeko\zugferdmail\tests\TestCase;
+use Webklex\PHPIMAP\Client;
+use Webklex\PHPIMAP\ClientManager;
 
 class MailConfigTest extends TestCase
 {
@@ -156,6 +159,14 @@ class MailConfigTest extends TestCase
         $mailAccount->setPort(993);
         $mailAccount->setProtocol("imap");
         $mailAccount->setEncryption("tls");
+        $mailAccount->setUsername('demouser');
+        $mailAccount->setPassword('demopassword');
+        $mailAccount->addFolderToWatch('INBOX');
+        $mailAccount->addFolderToWatch('INBOX/somefolder');
+        $mailAccount->addMimeTypeToWatch('text/xml');
+        $mailAccount->addMimeTypeToWatch('application/pdf');
+        $mailAccount->addHandler(new ZugferdMailHandlerNull());
+        $mailAccount->addHandler(new ZugferdMailHandlerCopyMessage('INBOX/someotherfolder'));
 
         $config = new ZugferdMailConfig();
         $config->addAccountObject($mailAccount);
@@ -170,6 +181,8 @@ class MailConfigTest extends TestCase
         $this->assertEquals(993, $mailAccount->getPort());
         $this->assertEquals("imap", $mailAccount->getProtocol());
         $this->assertEquals("tls", $mailAccount->getEncryption());
+        $this->assertEquals("demouser", $mailAccount->getUsername());
+        $this->assertEquals("demopassword", $mailAccount->getPassword());
     }
 
     public function testMailConfigRemoveAccount(): void
@@ -193,5 +206,93 @@ class MailConfigTest extends TestCase
         $config->removeAccount("demo");
 
         $this->assertEmpty($config->getAccounts());
+    }
+
+    public function testLoadConfigFromNotExistingFile(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        ZugferdMailConfig::loadFromFile(dirname(__FILE__) . '/../assets/unknown.json');
+    }
+
+    public function testLoadConfigWithContentWhichIsNoJson(): void
+    {
+        $configFilename = dirname(__FILE__) . '/../assets/config.nojson.json';
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('The file %s does not seem to be a valid json.', $configFilename));
+
+        ZugferdMailConfig::loadFromFile($configFilename);
+    }
+
+    public function testLoadConfigWithContentWhichIsInvalidJson(): void
+    {
+        $configFilename = dirname(__FILE__) . '/../assets/config.invalid.json';
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('The file %s could not be identified as a valid JSON file', $configFilename));
+
+        ZugferdMailConfig::loadFromFile($configFilename);
+    }
+
+    public function testLoadConfigWithValidJson(): void
+    {
+        $configFilename = dirname(__FILE__) . '/../assets/config.valid.json';
+
+        $config = ZugferdMailConfig::loadFromFile($configFilename);
+
+        $this->assertNotNull($config);
+        $this->assertInstanceOf(ZugferdMailConfig::class, $config);
+        $this->assertEquals("d-M-Y", $config->getDateFormat());
+        $this->assertTrue($config->getUblSupportEnabled());
+        $this->assertTrue($config->getXsdValidationEnabled());
+        $this->assertTrue($config->getKositValidationEnabled());
+
+        $this->assertNotEmpty($config->getAccounts());
+        $this->assertArrayHasKey(0, $config->getAccounts());
+        $this->assertArrayNotHasKey(1, $config->getAccounts());
+
+        $mailAccount = $config->getAccounts()[0];
+
+        $this->assertEquals("127.0.0.1", $mailAccount->getHost());
+        $this->assertEquals(993, $mailAccount->getPort());
+        $this->assertEquals("imap", $mailAccount->getProtocol());
+        $this->assertEquals("tls", $mailAccount->getEncryption());
+        $this->assertTrue($mailAccount->getValidateCert());
+        $this->assertEquals("demouser", $mailAccount->getUsername());
+        $this->assertEquals("demopassword", $mailAccount->getPassword());
+        $this->assertEmpty($mailAccount->getAuthentication());
+        $this->assertEquals(45, $mailAccount->getTimeout());
+
+        $mailAccountFoldersToWatch = $mailAccount->getFoldersTowatch();
+
+        $this->assertArrayHasKey(0, $mailAccountFoldersToWatch);
+        $this->assertArrayHasKey(1, $mailAccountFoldersToWatch);
+        $this->assertArrayNotHasKey(2, $mailAccountFoldersToWatch);
+        $this->assertEquals("INBOX", $mailAccountFoldersToWatch[0]);
+        $this->assertEquals("INBOX/somefolder", $mailAccountFoldersToWatch[1]);
+
+        $mailAccountMimeTypesToWatch = $mailAccount->getMimeTypesToWatch();
+
+        $this->assertArrayHasKey(0, $mailAccountMimeTypesToWatch);
+        $this->assertArrayHasKey(1, $mailAccountMimeTypesToWatch);
+        $this->assertArrayNotHasKey(2, $mailAccountMimeTypesToWatch);
+        $this->assertEquals("text/xml", $mailAccountMimeTypesToWatch[0]);
+        $this->assertEquals("application/pdf", $mailAccountMimeTypesToWatch[1]);
+
+        $mailAccountHandlers = $mailAccount->getHandlers();
+
+        $this->assertArrayHasKey(0, $mailAccountHandlers);
+        $this->assertArrayHasKey(1, $mailAccountHandlers);
+        $this->assertArrayNotHasKey(2, $mailAccountHandlers);
+        $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccountHandlers[0]);
+        $this->assertInstanceOf(ZugferdMailHandlerCopyMessage::class, $mailAccountHandlers[1]);
+
+        /**
+         * @var ZugferdMailHandlerCopyMessage
+         */
+        $mailAccountHandler1 = $mailAccountHandlers[1];
+
+        $this->assertEquals("INBOX/someotherfolder", $mailAccountHandler1->getCopyToFolder());
     }
 }

@@ -1,0 +1,40 @@
+{
+    "dateFormat": "d-M-Y",
+    "ublSupportEnabled": true,
+    "xsdValidationEnabled": true,
+    "kositValidationEnabled": true,
+    "accounts": [
+        {
+            "identifier": "DC38517A-6410-421E-947D-0E971A1F9A28",
+            "host": "127.0.0.1",
+            "port": 993,
+            "protocol": "imap",
+            "encryption": "tls",
+            "validateCert": true,
+            "username": "demouser",
+            "password": "demopassword",
+            "authentication": null,
+            "timeout": 45,
+            "foldersToWatch": [
+                "INBOX",
+                "INBOX\/somefolder"
+            ],
+            "mimeTypesToWatch": [
+                "text\/xml",
+                "application\/pdf"
+            ],
+            "handlers": [
+                {
+                    "classname": "horstoeko\\zugferdmail\\handlers\\ZugferdMailHandlerNull",
+                    "properties": {}
+                },
+                {
+                    "classname": "horstoeko\\zugferdmail\\handlers\\ZugferdMailHandlerCopyMessage",
+                    "properties": {
+                        "copyToFolder": "INBOX\/someotherfolder"
+                    }
+                }
+            ]
+        }
+    ]
+}
