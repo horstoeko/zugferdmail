@@ -2,6 +2,7 @@
 
 namespace horstoeko\zugferdmail\tests\testcases;
 
+use Webklex\PHPIMAP\Client;
 use InvalidArgumentException;
 use Webklex\PHPIMAP\ClientManager;
 use horstoeko\zugferdmail\tests\TestCase;
@@ -119,10 +120,14 @@ class MailConfigTest extends TestCase
     public function testMailConfigMakeClientManager(): void
     {
         $config = new ZugferdMailConfig();
+        $config->addAccount("test", "127.0.0.1", 993, "imap", "tls", true, "demouser", "demopwd");
+
         $clientManagher = $config->makeClientManager();
 
         $this->assertNotNull($clientManagher);
         $this->assertInstanceOf(ClientManager::class, $clientManagher);
+        $this->assertNotNull($clientManagher->account("test"));
+        $this->assertInstanceOf(Client::class, $clientManagher->account("test"));
     }
 
     public function testMailConfigAddAccount(): void
