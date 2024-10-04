@@ -128,6 +128,9 @@ class MailConfigTest extends TestCase
         $this->assertInstanceOf(ClientManager::class, $clientManagher);
         $this->assertNotNull($clientManagher->account("test"));
         $this->assertInstanceOf(Client::class, $clientManagher->account("test"));
+        $this->assertEquals("127.0.0.1", $clientManagher->account("test")->host);
+        $this->assertEquals(993, $clientManagher->account("test")->port);
+        $this->assertEquals("imap", $clientManagher->account("test")->protocol);
     }
 
     public function testMailConfigAddAccount(): void
