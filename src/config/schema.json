@@ -4,6 +4,8 @@
     "required": [
         "dateFormat",
         "ublSupportEnabled",
+        "xsdValidationEnabled",
+        "kositValidationEnabled",
         "accounts"
     ],
     "properties": {

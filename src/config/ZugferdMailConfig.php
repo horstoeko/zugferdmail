@@ -43,6 +43,20 @@ class ZugferdMailConfig
     protected $ublSupportEnabled = false;
 
     /**
+     * XSD validation enabled
+     *
+     * @var boolean
+     */
+    protected $xsdValidationEnabled = false;
+
+    /**
+     * Kosit validation enabled (JAVA is required)
+     *
+     * @var boolean
+     */
+    protected $kositValidationEnabled = false;
+
+    /**
      * List of defined accounts
      *
      * @var array<ZugferdMailAccount>
@@ -120,6 +134,100 @@ class ZugferdMailConfig
     public function deactivateUblSupport(): ZugferdMailConfig
     {
         $this->setUblSupportEnabled(false);
+
+        return $this;
+    }
+
+    /**
+     * Returns true if the XSD validation is enabled
+     *
+     * @return boolean
+     */
+    public function getXsdValidationEnabled(): bool
+    {
+        return $this->xsdValidationEnabled;
+    }
+
+    /**
+     * Activate or deactivate XSD validation
+     *
+     * @param  boolean $xsdValidationEnabled
+     * @return ZugferdMailConfig
+     */
+    public function setXsdValidationEnabled(bool $xsdValidationEnabled): ZugferdMailConfig
+    {
+        $this->xsdValidationEnabled = $xsdValidationEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Activate the UBL-Syntax support
+     *
+     * @return ZugferdMailConfig
+     */
+    public function activateXsdValidation(): ZugferdMailConfig
+    {
+        $this->setXsdValidationEnabled(true);
+
+        return $this;
+    }
+
+    /**
+     * Deactivate the UBL-Syntax support
+     *
+     * @return ZugferdMailConfig
+     */
+    public function deactivateXsdValidation(): ZugferdMailConfig
+    {
+        $this->setXsdValidationEnabled(false);
+
+        return $this;
+    }
+
+    /**
+     * Returns true if the Kosit validation is enabled
+     *
+     * @return boolean
+     */
+    public function getKositValidationEnabled(): bool
+    {
+        return $this->kositValidationEnabled;
+    }
+
+    /**
+     * Activate or deactivate Kosit validation
+     *
+     * @param  boolean $kositValidationEnabled
+     * @return ZugferdMailConfig
+     */
+    public function setKositValidationEnabled(bool $kositValidationEnabled): ZugferdMailConfig
+    {
+        $this->kositValidationEnabled = $kositValidationEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Activate the UBL-Syntax support
+     *
+     * @return ZugferdMailConfig
+     */
+    public function activateKositValidation(): ZugferdMailConfig
+    {
+        $this->setKositValidationEnabled(true);
+
+        return $this;
+    }
+
+    /**
+     * Deactivate the UBL-Syntax support
+     *
+     * @return ZugferdMailConfig
+     */
+    public function deactivateKositValidation(): ZugferdMailConfig
+    {
+        $this->setKositValidationEnabled(false);
 
         return $this;
     }
@@ -257,6 +365,8 @@ class ZugferdMailConfig
         $config = new ZugferdMailConfig;
         $config->setDateFormat($jsonObject->dateFormat);
         $config->setUblSupportEnabled($jsonObject->ublSupportEnabled);
+        $config->setXsdValidationEnabled($jsonObject->xsdValidationEnabled);
+        $config->setKositValidationEnabled($jsonObject->kositValidationEnabled);
 
         foreach ($jsonObject->accounts as $accountDefinition) {
             $account = new ZugferdMailAccount();
@@ -296,6 +406,8 @@ class ZugferdMailConfig
         $jsonObject = new stdClass;
         $jsonObject->dateFormat = $this->getDateFormat();
         $jsonObject->ublSupportEnabled = $this->getUblSupportEnabled();
+        $jsonObject->xsdValidationEnabled = $this->getXsdValidationEnabled();
+        $jsonObject->kositValidationEnabled = $this->getKositValidationEnabled();
         $jsonObject->accounts = [];
 
         foreach ($this->getAccounts() as $account) {

@@ -17,6 +17,8 @@ class MailConfigTest extends TestCase
         $this->assertNotNull($config);
         $this->assertEquals("d-M-Y", $config->getDateFormat());
         $this->assertEquals(false, $config->getUblSupportEnabled());
+        $this->assertEquals(false, $config->getXsdValidationEnabled());
+        $this->assertEquals(false, $config->getKositValidationEnabled());
         $this->assertEmpty($config->getAccounts());
     }
 
@@ -60,6 +62,58 @@ class MailConfigTest extends TestCase
         $config->deactivateUblSupport();
 
         $this->assertEquals(false, $config->getUblSupportEnabled());
+    }
+
+    public function testMailConfigActivateXsdValidation(): void
+    {
+        $config = new ZugferdMailConfig();
+
+        $this->assertEquals(false, $config->getXsdValidationEnabled());
+
+        $config->activateXsdValidation();
+
+        $this->assertEquals(true, $config->getXsdValidationEnabled());
+    }
+
+    public function testMailConfigDeactivateXsdValidation(): void
+    {
+        $config = new ZugferdMailConfig();
+
+        $this->assertEquals(false, $config->getXsdValidationEnabled());
+
+        $config->activateXsdValidation();
+
+        $this->assertEquals(true, $config->getXsdValidationEnabled());
+
+        $config->deactivateXsdValidation();
+
+        $this->assertEquals(false, $config->getXsdValidationEnabled());
+    }
+
+    public function testMailConfigActivateKositValidation(): void
+    {
+        $config = new ZugferdMailConfig();
+
+        $this->assertEquals(false, $config->getKositValidationEnabled());
+
+        $config->activateKositValidation();
+
+        $this->assertEquals(true, $config->getKositValidationEnabled());
+    }
+
+    public function testMailConfigDeactivateKositValidation(): void
+    {
+        $config = new ZugferdMailConfig();
+
+        $this->assertEquals(false, $config->getKositValidationEnabled());
+
+        $config->activateKositValidation();
+
+        $this->assertEquals(true, $config->getKositValidationEnabled());
+
+        $config->deactivateKositValidation();
+
+        $this->assertEquals(false, $config->getKositValidationEnabled());
     }
 
     public function testMailConfigMakeClientManager(): void

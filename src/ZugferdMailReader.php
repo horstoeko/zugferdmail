@@ -194,8 +194,11 @@ class ZugferdMailReader
                 $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
                 $this->raiseRuntimeExceptionIf(is_null($document), "No document returned");
                 $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
-                $validator = new ZugferdXsdValidator($document);
-                $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
+                if ($this->config->getXsdValidationEnabled()) {
+                    $validator = new ZugferdXsdValidator($document);
+                    $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
+                    $this->addSuccessMessageToMessageBag('The document was successfully validated againt XSD scheme', $messageAdditionalData);
+                }
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
             } catch (Throwable $e) {
                 $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
@@ -207,8 +210,11 @@ class ZugferdMailReader
                 $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible XML', $messageAdditionalData);
                 $document = ZugferdDocumentReader::readAndGuessFromContent($attachment->getContent());
                 $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible XML', $messageAdditionalData);
-                $validator = new ZugferdXsdValidator($document);
-                $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
+                if ($this->config->getXsdValidationEnabled()) {
+                    $validator = new ZugferdXsdValidator($document);
+                    $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
+                    $this->addSuccessMessageToMessageBag('The document was successfully validated againt XSD scheme', $messageAdditionalData);
+                }
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
             } catch (Throwable $e) {
                 $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
@@ -223,8 +229,11 @@ class ZugferdMailReader
                         XmlConverterUblToCii::fromString($attachment->getContent())->convert()->saveXmlString()
                     );
                     $this->addSuccessMessageToMessageBag('Mail contains a UBL compatible XML', $messageAdditionalData);
-                    $validator = new ZugferdXsdValidator($document);
-                    $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
+                    if ($this->config->getXsdValidationEnabled()) {
+                        $validator = new ZugferdXsdValidator($document);
+                        $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
+                        $this->addSuccessMessageToMessageBag('The document was successfully validated againt XSD scheme', $messageAdditionalData);
+                    }
                     $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                 } catch (Throwable $e) {
                     $this->addWarningMessageToMessageBag(sprintf("No UBL compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
