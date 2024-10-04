@@ -10,21 +10,20 @@
 namespace horstoeko\zugferdmail;
 
 use Throwable;
-use horstoeko\zugferd\ZugferdDocument;
-use horstoeko\zugferd\ZugferdDocumentPdfReader;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferdmail\concerns\ZugferdMailClearsMessageBag;
-use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
-use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
-use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
-use horstoeko\zugferdublbridge\XmlConverterUblToCii;
-use RuntimeException;
-use Webklex\PHPIMAP\Attachment;
-use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
+use Webklex\PHPIMAP\Attachment;
+use Webklex\PHPIMAP\ClientManager;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferd\ZugferdDocumentPdfReader;
+use horstoeko\zugferdmail\config\ZugferdMailConfig;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use horstoeko\zugferdublbridge\XmlConverterUblToCii;
+use horstoeko\zugferdmail\concerns\ZugferdMailClearsMessageBag;
+use horstoeko\zugferdmail\concerns\ZugferdMailRaisesExceptions;
+use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
+use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
+use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
 
 /**
  * Class representing the mail reader
@@ -39,7 +38,8 @@ class ZugferdMailReader
 {
     use ZugferdMailSendsMessagesToMessageBag,
         ZugferdMailReceivesMessagesFromMessageBag,
-        ZugferdMailClearsMessageBag;
+        ZugferdMailClearsMessageBag,
+        ZugferdMailRaisesExceptions;
 
     /**
      * The config
@@ -191,7 +191,7 @@ class ZugferdMailReader
             try {
                 $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
                 $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
-                $this->runtimeExceptionIf(is_null($document), "No document returned");
+                $this->raiseRuntimeExceptionIf(is_null($document), "No document returned");
                 $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
             } catch (Throwable $e) {
@@ -247,20 +247,6 @@ class ZugferdMailReader
             } catch (Throwable $e) {
                 $this->addThrowableToMessageBag($e);
             }
-        }
-    }
-
-    /**
-     * Raise exception if $condition is evaludated to trze
-     *
-     * @param  boolean $condidition
-     * @param  string  $message
-     * @return void
-     */
-    protected function runtimeExceptionIf(bool $condidition, string $message = ""): void
-    {
-        if ($condidition === true) {
-            throw new RuntimeException($message);
         }
     }
 }
