@@ -16,6 +16,7 @@ use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\ClientManager;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferd\ZugferdDocumentPdfReader;
+use horstoeko\zugferd\ZugferdKositValidator;
 use horstoeko\zugferd\ZugferdXsdValidator;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
@@ -199,6 +200,11 @@ class ZugferdMailReader
                     $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
                     $this->addSuccessMessageToMessageBag('The document was successfully validated againt XSD scheme', $messageAdditionalData);
                 }
+                if ($this->config->getKositValidationEnabled()) {
+                    $validator = new ZugferdKositValidator($document);
+                    $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against KosIT Validation failed");
+                    $this->addSuccessMessageToMessageBag('The document was successfully validated with the KosIT validator', $messageAdditionalData);
+                }
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
             } catch (Throwable $e) {
                 $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
@@ -214,6 +220,11 @@ class ZugferdMailReader
                     $validator = new ZugferdXsdValidator($document);
                     $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
                     $this->addSuccessMessageToMessageBag('The document was successfully validated againt XSD scheme', $messageAdditionalData);
+                }
+                if ($this->config->getKositValidationEnabled()) {
+                    $validator = new ZugferdKositValidator($document);
+                    $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against KosIT Validation failed");
+                    $this->addSuccessMessageToMessageBag('The document was successfully validated with the KosIT validator', $messageAdditionalData);
                 }
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
             } catch (Throwable $e) {
@@ -233,6 +244,11 @@ class ZugferdMailReader
                         $validator = new ZugferdXsdValidator($document);
                         $this->raiseRuntimeExceptionIf($validator->validate()->validationFailed(), "XSD-Validation of document failed");
                         $this->addSuccessMessageToMessageBag('The document was successfully validated againt XSD scheme', $messageAdditionalData);
+                    }
+                    if ($this->config->getKositValidationEnabled()) {
+                        $validator = new ZugferdKositValidator($document);
+                        $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against KosIT Validation failed");
+                        $this->addSuccessMessageToMessageBag('The document was successfully validated with the KosIT validator', $messageAdditionalData);
                     }
                     $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                 } catch (Throwable $e) {
