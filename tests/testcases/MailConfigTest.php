@@ -9,6 +9,7 @@ use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\handlers\ZugferdMailHandlerCopyMessage;
 use horstoeko\zugferdmail\handlers\ZugferdMailHandlerNull;
 use horstoeko\zugferdmail\tests\TestCase;
+use stdClass;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
 
@@ -294,5 +295,57 @@ class MailConfigTest extends TestCase
         $mailAccountHandler1 = $mailAccountHandlers[1];
 
         $this->assertEquals("INBOX/someotherfolder", $mailAccountHandler1->getCopyToFolder());
+    }
+
+    public function testSaveConfigToInvalidFilename(): void
+    {
+        $configFilename = dirname(__FILE__) . '/../somefolder/config.save.json';
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(sprintf('Directory of file %s does not exist.', $configFilename));
+
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setHost("127.0.0.1");
+        $mailAccount->setPort(993);
+        $mailAccount->setProtocol("imap");
+        $mailAccount->setEncryption("tls");
+        $mailAccount->setUsername('demouser');
+        $mailAccount->setPassword('demopassword');
+        $mailAccount->addFolderToWatch('INBOX');
+        $mailAccount->addFolderToWatch('INBOX/somefolder');
+        $mailAccount->addMimeTypeToWatch('text/xml');
+        $mailAccount->addMimeTypeToWatch('application/pdf');
+        $mailAccount->addHandler(new ZugferdMailHandlerNull());
+        $mailAccount->addHandler(new ZugferdMailHandlerCopyMessage('INBOX/someotherfolder'));
+
+        $config = new ZugferdMailConfig();
+        $config->addAccountObject($mailAccount);
+        $config->saveToFile($configFilename);
+    }
+
+    public function testSaveConfigToValidFilename(): void
+    {
+        $configFilename = dirname(__FILE__) . '/../assets/config.save.json';
+
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setHost("127.0.0.1");
+        $mailAccount->setPort(993);
+        $mailAccount->setProtocol("imap");
+        $mailAccount->setEncryption("tls");
+        $mailAccount->setUsername('demouser');
+        $mailAccount->setPassword('demopassword');
+        $mailAccount->addFolderToWatch('INBOX');
+        $mailAccount->addFolderToWatch('INBOX/somefolder');
+        $mailAccount->addMimeTypeToWatch('text/xml');
+        $mailAccount->addMimeTypeToWatch('application/pdf');
+        $mailAccount->addHandler(new ZugferdMailHandlerNull());
+        $mailAccount->addHandler(new ZugferdMailHandlerCopyMessage('INBOX/someotherfolder'));
+
+        $config = new ZugferdMailConfig();
+        $config->addAccountObject($mailAccount);
+        $config->saveToFile($configFilename);
+
+        $this->assertTrue(file_exists($configFilename));
+        $this->assertInstanceOf(stdClass::class, json_decode(file_get_contents($configFilename)));
     }
 }

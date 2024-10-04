@@ -9,6 +9,8 @@
 
 namespace horstoeko\zugferdmail\config;
 
+use horstoeko\stringmanagement\FileUtils;
+use horstoeko\stringmanagement\PathUtils;
 use stdClass;
 use Throwable;
 use RuntimeException;
@@ -455,6 +457,10 @@ class ZugferdMailConfig
 
         if (!static::validateConfig($jsonObject)) {
             throw new RuntimeException("The content of the generated config is not valid.");
+        }
+
+        if (!is_dir(FileUtils::getFileDirectory($filename))) {
+            throw new RuntimeException(sprintf("Directory of file %s does not exist.", $filename));
         }
 
         if (file_put_contents($filename, json_encode($jsonObject, JSON_PRETTY_PRINT)) === false) {
