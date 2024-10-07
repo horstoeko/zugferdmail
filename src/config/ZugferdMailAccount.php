@@ -115,13 +115,6 @@ class ZugferdMailAccount
     protected $handlers = [];
 
     /**
-     * Flag that indicates if the subfolder should be checked to
-     *
-     * @var boolean
-     */
-    protected $recursive = true;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -523,29 +516,6 @@ class ZugferdMailAccount
     public function addHandler(?ZugferdMailHandlerAbstract $handler): ZugferdMailAccount
     {
         $this->handlers[] = $handler;
-
-        return $this;
-    }
-
-    /**
-     * Returns true if subfolders of a found folder should be checked to
-     *
-     * @return boolean
-     */
-    public function getRecursive(): bool
-    {
-        return $this->recursive;
-    }
-
-    /**
-     * Set to true if subfolders from a found folder should be checked to
-     *
-     * @param  boolean $recursive
-     * @return ZugferdMailAccount
-     */
-    public function setRecursive(bool $recursive): ZugferdMailAccount
-    {
-        $this->recursive = $recursive;
 
         return $this;
     }

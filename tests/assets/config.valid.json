@@ -34,8 +34,7 @@
                         "copyToFolder": "INBOX\/someotherfolder"
                     }
                 }
-            ],
-            "recursive": true
+            ]
         }
     ]
 }

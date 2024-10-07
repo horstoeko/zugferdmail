@@ -5,7 +5,7 @@
     "kositValidationEnabled": false,
     "accounts": [
         {
-            "identifier": "EBB156FF-2107-4D1F-878D-88E72AE26148",
+            "identifier": "B0599EB9-14BC-4948-B508-2560FC25C7C3",
             "host": "127.0.0.1",
             "port": 993,
             "protocol": "imap",
@@ -34,8 +34,7 @@
                         "copyToFolder": "INBOX\/someotherfolder"
                     }
                 }
-            ],
-            "recursive": true
+            ]
         }
     ]
 }

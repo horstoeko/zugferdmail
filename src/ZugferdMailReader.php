@@ -140,13 +140,11 @@ class ZugferdMailReader
             );
         }
 
-        if ($account->getRecursive()) {
-            collect($folder->children)->each(
-                function (Folder $subFolder) use ($account) {
-                    $this->checkSingleAccountFolder($account, $subFolder);
-                }
-            );
-        }
+        collect($folder->children)->each(
+            function (Folder $subFolder) use ($account) {
+                $this->checkSingleAccountFolder($account, $subFolder);
+            }
+        );
     }
 
     /**

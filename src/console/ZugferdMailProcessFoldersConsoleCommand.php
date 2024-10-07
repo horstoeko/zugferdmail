@@ -9,8 +9,9 @@
 
 namespace horstoeko\zugferdmail\console;
 
+use ReflectionClass;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsGeneralInformation;
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMailAccountInformation;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
@@ -30,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ZugferdMailProcessFoldersConsoleCommand extends Command
 {
-    use ZugferdMailConsoleHandlesMailAccount,
+    use ZugferdMailConsoleOutputsMailAccountInformation,
         ZugferdMailConsoleOutputsGeneralInformation,
         ZugferdMailConsoleOutputsMessageBagMessages;
 
@@ -44,6 +45,9 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
             ->setDescription('Process mails and their attachments')
             ->setHelp('Process mails and their attachments')
             ->configureMailAccountOptions()
+            ->addOption('folder', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A folder to look into')
+            ->addOption('mimetype', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid mimetype for an message attachment')
+            ->addOption('handler', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid handler class')
             ->addOption('enableublsupport', null, InputOption::VALUE_NONE, 'Enable UBL support')
             ->addOption('enablexsdvalidation', null, InputOption::VALUE_NONE, 'Enable XSD validation')
             ->addOption('enablekositvalidation', null, InputOption::VALUE_NONE, 'Enable Kosit validation');
@@ -57,6 +61,25 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
         $this->writeHeading($output);
 
         $account = $this->createMailAccountFromOptions($input);
+
+        foreach ($input->getOption('folder') as $folderToWatch) {
+            $account->addFolderToWatch($folderToWatch);
+        }
+
+        foreach ($input->getOption('mimetype') as $mimeTypeToWatch) {
+            $account->addMimeTypeToWatch($mimeTypeToWatch);
+        }
+
+        foreach ($input->getOption('handler') as $handlerClassName) {
+            $args = explode(",", $handlerClassName);
+            $handlerClassName = $args[0];
+            unset($args[0]);
+
+            $reflection = new ReflectionClass($handlerClassName);
+            $handler = $reflection->newInstanceArgs($args);
+
+            $account->addHandler($handler);
+        }
 
         $this->writeAccountInformation($output, $account);
         $this->writeAccountFoldersToWatch($output, $account);

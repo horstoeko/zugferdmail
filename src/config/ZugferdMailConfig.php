@@ -384,7 +384,6 @@ class ZugferdMailConfig
             $account->setTimeout($accountDefinition->timeout);
             $account->setFoldersToWatch($accountDefinition->foldersToWatch);
             $account->setMimeTypesToWatch($accountDefinition->mimeTypesToWatch);
-            $account->setRecursive($accountDefinition->recursive);
 
             foreach ($accountDefinition->handlers as $accountHandlerDefinition) {
                 $reflection = new \ReflectionClass($accountHandlerDefinition->classname);
@@ -428,7 +427,6 @@ class ZugferdMailConfig
             $jsonAccountObject->foldersToWatch = $account->getFoldersTowatch();
             $jsonAccountObject->mimeTypesToWatch = $account->getMimeTypesToWatch();
             $jsonAccountObject->handlers = [];
-            $jsonAccountObject->recursive = $account->getRecursive();
 
             foreach ($account->getHandlers() as $handler) {
                 $jsonAccountHandlerObject = new stdClass;
