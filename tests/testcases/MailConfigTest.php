@@ -264,6 +264,7 @@ class MailConfigTest extends TestCase
         $this->assertEquals("demopassword", $mailAccount->getPassword());
         $this->assertEmpty($mailAccount->getAuthentication());
         $this->assertEquals(45, $mailAccount->getTimeout());
+        $this->assertTrue($mailAccount->getRecursive());
 
         $mailAccountFoldersToWatch = $mailAccount->getFoldersTowatch();
 

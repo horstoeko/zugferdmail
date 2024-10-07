@@ -32,7 +32,8 @@
                     "timeout",
                     "foldersToWatch",
                     "mimeTypesToWatch",
-                    "handlers"
+                    "handlers",
+                    "recursive"
                 ],
                 "properties": {
                     "identifier": {
@@ -137,6 +138,9 @@
                                 }
                             }
                         }
+                    },
+                    "recursive": {
+                        "type": "boolean"
                     }
                 }
             }

@@ -9,10 +9,11 @@
 
 namespace horstoeko\zugferdmail\concerns;
 
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use ReflectionClass;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -24,7 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-trait ZugferdMailConsoleOutputsMailAccountInformation
+trait ZugferdMailConsoleHandlesMailAccount
 {
     /**
      * Add console options with all needed options for creating a mail account
@@ -41,7 +42,11 @@ trait ZugferdMailConsoleOutputsMailAccountInformation
             ->addOption('username', null, InputOption::VALUE_REQUIRED, 'The username to use for authentication', '')
             ->addOption('password', null, InputOption::VALUE_REQUIRED, 'The password to use for authentication', '')
             ->addOption('authentication', null, InputOption::VALUE_REQUIRED, 'The authentication method to use. Must be one of none, oauth', 'none')
-            ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'Connection timeout in seconds', 30);
+            ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'Connection timeout in seconds', 30)
+            ->addOption('recursive', null, InputOption::VALUE_NONE, 'Check folders recursive')
+            ->addOption('folder', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A folder to look into')
+            ->addOption('mimetype', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid mimetype for an message attachment')
+            ->addOption('handler', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid handler class');
 
         return $this;
     }
@@ -65,6 +70,26 @@ trait ZugferdMailConsoleOutputsMailAccountInformation
         $account->setPassword($input->getOption('password'));
         $account->setAuthentication(strcasecmp($input->getOption('authentication'), "none") === 0 ? null : $input->getOption('authentication'));
         $account->setTimeout($input->getOption('timeout'));
+        $account->setRecursive($input->getOption('recursive'));
+
+        foreach ($input->getOption('folder') as $folderToWatch) {
+            $account->addFolderToWatch($folderToWatch);
+        }
+
+        foreach ($input->getOption('mimetype') as $mimeTypeToWatch) {
+            $account->addMimeTypeToWatch($mimeTypeToWatch);
+        }
+
+        foreach ($input->getOption('handler') as $handlerClassName) {
+            $args = explode(",", $handlerClassName);
+            $handlerClassName = $args[0];
+            unset($args[0]);
+
+            $reflection = new ReflectionClass($handlerClassName);
+            $handler = $reflection->newInstanceArgs($args);
+
+            $account->addHandler($handler);
+        }
 
         return $account;
     }
@@ -80,7 +105,7 @@ trait ZugferdMailConsoleOutputsMailAccountInformation
     {
         $table = new Table($output);
         $table->setStyle('box');
-        $table->setHeaders(['ID', 'Host', 'Port', 'Protocol', 'Encryption', 'ValidateCert', 'Authentication', 'Username']);
+        $table->setHeaders(['ID', 'Host', 'Port', 'Protocol', 'Encryption', 'ValidateCert', 'Authentication', 'Username', 'Recursive']);
         $table->setRows(
             [
             [
@@ -92,6 +117,7 @@ trait ZugferdMailConsoleOutputsMailAccountInformation
                 $account->getValidateCert() === true ? "Yes" : "No",
                 $account->getAuthentication() === null ? "None" : $account->getAuthentication(),
                 $account->getUsername(),
+                $account->getRecursive() === true ? "Yes" : "No",
             ],
             ]
         );
