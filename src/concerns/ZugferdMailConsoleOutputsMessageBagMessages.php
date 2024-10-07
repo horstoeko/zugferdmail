@@ -53,12 +53,16 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
             function ($message, int $messageKey) use ($messages) {
                 $result = [];
 
-                if ($message["message"] == "") {
+                if ($message["message"] == "" || $message["message"] == "<T-SEP>") {
                     if ($messageKey != $messages->count() - 1) {
-                        $result = [new TableSeparator()];
+                        $result = [new TableSeparator(), new TableSeparator(), new TableSeparator()];
                     }
                 } else {
-                    $result = [$this->formatMessageBagMessage($message)];
+                    $result = [
+                        $message["datetime"]->format("Y-m-d H:i:s"),
+                        $this->formatMessageBagMessage($message),
+                        $message["source"]
+                    ];
                 }
 
                 return $result;
@@ -67,7 +71,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
 
         $table = new Table($output);
         $table->setStyle('box');
-        $table->setHeaders(['Message']);
+        $table->setHeaders(['Date', 'Message', 'Source']);
         $table->setRows($messages);
         $table->render();
     }

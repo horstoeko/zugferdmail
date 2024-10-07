@@ -9,6 +9,7 @@
 
 namespace horstoeko\zugferdmail;
 
+use DateTime;
 use Throwable;
 use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
 
@@ -97,7 +98,8 @@ class ZugferdMailMessageBag
             "type" => $type,
             "source" => $source,
             "message" => $message,
-            "additionalData" => $additionalData
+            "additionalData" => $additionalData,
+            "datetime" => new DateTime()
         ];
 
         return $this;

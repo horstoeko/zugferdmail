@@ -35,7 +35,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMessageToMessageBag(string $type, string $message, array $additionalData = [])
     {
-        ZugferdMailMessageBag::factory()->addMessage($type, static::class, $message, $additionalData);
+        ZugferdMailMessageBag::factory()->addMessage($type, $this->getMessageBagSourceFromClassname(), $message, $additionalData);
 
         return $this;
     }
@@ -105,8 +105,20 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addThrowableToMessageBag(Throwable $throwable, array $additionalData = [])
     {
-        ZugferdMailMessageBag::factory()->addThrowable($throwable, static::class, $additionalData);
+        ZugferdMailMessageBag::factory()->addThrowable($throwable, $this->getMessageBagSourceFromClassname(), $additionalData);
 
         return $this;
+    }
+
+    /**
+     * Helper function for getting the source from a current classname
+     *
+     * @return string
+     */
+    private function getMessageBagSourceFromClassname(): string
+    {
+        $classname = explode('\\', static::class);
+
+        return array_pop($classname);
     }
 }
