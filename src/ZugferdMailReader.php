@@ -247,13 +247,13 @@ class ZugferdMailReader
     {
         if ($this->config->getXsdValidationEnabled()) {
             $validator = new ZugferdXsdValidator($document);
-            $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "XSD-Validation of document failed");
-            $this->addSuccessMessageToMessageBag('The document was successfully validated againt XSD scheme', $messageAdditionalData);
+            $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against XSD-Validation failed");
+            $this->addSuccessMessageToMessageBag('The document was successfully validated against XSD scheme', $messageAdditionalData);
         }
         if ($this->config->getKositValidationEnabled()) {
             $validator = new ZugferdKositValidator($document);
             $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against KosIT Validation failed");
-            $this->addSuccessMessageToMessageBag('The document was successfully validated with the KosIT validator', $messageAdditionalData);
+            $this->addSuccessMessageToMessageBag('The document was successfully validated against the KosIT validator', $messageAdditionalData);
         }
     }
 
