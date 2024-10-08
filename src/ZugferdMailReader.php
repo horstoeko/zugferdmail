@@ -239,8 +239,8 @@ class ZugferdMailReader
     /**
      * Validates a document
      *
-     * @param ZugferdDocument $document
-     * @param array $messageAdditionalData
+     * @param  ZugferdDocument $document
+     * @param  array           $messageAdditionalData
      * @return void
      */
     private function validateDocument(ZugferdDocument $document, array $messageAdditionalData): void
