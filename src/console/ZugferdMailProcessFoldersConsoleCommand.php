@@ -11,7 +11,7 @@ namespace horstoeko\zugferdmail\console;
 
 use ReflectionClass;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsGeneralInformation;
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMailAccountInformation;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
@@ -31,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ZugferdMailProcessFoldersConsoleCommand extends Command
 {
-    use ZugferdMailConsoleOutputsMailAccountInformation,
+    use ZugferdMailConsoleHandlesMailAccount,
         ZugferdMailConsoleOutputsGeneralInformation,
         ZugferdMailConsoleOutputsMessageBagMessages;
 

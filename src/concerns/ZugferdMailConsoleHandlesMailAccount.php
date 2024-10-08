@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-trait ZugferdMailConsoleOutputsMailAccountInformation
+trait ZugferdMailConsoleHandlesMailAccount
 {
     /**
      * Add console options with all needed options for creating a mail account
