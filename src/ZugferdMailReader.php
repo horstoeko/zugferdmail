@@ -175,10 +175,6 @@ class ZugferdMailReader
      */
     protected function checkSingleMessageAttachment(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment): void
     {
-        if (!in_array($attachment->getMimeType(), $account->getMimeTypesToWatch())) {
-            return;
-        }
-
         $messageAdditionalData = [
             "account" => $account,
             "folder" => $folder,
@@ -186,9 +182,17 @@ class ZugferdMailReader
             "attachment" => $attachment,
         ];
 
-        $document = null;
+        $this->addLogMessageToMessageBag(sprintf("Checking attachment of mail %s, Subject: %s, Sender: %s", $message->getUid(), $message->getSubject(), $message->getFrom()));
 
-        $this->addLogMessageToMessageBag(sprintf("Checking mail %s, Subject: %s, Sender: %s", $message->getUid(), $message->getSubject(), $message->getFrom()));
+        if (!in_array($attachment->getMimeType(), $account->getMimeTypesToWatch())) {
+            $this->addLogMessageToMessageBag(sprintf("Mimetype %s does not match", $attachment->getMimeType()));
+            $this->addLogMessageToMessageBag('');
+            return;
+        }
+
+        $this->addLogMessageToMessageBag(sprintf("Valid Mimetype %s found", $attachment->getMimeType()));
+
+        $document = null;
 
         if (is_null($document)) {
             try {
