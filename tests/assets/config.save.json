@@ -1,11 +1,12 @@
 {
     "dateFormat": "d-M-Y",
     "ublSupportEnabled": false,
-    "xsdValidationEnabled": false,
-    "kositValidationEnabled": false,
+    "symfonyValidationEnabled": true,
+    "xsdValidationEnabled": true,
+    "kositValidationEnabled": true,
     "accounts": [
         {
-            "identifier": "B0599EB9-14BC-4948-B508-2560FC25C7C3",
+            "identifier": "3ACD7956-A9BB-427B-A0C6-0F347A485D74",
             "host": "127.0.0.1",
             "port": 993,
             "protocol": "imap",

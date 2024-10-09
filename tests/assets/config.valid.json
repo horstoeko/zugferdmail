@@ -1,6 +1,7 @@
 {
     "dateFormat": "d-M-Y",
     "ublSupportEnabled": true,
+    "symfonyValidationEnabled": true,
     "xsdValidationEnabled": true,
     "kositValidationEnabled": true,
     "accounts": [

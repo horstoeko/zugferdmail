@@ -17,6 +17,7 @@ use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\ClientManager;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferd\ZugferdDocumentPdfReader;
+use horstoeko\zugferd\ZugferdDocumentValidator;
 use horstoeko\zugferd\ZugferdKositValidator;
 use horstoeko\zugferd\ZugferdXsdValidator;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
@@ -249,6 +250,11 @@ class ZugferdMailReader
      */
     private function validateDocument(ZugferdDocument $document, array $messageAdditionalData): void
     {
+        if ($this->config->getSymfonyValidationEnabled()) {
+            $validator = new ZugferdDocumentValidator($document);
+            $this->raiseRuntimeExceptionIf(count($validator->validateDocument()) != 0, "Validation against Symfony-Validation failed");
+            $this->addSuccessMessageToMessageBag('The document was successfully validated against Symfony Validator', $messageAdditionalData);
+        }
         if ($this->config->getXsdValidationEnabled()) {
             $validator = new ZugferdXsdValidator($document);
             $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against XSD-Validation failed");

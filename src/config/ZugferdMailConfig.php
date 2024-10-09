@@ -9,8 +9,6 @@
 
 namespace horstoeko\zugferdmail\config;
 
-use horstoeko\stringmanagement\FileUtils;
-use horstoeko\stringmanagement\PathUtils;
 use stdClass;
 use Throwable;
 use RuntimeException;
@@ -18,6 +16,7 @@ use ReflectionException;
 use InvalidArgumentException;
 use Swaggest\JsonSchema\Schema;
 use Webklex\PHPIMAP\ClientManager;
+use horstoeko\stringmanagement\FileUtils;
 
 /**
  * Class representing the config for the Zugferd MailReader
@@ -43,6 +42,13 @@ class ZugferdMailConfig
      * @var boolean
      */
     protected $ublSupportEnabled = false;
+
+    /**
+     * Symfony validation enabled
+     *
+     * @var boolean
+     */
+    protected $symfonyValidationEnabled = false;
 
     /**
      * XSD validation enabled
@@ -141,6 +147,53 @@ class ZugferdMailConfig
     }
 
     /**
+     * Returns true if the Symfony validation is enabled
+     *
+     * @return boolean
+     */
+    public function getSymfonyValidationEnabled(): bool
+    {
+        return $this->symfonyValidationEnabled;
+    }
+
+    /**
+     * Activate or deactivate Symfony validation
+     *
+     * @param  boolean $symfonyValidationEnabled
+     * @return ZugferdMailConfig
+     */
+    public function setSymfonyValidationEnabled(bool $symfonyValidationEnabled): ZugferdMailConfig
+    {
+        $this->symfonyValidationEnabled = $symfonyValidationEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Activate the Symfony validation
+     *
+     * @return ZugferdMailConfig
+     */
+    public function activateSymfonyValidation(): ZugferdMailConfig
+    {
+        $this->setSymfonyValidationEnabled(true);
+
+        return $this;
+    }
+
+    /**
+     * Deactivate the Symfony validation
+     *
+     * @return ZugferdMailConfig
+     */
+    public function deactivateSymfonyValidation(): ZugferdMailConfig
+    {
+        $this->setSymfonyValidationEnabled(false);
+
+        return $this;
+    }
+
+    /**
      * Returns true if the XSD validation is enabled
      *
      * @return boolean
@@ -164,7 +217,7 @@ class ZugferdMailConfig
     }
 
     /**
-     * Activate the UBL-Syntax support
+     * Activate the XSD validation
      *
      * @return ZugferdMailConfig
      */
@@ -176,7 +229,7 @@ class ZugferdMailConfig
     }
 
     /**
-     * Deactivate the UBL-Syntax support
+     * Deactivate the XSD validation
      *
      * @return ZugferdMailConfig
      */
@@ -211,7 +264,7 @@ class ZugferdMailConfig
     }
 
     /**
-     * Activate the UBL-Syntax support
+     * Activate the Kosit validation
      *
      * @return ZugferdMailConfig
      */
@@ -223,7 +276,7 @@ class ZugferdMailConfig
     }
 
     /**
-     * Deactivate the UBL-Syntax support
+     * Deactivate the Kosit validation
      *
      * @return ZugferdMailConfig
      */
@@ -367,6 +420,7 @@ class ZugferdMailConfig
         $config = new ZugferdMailConfig;
         $config->setDateFormat($jsonObject->dateFormat);
         $config->setUblSupportEnabled($jsonObject->ublSupportEnabled);
+        $config->setSymfonyValidationEnabled($jsonObject->symfonyValidationEnabled);
         $config->setXsdValidationEnabled($jsonObject->xsdValidationEnabled);
         $config->setKositValidationEnabled($jsonObject->kositValidationEnabled);
 
@@ -408,6 +462,7 @@ class ZugferdMailConfig
         $jsonObject = new stdClass;
         $jsonObject->dateFormat = $this->getDateFormat();
         $jsonObject->ublSupportEnabled = $this->getUblSupportEnabled();
+        $jsonObject->symfonyValidationEnabled = $this->getSymfonyValidationEnabled();
         $jsonObject->xsdValidationEnabled = $this->getXsdValidationEnabled();
         $jsonObject->kositValidationEnabled = $this->getKositValidationEnabled();
         $jsonObject->accounts = [];

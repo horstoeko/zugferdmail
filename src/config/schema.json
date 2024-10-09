@@ -4,6 +4,7 @@
     "required": [
         "dateFormat",
         "ublSupportEnabled",
+        "symfonyValidationEnabled",
         "xsdValidationEnabled",
         "kositValidationEnabled",
         "accounts"
@@ -13,6 +14,15 @@
             "type": "string"
         },
         "ublSupportEnabled": {
+            "type": "boolean"
+        },
+        "symfonyValidationEnabled": {
+            "type": "boolean"
+        },
+        "xsdValidationEnabled": {
+            "type": "boolean"
+        },
+        "kositValidationEnabled": {
             "type": "boolean"
         },
         "accounts": {

@@ -49,6 +49,7 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
             ->addOption('mimetype', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid mimetype for an message attachment')
             ->addOption('handler', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid handler class')
             ->addOption('enableublsupport', null, InputOption::VALUE_NONE, 'Enable UBL support')
+            ->addOption('enablesymfonyvalidation', null, InputOption::VALUE_NONE, 'Enable Symfony validation')
             ->addOption('enablexsdvalidation', null, InputOption::VALUE_NONE, 'Enable XSD validation')
             ->addOption('enablekositvalidation', null, InputOption::VALUE_NONE, 'Enable Kosit validation');
     }
@@ -88,6 +89,7 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
         $config = new ZugferdMailConfig();
         $config->addAccountObject($account);
         $config->setUblSupportEnabled($input->getOption('enableublsupport'));
+        $config->setSymfonyValidationEnabled($input->getOption('enablesymfonyvalidation'));
         $config->setXsdValidationEnabled($input->getOption('enablexsdvalidation'));
         $config->setKositValidationEnabled($input->getOption('enablekositvalidation'));
 

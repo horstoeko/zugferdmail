@@ -22,6 +22,8 @@ class MailConfigTest extends TestCase
         $this->assertNotNull($config);
         $this->assertEquals("d-M-Y", $config->getDateFormat());
         $this->assertEquals(false, $config->getUblSupportEnabled());
+        $this->assertEquals(false, $config->getSymfonyValidationEnabled());
+        $this->assertEquals(false, $config->getSymfonyValidationEnabled());
         $this->assertEquals(false, $config->getXsdValidationEnabled());
         $this->assertEquals(false, $config->getKositValidationEnabled());
         $this->assertEmpty($config->getAccounts());
@@ -67,6 +69,32 @@ class MailConfigTest extends TestCase
         $config->deactivateUblSupport();
 
         $this->assertEquals(false, $config->getUblSupportEnabled());
+    }
+
+    public function testMailConfigActivateSymfonyValidation(): void
+    {
+        $config = new ZugferdMailConfig();
+
+        $this->assertEquals(false, $config->getSymfonyValidationEnabled());
+
+        $config->activateSymfonyValidation();
+
+        $this->assertEquals(true, $config->getSymfonyValidationEnabled());
+    }
+
+    public function testMailConfigDeactivateSymfonyValidation(): void
+    {
+        $config = new ZugferdMailConfig();
+
+        $this->assertEquals(false, $config->getSymfonyValidationEnabled());
+
+        $config->activateSymfonyValidation();
+
+        $this->assertEquals(true, $config->getSymfonyValidationEnabled());
+
+        $config->deactivateSymfonyValidation();
+
+        $this->assertEquals(false, $config->getSymfonyValidationEnabled());
     }
 
     public function testMailConfigActivateXsdValidation(): void
@@ -246,6 +274,7 @@ class MailConfigTest extends TestCase
         $this->assertInstanceOf(ZugferdMailConfig::class, $config);
         $this->assertEquals("d-M-Y", $config->getDateFormat());
         $this->assertTrue($config->getUblSupportEnabled());
+        $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());
         $this->assertTrue($config->getKositValidationEnabled());
 
@@ -345,7 +374,94 @@ class MailConfigTest extends TestCase
         $config->addAccountObject($mailAccount);
         $config->saveToFile($configFilename);
 
-        $this->assertTrue(file_exists($configFilename));
+        $this->assertFileExists($configFilename);
         $this->assertInstanceOf(stdClass::class, json_decode(file_get_contents($configFilename)));
+    }
+
+    public function testSaveAndLoadConfigSameFile(): void
+    {
+        $configFilename = dirname(__FILE__) . '/../assets/config.save.json';
+
+        // Create config and save to config file
+
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setHost("127.0.0.1");
+        $mailAccount->setPort(993);
+        $mailAccount->setProtocol("imap");
+        $mailAccount->setEncryption("tls");
+        $mailAccount->setUsername('demouser');
+        $mailAccount->setPassword('demopassword');
+        $mailAccount->addFolderToWatch('INBOX');
+        $mailAccount->addFolderToWatch('INBOX/somefolder');
+        $mailAccount->addMimeTypeToWatch('text/xml');
+        $mailAccount->addMimeTypeToWatch('application/pdf');
+        $mailAccount->addHandler(new ZugferdMailHandlerNull());
+        $mailAccount->addHandler(new ZugferdMailHandlerCopyMessage('INBOX/someotherfolder'));
+
+        $config = new ZugferdMailConfig();
+        $config->addAccountObject($mailAccount);
+        $config->activateSymfonyValidation();
+        $config->activateXsdValidation();
+        $config->activateKositValidation();
+        $config->saveToFile($configFilename);
+
+        // Load formerly saved config file
+
+        $config = ZugferdMailConfig::loadFromFile($configFilename);
+
+        $this->assertNotNull($config);
+        $this->assertInstanceOf(ZugferdMailConfig::class, $config);
+        $this->assertEquals("d-M-Y", $config->getDateFormat());
+        $this->assertFalse($config->getUblSupportEnabled());
+        $this->assertTrue($config->getSymfonyValidationEnabled());
+        $this->assertTrue($config->getXsdValidationEnabled());
+        $this->assertTrue($config->getKositValidationEnabled());
+
+        $this->assertNotEmpty($config->getAccounts());
+        $this->assertArrayHasKey(0, $config->getAccounts());
+        $this->assertArrayNotHasKey(1, $config->getAccounts());
+
+        $mailAccount = $config->getAccounts()[0];
+
+        $this->assertEquals("127.0.0.1", $mailAccount->getHost());
+        $this->assertEquals(993, $mailAccount->getPort());
+        $this->assertEquals("imap", $mailAccount->getProtocol());
+        $this->assertEquals("tls", $mailAccount->getEncryption());
+        $this->assertTrue($mailAccount->getValidateCert());
+        $this->assertEquals("demouser", $mailAccount->getUsername());
+        $this->assertEquals("demopassword", $mailAccount->getPassword());
+        $this->assertEmpty($mailAccount->getAuthentication());
+        $this->assertEquals(30, $mailAccount->getTimeout());
+
+        $mailAccountFoldersToWatch = $mailAccount->getFoldersTowatch();
+
+        $this->assertArrayHasKey(0, $mailAccountFoldersToWatch);
+        $this->assertArrayHasKey(1, $mailAccountFoldersToWatch);
+        $this->assertArrayNotHasKey(2, $mailAccountFoldersToWatch);
+        $this->assertEquals("INBOX", $mailAccountFoldersToWatch[0]);
+        $this->assertEquals("INBOX/somefolder", $mailAccountFoldersToWatch[1]);
+
+        $mailAccountMimeTypesToWatch = $mailAccount->getMimeTypesToWatch();
+
+        $this->assertArrayHasKey(0, $mailAccountMimeTypesToWatch);
+        $this->assertArrayHasKey(1, $mailAccountMimeTypesToWatch);
+        $this->assertArrayNotHasKey(2, $mailAccountMimeTypesToWatch);
+        $this->assertEquals("text/xml", $mailAccountMimeTypesToWatch[0]);
+        $this->assertEquals("application/pdf", $mailAccountMimeTypesToWatch[1]);
+
+        $mailAccountHandlers = $mailAccount->getHandlers();
+
+        $this->assertArrayHasKey(0, $mailAccountHandlers);
+        $this->assertArrayHasKey(1, $mailAccountHandlers);
+        $this->assertArrayNotHasKey(2, $mailAccountHandlers);
+        $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccountHandlers[0]);
+        $this->assertInstanceOf(ZugferdMailHandlerCopyMessage::class, $mailAccountHandlers[1]);
+
+        /**
+         * @var ZugferdMailHandlerCopyMessage
+         */
+        $mailAccountHandler1 = $mailAccountHandlers[1];
+
+        $this->assertEquals("INBOX/someotherfolder", $mailAccountHandler1->getCopyToFolder());
     }
 }
