@@ -106,7 +106,67 @@ class ZugferdMailMessageBag
     }
 
     /**
-     * Add a throwable (exception) message to internal message container
+     * Add a message of type "Log"
+     *
+     * @param  string $source
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return static
+     */
+    public function addLogMessage(string $source, string $message, array $additionalData = [])
+    {
+        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_LOG, $source, $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
+     * Add a message of type "Warning"
+     *
+     * @param  string $source
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return static
+     */
+    public function addWarningMessage(string $source, string $message, array $additionalData = [])
+    {
+        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_WARN, $source, $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
+     * Add a message of type "Error"
+     *
+     * @param  string $source
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return static
+     */
+    public function addErrorMessage(string $source, string $message, array $additionalData = [])
+    {
+        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $source, $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
+     * Add a message of type "Success"
+     *
+     * @param  string $source
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return static
+     */
+    public function addSuccessMessage(string $source, string $message, array $additionalData = [])
+    {
+        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $source, $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
+     * Add a message of type "Error" by the given exception/throwable
      *
      * @param  Throwable $throwable
      * @param  string    $source
@@ -125,7 +185,7 @@ class ZugferdMailMessageBag
             ]
         );
 
-        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $source, $throwable->getMessage(), $additionalData);
+        $this->addErrorMessage($source, $throwable->getMessage(), $additionalData);
 
         return $this;
     }

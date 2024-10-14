@@ -49,7 +49,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addLogMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_LOG, $message, $additionalData);
+        ZugferdMailMessageBag::factory()->addLogMessage($this->getMessageBagSourceFromClassname(), $message, $additionalData);
 
         return $this;
     }
@@ -63,7 +63,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addWarningMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_WARN, $message, $additionalData);
+        ZugferdMailMessageBag::factory()->addWarningMessage($this->getMessageBagSourceFromClassname(), $message, $additionalData);
 
         return $this;
     }
@@ -77,7 +77,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addErrorMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $message, $additionalData);
+        ZugferdMailMessageBag::factory()->addErrorMessage($this->getMessageBagSourceFromClassname(), $message, $additionalData);
 
         return $this;
     }
@@ -91,7 +91,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addSuccessMessageToMessageBag(string $message, array $additionalData = [])
     {
-        $this->addMessageToMessageBag(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $message, $additionalData);
+        ZugferdMailMessageBag::factory()->addSuccessMessage($this->getMessageBagSourceFromClassname(), $message, $additionalData);
 
         return $this;
     }
