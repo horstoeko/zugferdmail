@@ -15,20 +15,20 @@ use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\ClientManager;
 use horstoeko\zugferd\ZugferdDocument;
-use horstoeko\zugferd\ZugferdXsdValidator;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferd\ZugferdKositValidator;
 use horstoeko\zugferd\ZugferdDocumentPdfReader;
+use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferd\ZugferdDocumentValidator;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use horstoeko\zugferdublbridge\XmlConverterUblToCii;
-use horstoeko\zugferdmail\concerns\ZugferdMailStringHelper;
+use horstoeko\zugferd\ZugferdKositValidator;
+use horstoeko\zugferd\ZugferdXsdValidator;
 use horstoeko\zugferdmail\concerns\ZugferdMailClearsMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailRaisesExceptions;
-use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
-use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
+use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
+use horstoeko\zugferdmail\concerns\ZugferdMailStringHelper;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use horstoeko\zugferdmail\config\ZugferdMailConfig;
+use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
+use horstoeko\zugferdublbridge\XmlConverterUblToCii;
 
 /**
  * Class representing the mail reader
