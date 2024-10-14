@@ -10,6 +10,7 @@
 namespace horstoeko\zugferdmail\concerns;
 
 use Composer\InstalledVersions as ComposerInstalledVersions;
+use OutOfBoundsException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -21,12 +22,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-trait ZugferdMailConsoleOutputsGeneralInformation
+trait ZugferdMailConsoleOutputsHeading
 {
     /**
      * Writes a heading
      *
+     * @param OutputInterface $output
      * @return void
+     * @throws OutOfBoundsException
      */
     protected function writeHeading(OutputInterface $output): void
     {
