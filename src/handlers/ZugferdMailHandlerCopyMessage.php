@@ -12,6 +12,7 @@ namespace horstoeko\zugferdmail\handlers;
 use InvalidArgumentException;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Throwable;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
@@ -49,7 +50,14 @@ class ZugferdMailHandlerCopyMessage extends ZugferdMailHandlerAbstract
      */
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
-        $message->copy($this->getCopyToFolder());
+        try {
+            $this->addLogMessageToMessageBag(sprintf('Copying mail to %s', $this->getCopyToFolder()));
+            $message->copy($this->getCopyToFolder());
+            $this->addLogMessageToMessageBag(sprintf('Successfully copied mail to %s', $this->getCopyToFolder()));
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to copy mail to %s: %s', $this->getCopyToFolder(), $e->getMessage()));
+            throw $e;
+        }
     }
 
     /**

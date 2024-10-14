@@ -9,12 +9,13 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
-use InvalidArgumentException;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use Webklex\PHPIMAP\Attachment;
+use Throwable;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
+use InvalidArgumentException;
+use Webklex\PHPIMAP\Attachment;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
 
 /**
  * Class representing a handler that moves a message to another folder
@@ -49,7 +50,14 @@ class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
      */
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
-        $message->move($this->getMoveToFolder());
+        try {
+            $this->addLogMessageToMessageBag(sprintf('Moving mail to %s', $this->getMoveToFolder()));
+            $message->move($this->getMoveToFolder());
+            $this->addLogMessageToMessageBag(sprintf('Successfully moved mail to %s', $this->getMoveToFolder()));
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to move mail to %s: %s', $this->getMoveToFolder(), $e->getMessage()));
+            throw $e;
+        }
     }
 
     /**

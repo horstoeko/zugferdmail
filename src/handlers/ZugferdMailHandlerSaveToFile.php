@@ -9,12 +9,13 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
-use InvalidArgumentException;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use Webklex\PHPIMAP\Attachment;
+use Throwable;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
+use InvalidArgumentException;
+use Webklex\PHPIMAP\Attachment;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
 
 /**
  * Class representing a handler which saves the attachment (the invoice document)
@@ -59,7 +60,14 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
      */
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
-        $attachment->save($this->getFilePath(), $this->getFileName());
+        try {
+            $this->addLogMessageToMessageBag(sprintf('Saving attachment to %s%s', $this->getFilePath(), $this->getFileName()));
+            $attachment->save($this->getFilePath(), $this->getFileName());
+            $this->addLogMessageToMessageBag(sprintf('Successfully saved attachment to %s%s', $this->getFilePath(), $this->getFileName()));
+        } catch (Throwable $e) {
+            $this->addLogMessageToMessageBag(sprintf('Failed to save attachment to %s%s: %s', $this->getFilePath(), $this->getFileName(), $e->getMessage()));
+            throw $e;
+        }
     }
 
     /**

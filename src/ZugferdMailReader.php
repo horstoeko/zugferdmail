@@ -9,20 +9,21 @@
 
 namespace horstoeko\zugferdmail;
 
-use horstoeko\zugferd\ZugferdDocument;
 use Throwable;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\ClientManager;
+use horstoeko\zugferd\ZugferdDocument;
+use horstoeko\zugferd\ZugferdXsdValidator;
 use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferd\ZugferdKositValidator;
 use horstoeko\zugferd\ZugferdDocumentPdfReader;
 use horstoeko\zugferd\ZugferdDocumentValidator;
-use horstoeko\zugferd\ZugferdKositValidator;
-use horstoeko\zugferd\ZugferdXsdValidator;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use horstoeko\zugferdublbridge\XmlConverterUblToCii;
+use horstoeko\zugferdmail\concerns\ZugferdMailStringHelper;
 use horstoeko\zugferdmail\concerns\ZugferdMailClearsMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailRaisesExceptions;
 use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
@@ -43,7 +44,8 @@ class ZugferdMailReader
     use ZugferdMailSendsMessagesToMessageBag,
         ZugferdMailReceivesMessagesFromMessageBag,
         ZugferdMailClearsMessageBag,
-        ZugferdMailRaisesExceptions;
+        ZugferdMailRaisesExceptions,
+        ZugferdMailStringHelper;
 
     /**
      * The config
@@ -183,7 +185,7 @@ class ZugferdMailReader
             "attachment" => $attachment,
         ];
 
-        $this->addLogMessageToMessageBag(sprintf("Checking attachment of mail %s, Subject: %s, Sender: %s", $message->getUid(), $message->getSubject(), $message->getFrom()));
+        $this->addLogMessageToMessageBag(sprintf("Checking attachment of mail %s, Subject: %s, Sender: %s", $message->getUid(), $this->zfMailTruncateString($message->getSubject(), 20), $this->zfMailTruncateString($message->getFrom(), 20)));
 
         if (!in_array($attachment->getMimeType(), $account->getMimeTypesToWatch())) {
             $this->addLogMessageToMessageBag(sprintf("Mimetype %s does not match", $attachment->getMimeType()));

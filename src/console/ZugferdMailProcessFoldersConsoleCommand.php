@@ -10,8 +10,8 @@
 namespace horstoeko\zugferdmail\console;
 
 use ReflectionClass;
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsGeneralInformation;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsGeneralInformation;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;

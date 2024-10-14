@@ -9,11 +9,12 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use Webklex\PHPIMAP\Attachment;
+use Throwable;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
+use Webklex\PHPIMAP\Attachment;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
 
 /**
  * Class representing a handler that copies a message to another folder
@@ -31,6 +32,13 @@ class ZugferdMailHandlerDeleteMessage extends ZugferdMailHandlerAbstract
      */
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
-        $message->delete();
+        try {
+            $this->addLogMessageToMessageBag(sprintf('Deleting message with %s', $message->getUid()));
+            $message->delete();
+            $this->addLogMessageToMessageBag(sprintf('Successfully deleted message with %s', $message->getUid()));
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to delete message with id %s: %s', $message->getUid(), $e->getMessage()));
+            throw $e;
+        }
     }
 }
