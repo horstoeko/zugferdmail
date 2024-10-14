@@ -123,7 +123,7 @@ class ZugferdMailReader
     /**
      * Checks a single account
      *
-     * @param ZugferdMailAccount $account
+     * @param  ZugferdMailAccount $account
      * @return void
      * @throws MaskNotFoundException
      * @throws ConnectionFailedException
@@ -142,8 +142,8 @@ class ZugferdMailReader
     /**
      * Checks a single mail account folder
      *
-     * @param ZugferdMailAccount $account
-     * @param Folder $folder
+     * @param  ZugferdMailAccount $account
+     * @param  Folder             $folder
      * @return void
      * @throws ConnectionFailedException
      * @throws RuntimeException
@@ -169,9 +169,9 @@ class ZugferdMailReader
     /**
      * Checks a single mail
      *
-     * @param ZugferdMailAccount $account
-     * @param Folder $folder
-     * @param Message $message
+     * @param  ZugferdMailAccount $account
+     * @param  Folder             $folder
+     * @param  Message            $message
      * @return void
      */
     protected function checkSingleMessage(ZugferdMailAccount $account, Folder $folder, Message $message): void
@@ -186,10 +186,10 @@ class ZugferdMailReader
     /**
      * Checks a single mail attachment
      *
-     * @param ZugferdMailAccount $account
-     * @param Folder $folder
-     * @param Message $message
-     * @param Attachment $attachment
+     * @param  ZugferdMailAccount $account
+     * @param  Folder             $folder
+     * @param  Message            $message
+     * @param  Attachment         $attachment
      * @return void
      */
     protected function checkSingleMessageAttachment(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment): void
@@ -262,8 +262,8 @@ class ZugferdMailReader
     /**
      * Validates a document
      *
-     * @param ZugferdDocument $document
-     * @param array $messageAdditionalData
+     * @param  ZugferdDocument $document
+     * @param  array           $messageAdditionalData
      * @return void
      */
     private function validateDocument(ZugferdDocument $document, array $messageAdditionalData): void
@@ -294,12 +294,12 @@ class ZugferdMailReader
     /**
      * Internal trigger when attachment was found
      *
-     * @param ZugferdMailAccount $account
-     * @param Folder $folder
-     * @param Message $message
-     * @param Attachment $attachment
-     * @param ZugferdDocumentReader $document
-     * @param int $recognitionType
+     * @param  ZugferdMailAccount    $account
+     * @param  Folder                $folder
+     * @param  Message               $message
+     * @param  Attachment            $attachment
+     * @param  ZugferdDocumentReader $document
+     * @param  int                   $recognitionType
      * @return void
      */
     protected function triggerHandlers(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void

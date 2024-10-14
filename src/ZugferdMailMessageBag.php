@@ -53,7 +53,9 @@ class ZugferdMailMessageBag
     }
 
     /**
-     * @inheritDoc
+     * Returns the config as a JSON string
+     *
+     * @return string
      */
     public function __toString(): string
     {
@@ -111,7 +113,7 @@ class ZugferdMailMessageBag
      * @param  string $source
      * @param  string $message
      * @param  array  $additionalData
-     * @return static
+     * @return ZugferdMailMessageBag
      */
     public function addLogMessage(string $source, string $message, array $additionalData = [])
     {
@@ -126,7 +128,7 @@ class ZugferdMailMessageBag
      * @param  string $source
      * @param  string $message
      * @param  array  $additionalData
-     * @return static
+     * @return ZugferdMailMessageBag
      */
     public function addWarningMessage(string $source, string $message, array $additionalData = [])
     {
@@ -141,7 +143,7 @@ class ZugferdMailMessageBag
      * @param  string $source
      * @param  string $message
      * @param  array  $additionalData
-     * @return static
+     * @return ZugferdMailMessageBag
      */
     public function addErrorMessage(string $source, string $message, array $additionalData = [])
     {
@@ -156,7 +158,7 @@ class ZugferdMailMessageBag
      * @param  string $source
      * @param  string $message
      * @param  array  $additionalData
-     * @return static
+     * @return ZugferdMailMessageBag
      */
     public function addSuccessMessage(string $source, string $message, array $additionalData = [])
     {
