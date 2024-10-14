@@ -55,7 +55,6 @@ trait ZugferdMailConsoleHandlesMailAccount
     protected function createMailAccountFromOptions(InputInterface $input): ZugferdMailAccount
     {
         $account = new ZugferdMailAccount();
-        $account->setIdentifier(sprintf("%s@%s:%s", $input->getOption('username'), $input->getOption('host'), $input->getOption('port')));
         $account->setHost($input->getOption('host'));
         $account->setPort($input->getOption('port'));
         $account->setProtocol($input->getOption('protocol'));

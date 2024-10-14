@@ -119,17 +119,7 @@ class ZugferdMailAccount
      */
     public function __construct()
     {
-        $this->identifier = sprintf(
-            '%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
-            mt_rand(0, 65535),
-            mt_rand(0, 65535),
-            mt_rand(0, 65535),
-            mt_rand(16384, 20479),
-            mt_rand(32768, 49151),
-            mt_rand(0, 65535),
-            mt_rand(0, 65535),
-            mt_rand(0, 65535)
-        );
+        $this->setIdentifier();
     }
 
     /**
@@ -149,10 +139,10 @@ class ZugferdMailAccount
      * @return ZugferdMailAccount
      * @throws InvalidArgumentException
      */
-    public function setIdentifier(string $identifier): ZugferdMailAccount
+    public function setIdentifier(string $identifier = ''): ZugferdMailAccount
     {
-        if (empty($identifier)) {
-            throw new InvalidArgumentException("The identifier must not be ampty");
+        if (empty(trim($identifier))) {
+            $identifier = $this->createGuidForIdentifier();
         }
 
         $this->identifier = $identifier;
@@ -538,5 +528,25 @@ class ZugferdMailAccount
             'authentication' => $this->getAuthentication(),
             "timeout" => $this->getTimeout(),
         ];
+    }
+
+    /**
+     * Create a guid as an dummy identifier
+     *
+     * @return string
+     */
+    private function createGuidForIdentifier(): string
+    {
+        return sprintf(
+            '%04X%04X-%04X-%04X-%04X-%04X%04X%04X',
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(16384, 20479),
+            mt_rand(32768, 49151),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(0, 65535)
+        );
     }
 }
