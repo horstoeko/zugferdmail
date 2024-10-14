@@ -9,8 +9,11 @@
 
 namespace horstoeko\zugferdmail\concerns;
 
+use DivisionByZeroError;
+use ArithmeticError;
 use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
 use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,6 +34,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
     /**
      * Output messages to CLI
      *
+     * @param OutputInterface $output
      * @return void
      */
     protected function outputMessagesFromMessageBagToCli(OutputInterface $output): void
@@ -43,7 +47,11 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
     /**
      * Output messages as a table to CLI
      *
+     * @param OutputInterface $output
      * @return void
+     * @throws InvalidArgumentException
+     * @throws DivisionByZeroError
+     * @throws ArithmeticError
      */
     protected function outputMessagesFromMessageBagAsTableToCli(OutputInterface $output): void
     {
@@ -79,7 +87,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
     /**
      * Format the message string
      *
-     * @param  array $message
+     * @param array $message
      * @return string
      */
     private function formatMessageBagMessage(array $message): string
