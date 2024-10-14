@@ -9,7 +9,11 @@
 
 namespace horstoeko\zugferdmail\concerns;
 
+use DivisionByZeroError;
+use ArithmeticError;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use InvalidArgumentException as GlobalInvalidArgumentException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -49,8 +53,10 @@ trait ZugferdMailConsoleHandlesMailAccount
     /**
      * Create a mail account from console options
      *
-     * @param  InputInterface $input
+     * @param InputInterface $input
      * @return ZugferdMailAccount
+     * @throws InvalidArgumentException
+     * @throws GlobalInvalidArgumentException
      */
     protected function createMailAccountFromOptions(InputInterface $input): ZugferdMailAccount
     {
@@ -71,9 +77,12 @@ trait ZugferdMailConsoleHandlesMailAccount
     /**
      * Writes account information
      *
-     * @param  OutputInterface    $output
-     * @param  ZugferdMailAccount $account
+     * @param OutputInterface $output
+     * @param ZugferdMailAccount $account
      * @return void
+     * @throws InvalidArgumentException
+     * @throws DivisionByZeroError
+     * @throws ArithmeticError
      */
     protected function writeAccountInformation(OutputInterface $output, ZugferdMailAccount $account): void
     {
@@ -100,9 +109,12 @@ trait ZugferdMailConsoleHandlesMailAccount
     /**
      * Write account's folders to watch
      *
-     * @param  OutputInterface    $output
-     * @param  ZugferdMailAccount $account
+     * @param OutputInterface $output
+     * @param ZugferdMailAccount $account
      * @return void
+     * @throws InvalidArgumentException
+     * @throws DivisionByZeroError
+     * @throws ArithmeticError
      */
     protected function writeAccountFoldersToWatch(OutputInterface $output, ZugferdMailAccount $account): void
     {
@@ -117,10 +129,13 @@ trait ZugferdMailConsoleHandlesMailAccount
 
     /**
      * Write account's mimetypes to watch
-     *
-     * @param  OutputInterface    $output
-     * @param  ZugferdMailAccount $account
+     * 
+     * @param OutputInterface $output
+     * @param ZugferdMailAccount $account
      * @return void
+     * @throws InvalidArgumentException
+     * @throws DivisionByZeroError
+     * @throws ArithmeticError
      */
     protected function writeAccountMimeTypesToWatch(OutputInterface $output, ZugferdMailAccount $account): void
     {
