@@ -132,11 +132,7 @@ class ZugferdMailReader
     protected function checkSingleAccountFolder(ZugferdMailAccount $account, Folder $folder): void
     {
         if (in_array($folder->full_name, $account->getFoldersTowatch())) {
-            $folder->messages()->all()->get()->filter(
-                function (Message $message) {
-                    return $message->hasAttachments();
-                }
-            )->each(
+            $folder->messages()->all()->get()->each(
                 function (Message $message) use ($account, $folder) {
                     $this->checkSingleMessage($account, $folder, $message);
                 }
