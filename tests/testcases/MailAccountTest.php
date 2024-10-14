@@ -34,10 +34,10 @@ class MailAccountTest extends TestCase
 
     public function testMailAccountSetIdInvalid(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setIdentifier("");
+
+        $this->assertEquals(1, preg_match("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier()));
     }
 
     public function testMailAccountSetIdValid(): void
