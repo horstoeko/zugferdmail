@@ -53,7 +53,7 @@ trait ZugferdMailConsoleHandlesMailAccount
     /**
      * Create a mail account from console options
      *
-     * @param InputInterface $input
+     * @param  InputInterface $input
      * @return ZugferdMailAccount
      * @throws InvalidArgumentException
      * @throws GlobalInvalidArgumentException
@@ -77,8 +77,8 @@ trait ZugferdMailConsoleHandlesMailAccount
     /**
      * Writes account information
      *
-     * @param OutputInterface $output
-     * @param ZugferdMailAccount $account
+     * @param  OutputInterface    $output
+     * @param  ZugferdMailAccount $account
      * @return void
      * @throws InvalidArgumentException
      * @throws DivisionByZeroError
@@ -109,8 +109,8 @@ trait ZugferdMailConsoleHandlesMailAccount
     /**
      * Write account's folders to watch
      *
-     * @param OutputInterface $output
-     * @param ZugferdMailAccount $account
+     * @param  OutputInterface    $output
+     * @param  ZugferdMailAccount $account
      * @return void
      * @throws InvalidArgumentException
      * @throws DivisionByZeroError
@@ -129,9 +129,9 @@ trait ZugferdMailConsoleHandlesMailAccount
 
     /**
      * Write account's mimetypes to watch
-     * 
-     * @param OutputInterface $output
-     * @param ZugferdMailAccount $account
+     *
+     * @param  OutputInterface    $output
+     * @param  ZugferdMailAccount $account
      * @return void
      * @throws InvalidArgumentException
      * @throws DivisionByZeroError

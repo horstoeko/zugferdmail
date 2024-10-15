@@ -27,7 +27,7 @@ trait ZugferdMailConsoleOutputsHeading
     /**
      * Writes a heading
      *
-     * @param OutputInterface $output
+     * @param  OutputInterface $output
      * @return void
      * @throws OutOfBoundsException
      */

@@ -34,7 +34,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
     /**
      * Output messages to CLI
      *
-     * @param OutputInterface $output
+     * @param  OutputInterface $output
      * @return void
      */
     protected function outputMessagesFromMessageBagToCli(OutputInterface $output): void
@@ -47,7 +47,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
     /**
      * Output messages as a table to CLI
      *
-     * @param OutputInterface $output
+     * @param  OutputInterface $output
      * @return void
      * @throws InvalidArgumentException
      * @throws DivisionByZeroError
@@ -87,7 +87,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
     /**
      * Format the message string
      *
-     * @param array $message
+     * @param  array $message
      * @return string
      */
     private function formatMessageBagMessage(array $message): string

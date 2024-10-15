@@ -26,9 +26,9 @@ trait ZugferdMailRaisesExceptions
     /**
      * Raise exception defined by $class if $condition is evaludated to trze
      *
-     * @param  boolean $condidition
-     * @param  string  $exceptionClass
-     * @param  string  $message
+     * @param  bool   $condidition
+     * @param  string $exceptionClass
+     * @param  string $message
      * @return void
      */
     protected function raiseExceptionClassIf(bool $condidition, string $exceptionClass, string $message = ""): void
