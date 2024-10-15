@@ -70,10 +70,13 @@
             "vendor/bin/phpstan analyze -c build/phpstan.neon --autoload-file=vendor/autoload.php --no-interaction --no-progress --error-format=checkstyle > build/logs/checkstyle_phpstan.xml",
             "vendor/bin/phpcpd --log-pmd build/logs/pmd-cpd.xml --exclude src/entities/ src"
         ],
-        "beforecommit": [
-            "@testsreal",
-            "@phpcbf",
-            "@checkstyle"
+        "gitco": [
+            "@testsreal @no_additional_args",
+            "@phpcbf @no_additional_args",
+            "@checkstyle @no_additional_args",
+            "git add . @no_additional_args",
+            "git commit -m",
+            "git push @no_additional_args"
         ]
     }
 }
