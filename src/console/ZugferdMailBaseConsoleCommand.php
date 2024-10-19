@@ -33,14 +33,14 @@ abstract class ZugferdMailBaseConsoleCommand extends Command
      *
      * @var InputInterface
      */
-    protected $input;
+    protected $inputInterface;
 
     /**
      * Output interface
      *
      * @var OutputInterface
      */
-    protected $output;
+    protected $outputInterface;
 
     /**
      * Introduce custom colors
@@ -50,7 +50,7 @@ abstract class ZugferdMailBaseConsoleCommand extends Command
     private function setCustomColors(): void
     {
         $outputStyle = new OutputFormatterStyle('gray', '#000', []);
-        $this->output->getFormatter()->setStyle('gray', $outputStyle);
+        $this->outputInterface->getFormatter()->setStyle('gray', $outputStyle);
     }
 
     /**
@@ -61,9 +61,9 @@ abstract class ZugferdMailBaseConsoleCommand extends Command
      */
     private function writeHeading(): void
     {
-        $this->output->writeln('┌────────────────────────────────────────────────┐');
-        $this->output->writeLn('│ <info>' . str_pad(sprintf("horstoeko/zugferdmail %s", ComposerInstalledVersions::getVersion('horstoeko/zugferdmail')), 46, ' ', STR_PAD_RIGHT) . '</info> │');
-        $this->output->writeln('└────────────────────────────────────────────────┘');
+        $this->outputInterface->writeln('┌────────────────────────────────────────────────┐');
+        $this->outputInterface->writeLn('│ <info>' . str_pad(sprintf("horstoeko/zugferdmail %s", ComposerInstalledVersions::getVersion('horstoeko/zugferdmail')), 46, ' ', STR_PAD_RIGHT) . '</info> │');
+        $this->outputInterface->writeln('└────────────────────────────────────────────────┘');
     }
 
     /**
@@ -71,8 +71,8 @@ abstract class ZugferdMailBaseConsoleCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->input = $input;
-        $this->output = $output;
+        $this->inputInterface = $input;
+        $this->outputInterface = $output;
 
         $this->setCustomColors();
         $this->writeHeading();

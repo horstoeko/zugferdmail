@@ -55,17 +55,17 @@ class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleComm
      */
     protected function doExecute(): int
     {
-        $account = $this->createMailAccountFromOptions($this->input);
+        $account = $this->createMailAccountFromOptions($this->inputInterface);
 
-        foreach ($this->input->getOption('folder') as $folderToWatch) {
+        foreach ($this->inputInterface->getOption('folder') as $folderToWatch) {
             $account->addFolderToWatch($folderToWatch);
         }
 
-        foreach ($this->input->getOption('mimetype') as $mimeTypeToWatch) {
+        foreach ($this->inputInterface->getOption('mimetype') as $mimeTypeToWatch) {
             $account->addMimeTypeToWatch($mimeTypeToWatch);
         }
 
-        foreach ($this->input->getOption('handler') as $handlerClassName) {
+        foreach ($this->inputInterface->getOption('handler') as $handlerClassName) {
             $args = explode(",", $handlerClassName);
             $handlerClassName = $args[0];
             unset($args[0]);
@@ -76,21 +76,21 @@ class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleComm
             $account->addHandler($handler);
         }
 
-        $this->writeAccountInformation($this->output, $account);
-        $this->writeAccountFoldersToWatch($this->output, $account);
-        $this->writeAccountMimeTypesToWatch($this->output, $account);
+        $this->writeAccountInformation($this->outputInterface, $account);
+        $this->writeAccountFoldersToWatch($this->outputInterface, $account);
+        $this->writeAccountMimeTypesToWatch($this->outputInterface, $account);
 
         $config = new ZugferdMailConfig();
         $config->addAccountObject($account);
-        $config->setUblSupportEnabled($this->input->getOption('enableublsupport'));
-        $config->setSymfonyValidationEnabled($this->input->getOption('enablesymfonyvalidation'));
-        $config->setXsdValidationEnabled($this->input->getOption('enablexsdvalidation'));
-        $config->setKositValidationEnabled($this->input->getOption('enablekositvalidation'));
+        $config->setUblSupportEnabled($this->inputInterface->getOption('enableublsupport'));
+        $config->setSymfonyValidationEnabled($this->inputInterface->getOption('enablesymfonyvalidation'));
+        $config->setXsdValidationEnabled($this->inputInterface->getOption('enablexsdvalidation'));
+        $config->setKositValidationEnabled($this->inputInterface->getOption('enablekositvalidation'));
 
         $reader = new ZugferdMailReader($config);
         $reader->checkAllAccounts();
 
-        $this->outputMessagesFromMessageBagAsTableToCli($this->output);
+        $this->outputMessagesFromMessageBagAsTableToCli($this->outputInterface);
 
         return Command::SUCCESS;
     }

@@ -46,9 +46,9 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
      */
     protected function doExecute(): int
     {
-        $account = $this->createMailAccountFromOptions($this->input);
+        $account = $this->createMailAccountFromOptions($this->inputInterface);
 
-        $this->writeAccountInformation($this->output, $account);
+        $this->writeAccountInformation($this->outputInterface, $account);
 
         $config = new ZugferdMailConfig();
         $config->addAccountObject($account);
@@ -66,7 +66,7 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
             $folders[0]["folders"]
         );
 
-        $table = new Table($this->output);
+        $table = new Table($this->outputInterface);
         $table->setStyle('box');
         $table->setHeaders(['Foldername', "Messages"]);
         $table->setRows($folders);
