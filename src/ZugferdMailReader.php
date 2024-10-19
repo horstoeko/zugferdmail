@@ -221,6 +221,7 @@ class ZugferdMailReader
                 $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
                 $this->validateDocument($document, $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
+                $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
             } catch (Throwable $e) {
                 $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
             }
@@ -233,6 +234,7 @@ class ZugferdMailReader
                 $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible XML', $messageAdditionalData);
                 $this->validateDocument($document, $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
+                $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
             } catch (Throwable $e) {
                 $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
             }
@@ -248,6 +250,7 @@ class ZugferdMailReader
                     $this->addSuccessMessageToMessageBag('Mail contains a UBL compatible XML', $messageAdditionalData);
                     $this->validateDocument($document, $messageAdditionalData);
                     $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
+                    $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                 } catch (Throwable $e) {
                     $this->addWarningMessageToMessageBag(sprintf("No UBL compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
                 }
@@ -292,7 +295,7 @@ class ZugferdMailReader
     }
 
     /**
-     * Internal trigger when attachment was found
+     * Internal trigger a handler when attachment was found
      *
      * @param  ZugferdMailAccount    $account
      * @param  Folder                $folder
@@ -307,6 +310,28 @@ class ZugferdMailReader
         foreach ($account->getHandlers() as $handler) {
             try {
                 $handler->handleDocument($account, $folder, $message, $attachment, $document, $recognitionType);
+            } catch (Throwable $e) {
+                $this->addThrowableToMessageBag($e);
+            }
+        }
+    }
+
+    /**
+     * Internal trigger a callback when attachment was found
+     *
+     * @param  ZugferdMailAccount    $account
+     * @param  Folder                $folder
+     * @param  Message               $message
+     * @param  Attachment            $attachment
+     * @param  ZugferdDocumentReader $document
+     * @param  int                   $recognitionType
+     * @return void
+     */
+    protected function triggerCallbacks(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    {
+        foreach ($account->getCallbacks() as $callback) {
+            try {
+                call_user_func($callback, $account, $folder, $message, $attachment, $document, $recognitionType);
             } catch (Throwable $e) {
                 $this->addThrowableToMessageBag($e);
             }

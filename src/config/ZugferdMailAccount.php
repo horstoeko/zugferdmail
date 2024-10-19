@@ -115,6 +115,13 @@ class ZugferdMailAccount
     protected $handlers = [];
 
     /**
+     * Callbacks for found documents
+     *
+     * @var array
+     */
+    protected $callBacks = [];
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -470,13 +477,23 @@ class ZugferdMailAccount
     }
 
     /**
-     * Returns the handler when a document was found
+     * Returns a list of handlers when a document was found
      *
      * @return array<ZugferdMailHandlerAbstract>
      */
     public function getHandlers(): array
     {
         return $this->handlers;
+    }
+
+    /**
+     * Returns a list of callbacks when a document was found
+     *
+     * @return array<callable>
+     */
+    public function getCallbacks(): array
+    {
+        return $this->callBacks;
     }
 
     /**
@@ -498,7 +515,25 @@ class ZugferdMailAccount
     }
 
     /**
-     * Sets the handler to execute when a document was found
+     * Sets multiple callbacks to run when a document was found
+     *
+     * @param  array<callable> $callbacks
+     * @return ZugferdMailAccount
+     */
+    public function setCallbacks(array $callbacks): ZugferdMailAccount
+    {
+        $this->callBacks = array_filter(
+            $callbacks,
+            function ($callback) {
+                return is_callable($callback);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Addd a handler to call when a document was found
      *
      * @param  ZugferdMailHandlerAbstract $handler
      * @return ZugferdMailAccount
@@ -506,6 +541,19 @@ class ZugferdMailAccount
     public function addHandler(?ZugferdMailHandlerAbstract $handler): ZugferdMailAccount
     {
         $this->handlers[] = $handler;
+
+        return $this;
+    }
+
+    /**
+     * Add a callback to call when a docuemnt was found
+     *
+     * @param  callable $callback
+     * @return ZugferdMailAccount
+     */
+    public function addCallback(callable $callback): ZugferdMailAccount
+    {
+        $this->callBacks[] = $callback;
 
         return $this;
     }
