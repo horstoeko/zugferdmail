@@ -49,7 +49,7 @@ abstract class ZugferdMailBaseConsoleCommand extends Command
      */
     private function setCustomColors(): void
     {
-        $outputStyle = new OutputFormatterStyle('gray', '#000', []);
+        $outputStyle = new OutputFormatterStyle('bright-blue', '#000', []);
         $this->outputInterface->getFormatter()->setStyle('gray', $outputStyle);
     }
 
