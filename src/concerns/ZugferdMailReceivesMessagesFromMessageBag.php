@@ -52,6 +52,35 @@ trait ZugferdMailReceivesMessagesFromMessageBag
     {
         return ZugferdMailMessageBag::factory()->hasLogMessages();
     }
+    /**
+     * Returns an array of all log messages
+     *
+     * @return array
+     */
+    public function getLogSecondaryMessagesFromMessageBag(): array
+    {
+        return ZugferdMailMessageBag::factory()->getLogSecondaryMessages();
+    }
+
+    /**
+     * Returns true if __no__ log messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasNoLogSecondaryMessagesInMessageBag(): bool
+    {
+        return ZugferdMailMessageBag::factory()->hasNoLogSecondaryMessages();
+    }
+
+    /**
+     * Returns true if log messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasLogSecondaryMessagesInMessageBag(): bool
+    {
+        return ZugferdMailMessageBag::factory()->hasLogSecondaryMessages();
+    }
 
     /**
      * Returns an array of all warning messages

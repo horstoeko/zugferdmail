@@ -9,6 +9,7 @@
 
 namespace horstoeko\zugferdmail\console;
 
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleCustomColors;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsHeading;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
@@ -31,7 +32,8 @@ use Webklex\PHPIMAP\Folder;
 class ZugferdMailListFoldersConsoleCommand extends Command
 {
     use ZugferdMailConsoleHandlesMailAccount,
-        ZugferdMailConsoleOutputsHeading;
+        ZugferdMailConsoleOutputsHeading,
+        ZugferdMailConsoleCustomColors;
 
     /**
      * @inheritDoc
@@ -50,6 +52,8 @@ class ZugferdMailListFoldersConsoleCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->setCustomColors($output);
+
         $this->writeHeading($output);
 
         $account = $this->createMailAccountFromOptions($input);

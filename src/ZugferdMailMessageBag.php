@@ -123,6 +123,21 @@ class ZugferdMailMessageBag
     }
 
     /**
+     * Add a message of type "Log (Secondary)"
+     *
+     * @param  string $source
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return ZugferdMailMessageBag
+     */
+    public function addLogSecondaryMessage(string $source, string $message, array $additionalData = [])
+    {
+        $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY, $source, $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
      * Add a message of type "Warning"
      *
      * @param  string $source
@@ -220,7 +235,7 @@ class ZugferdMailMessageBag
      */
     public function getLogMessages(): array
     {
-        return $this->getMessageBagFilteredByType(ZugferdMailMessageBagType::MESSAGETYPE_WARN);
+        return $this->getMessageBagFilteredByType(ZugferdMailMessageBagType::MESSAGETYPE_LOG);
     }
 
     /**
@@ -241,6 +256,36 @@ class ZugferdMailMessageBag
     public function hasLogMessages(): bool
     {
         return !$this->hasNoLogMessages();
+    }
+
+    /**
+     * Returns an array of all secondary log messages
+     *
+     * @return array
+     */
+    public function getLogSecondaryMessages(): array
+    {
+        return $this->getMessageBagFilteredByType(ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY);
+    }
+
+    /**
+     * Returns true if __no__ secondary log messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasNoLogSecondaryMessages(): bool
+    {
+        return empty($this->getLogSecondaryMessages());
+    }
+
+    /**
+     * Returns true if secondary log messages are present otherwise false
+     *
+     * @return boolean
+     */
+    public function hasLogSecondaryMessages(): bool
+    {
+        return !$this->hasNoLogSecondaryMessages();
     }
 
     /**

@@ -55,6 +55,20 @@ trait ZugferdMailSendsMessagesToMessageBag
     }
 
     /**
+     * Helper function for adding a secondary log entry to message bag
+     *
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return static
+     */
+    protected function addLogSecondaryMessageToMessageBag(string $message, array $additionalData = [])
+    {
+        ZugferdMailMessageBag::factory()->addLogSecondaryMessage($this->getMessageBagSourceFromClassname(), $message, $additionalData);
+
+        return $this;
+    }
+
+    /**
      * Helper function for adding a warning entry to message bag
      *
      * @param  string $message

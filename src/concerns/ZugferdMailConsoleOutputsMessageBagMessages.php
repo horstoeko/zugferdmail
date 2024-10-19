@@ -95,6 +95,9 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_LOG) {
             return sprintf("%s", $message["message"]);
         }
+        if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY) {
+            return sprintf("<gray>%s</gray>", $message["message"]);
+        }
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_WARN) {
             return sprintf("<comment>%s</comment>", $message["message"]);
         }

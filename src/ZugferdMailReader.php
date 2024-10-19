@@ -252,7 +252,7 @@ class ZugferdMailReader
                     $this->addWarningMessageToMessageBag(sprintf("No UBL compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
                 }
             } else {
-                $this->addWarningMessageToMessageBag("UBL support disabled", $messageAdditionalData);
+                $this->addLogSecondaryMessageToMessageBag("UBL support disabled", $messageAdditionalData);
             }
         }
 
@@ -273,21 +273,21 @@ class ZugferdMailReader
             $this->raiseRuntimeExceptionIf(count($validator->validateDocument()) != 0, "Validation against Symfony-Validation failed");
             $this->addSuccessMessageToMessageBag('The document was successfully validated against Symfony validator', $messageAdditionalData);
         } else {
-            $this->addWarningMessageToMessageBag('The document was not validated against Symfony validator (Disabled)', $messageAdditionalData);
+            $this->addLogSecondaryMessageToMessageBag('The document was not validated against Symfony validator (Disabled)', $messageAdditionalData);
         }
         if ($this->config->getXsdValidationEnabled()) {
             $validator = new ZugferdXsdValidator($document);
             $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against XSD-Validation failed");
             $this->addSuccessMessageToMessageBag('The document was successfully validated against XSD scheme', $messageAdditionalData);
         } else {
-            $this->addWarningMessageToMessageBag('The document was not validated against XSD scheme (Disabled)', $messageAdditionalData);
+            $this->addLogSecondaryMessageToMessageBag('The document was not validated against XSD scheme (Disabled)', $messageAdditionalData);
         }
         if ($this->config->getKositValidationEnabled()) {
             $validator = new ZugferdKositValidator($document);
             $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against KosIT Validation failed");
             $this->addSuccessMessageToMessageBag('The document was successfully validated against the KosIT validator', $messageAdditionalData);
         } else {
-            $this->addWarningMessageToMessageBag('The document was not validated against the KosIT validator (Disabled)', $messageAdditionalData);
+            $this->addLogSecondaryMessageToMessageBag('The document was not validated against the KosIT validator (Disabled)', $messageAdditionalData);
         }
     }
 

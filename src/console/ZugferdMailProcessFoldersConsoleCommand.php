@@ -10,6 +10,7 @@
 namespace horstoeko\zugferdmail\console;
 
 use ReflectionClass;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleCustomColors;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsHeading;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
@@ -33,7 +34,8 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
 {
     use ZugferdMailConsoleHandlesMailAccount,
         ZugferdMailConsoleOutputsHeading,
-        ZugferdMailConsoleOutputsMessageBagMessages;
+        ZugferdMailConsoleOutputsMessageBagMessages,
+        ZugferdMailConsoleCustomColors;
 
     /**
      * @inheritDoc
@@ -59,6 +61,8 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->setCustomColors($output);
+        
         $this->writeHeading($output);
 
         $account = $this->createMailAccountFromOptions($input);

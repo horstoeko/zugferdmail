@@ -12,11 +12,18 @@ namespace horstoeko\zugferdmail\consts;
 class ZugferdMailMessageBagType
 {
     /**
-     * Identifier for a message of type __info__
+     * Identifier for a message of type __log__
      *
      * @var string
      */
-    public const MESSAGETYPE_LOG = "info";
+    public const MESSAGETYPE_LOG = "log";
+
+    /**
+     * Identifier for a message of type __log-secondary__
+     *
+     * @var string
+     */
+    public const MESSAGETYPE_LOG_SECONDARY = "logsecondary";
 
     /**
      * Identifier for a message of type __warning__
