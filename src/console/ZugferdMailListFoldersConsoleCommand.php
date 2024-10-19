@@ -9,15 +9,11 @@
 
 namespace horstoeko\zugferdmail\console;
 
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleCustomColors;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsHeading;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Webklex\PHPIMAP\Folder;
 
 /**
@@ -29,11 +25,9 @@ use Webklex\PHPIMAP\Folder;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-class ZugferdMailListFoldersConsoleCommand extends Command
+class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
-    use ZugferdMailConsoleHandlesMailAccount,
-        ZugferdMailConsoleOutputsHeading,
-        ZugferdMailConsoleCustomColors;
+    use ZugferdMailConsoleHandlesMailAccount;
 
     /**
      * @inheritDoc
@@ -50,15 +44,11 @@ class ZugferdMailListFoldersConsoleCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(): int
     {
-        $this->setCustomColors($output);
+        $account = $this->createMailAccountFromOptions($this->input);
 
-        $this->writeHeading($output);
-
-        $account = $this->createMailAccountFromOptions($input);
-
-        $this->writeAccountInformation($output, $account);
+        $this->writeAccountInformation($this->output, $account);
 
         $config = new ZugferdMailConfig();
         $config->addAccountObject($account);
@@ -76,7 +66,7 @@ class ZugferdMailListFoldersConsoleCommand extends Command
             $folders[0]["folders"]
         );
 
-        $table = new Table($output);
+        $table = new Table($this->output);
         $table->setStyle('box');
         $table->setHeaders(['Foldername', "Messages"]);
         $table->setRows($folders);

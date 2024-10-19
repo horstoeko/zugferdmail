@@ -10,16 +10,12 @@
 namespace horstoeko\zugferdmail\console;
 
 use ReflectionClass;
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleCustomColors;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsHeading;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class representing a console command for processing messages in folders of an email account
@@ -30,12 +26,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-class ZugferdMailProcessFoldersConsoleCommand extends Command
+class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
     use ZugferdMailConsoleHandlesMailAccount,
-        ZugferdMailConsoleOutputsHeading,
-        ZugferdMailConsoleOutputsMessageBagMessages,
-        ZugferdMailConsoleCustomColors;
+        ZugferdMailConsoleOutputsMessageBagMessages;
 
     /**
      * @inheritDoc
@@ -59,23 +53,19 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function doExecute(): int
     {
-        $this->setCustomColors($output);
-        
-        $this->writeHeading($output);
+        $account = $this->createMailAccountFromOptions($this->input);
 
-        $account = $this->createMailAccountFromOptions($input);
-
-        foreach ($input->getOption('folder') as $folderToWatch) {
+        foreach ($this->input->getOption('folder') as $folderToWatch) {
             $account->addFolderToWatch($folderToWatch);
         }
 
-        foreach ($input->getOption('mimetype') as $mimeTypeToWatch) {
+        foreach ($this->input->getOption('mimetype') as $mimeTypeToWatch) {
             $account->addMimeTypeToWatch($mimeTypeToWatch);
         }
 
-        foreach ($input->getOption('handler') as $handlerClassName) {
+        foreach ($this->input->getOption('handler') as $handlerClassName) {
             $args = explode(",", $handlerClassName);
             $handlerClassName = $args[0];
             unset($args[0]);
@@ -86,21 +76,21 @@ class ZugferdMailProcessFoldersConsoleCommand extends Command
             $account->addHandler($handler);
         }
 
-        $this->writeAccountInformation($output, $account);
-        $this->writeAccountFoldersToWatch($output, $account);
-        $this->writeAccountMimeTypesToWatch($output, $account);
+        $this->writeAccountInformation($this->output, $account);
+        $this->writeAccountFoldersToWatch($this->output, $account);
+        $this->writeAccountMimeTypesToWatch($this->output, $account);
 
         $config = new ZugferdMailConfig();
         $config->addAccountObject($account);
-        $config->setUblSupportEnabled($input->getOption('enableublsupport'));
-        $config->setSymfonyValidationEnabled($input->getOption('enablesymfonyvalidation'));
-        $config->setXsdValidationEnabled($input->getOption('enablexsdvalidation'));
-        $config->setKositValidationEnabled($input->getOption('enablekositvalidation'));
+        $config->setUblSupportEnabled($this->input->getOption('enableublsupport'));
+        $config->setSymfonyValidationEnabled($this->input->getOption('enablesymfonyvalidation'));
+        $config->setXsdValidationEnabled($this->input->getOption('enablexsdvalidation'));
+        $config->setKositValidationEnabled($this->input->getOption('enablekositvalidation'));
 
         $reader = new ZugferdMailReader($config);
         $reader->checkAllAccounts();
 
-        $this->outputMessagesFromMessageBagAsTableToCli($output);
+        $this->outputMessagesFromMessageBagAsTableToCli($this->output);
 
         return Command::SUCCESS;
     }
