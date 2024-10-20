@@ -331,7 +331,10 @@ class ZugferdMailReader
     {
         foreach ($account->getCallbacks() as $callback) {
             try {
-                call_user_func($callback, $account, $folder, $message, $attachment, $document, $recognitionType);
+                $returnValue = call_user_func($callback, $account, $folder, $message, $attachment, $document, $recognitionType);
+                if ($returnValue === false) {
+                    break;
+                }
             } catch (Throwable $e) {
                 $this->addThrowableToMessageBag($e);
             }
