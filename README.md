@@ -21,6 +21,7 @@
     - [Check mail accounts for matching mails:](#check-mail-accounts-for-matching-mails)
     - [Predefined handlers](#predefined-handlers)
     - [Implement your own handler](#implement-your-own-handler)
+    - [A small example](#a-small-example)
     - [Console](#console)
       - [Start monitoring a mailbox](#start-monitoring-a-mailbox)
 
@@ -84,7 +85,7 @@ $account1->addHandler(new ZugferdMailHandlerMoveMessage('Invoice/Incoming'));
 $account1->addHandler(new ZugferdMailHandlerSaveToFile('/tmp', 'invoice.att'));
 ```
 
-You can also define callbacks to call when a document was found:
+You can also define callbacks to call when a document was found. If such a callback function returns the value false, then all remaining callback functions are not called:
 
 ```php
 $account1->addCallback(function(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType) {
@@ -94,39 +95,6 @@ $account1->addCallback(function(ZugferdMailAccount $account, Folder $folder, Mes
 });
 ```
 Please note that the callbacks are neither loaded from a configuration file nor saved in one.
-
-A possible implementation could look like this, for example:
-
-```php
-use Webklex\PHPIMAP\Folder;
-use Webklex\PHPIMAP\Message;
-use Webklex\PHPIMAP\Attachment;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferdmail\ZugferdMailReader;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use horstoeko\zugferdmail\handlers\ZugferdMailHandlerSaveToFile;
-
-require dirname(__FILE__) . "/../vendor/autoload.php";
-
-$config = new ZugferdMailConfig();
-
-$account1 = $config->addAccount('de', '127.0.0.1', 993, 'imap', 'ssl', false, 'demouser', 'demopassword');
-$account1->addFolderToWatch('Accounts/invoice@mydomain.com');
-$account1->addMimeTypeToWatch('application/pdf');
-$account1->addMimeTypeToWatch('text/xml');
-
-$account1->addHandler(new ZugferdMailHandlerSaveToFile('/tmp', 'file.xml'));
-
-$account1->addCallback(function(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType) {
-    $document->getDocumentInformation($documentno, $documenttypecode, $documentdate, $invoiceCurrency, $taxCurrency, $documentname, $documentlanguage, $effectiveSpecifiedPeriod);
-    echo "Document found ... " . PHP_EOL;
-    echo "Document No. ..... " . $documentno . PHP_EOL;
-});
-
-$reader = new ZugferdMailReader($config);
-$reader->checkAllAccounts();
-```
 
 ### Check mail accounts for matching mails:
 
@@ -196,6 +164,47 @@ The parameter $recognitionType is one of the constants from ```ZugferdMailReader
 | ZFMAIL_RECOGNITION_TYPE_XML | 1 | The document was recognized from a ZUGFeRD/Factur-X XML attachment
 | ZFMAIL_RECOGNITION_TYPE_XML_UBL | 2 | The document was recognized from a ZUGFeRD/Factur-X XML attachment (in UBL-Syntax)
 
+### A small example
+
+A possible implementation could look like this, for example:
+
+```php
+use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Message;
+use Webklex\PHPIMAP\Attachment;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\ZugferdMailReader;
+use horstoeko\zugferdmail\config\ZugferdMailConfig;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use horstoeko\zugferdmail\handlers\ZugferdMailHandlerSaveToFile;
+
+require dirname(__FILE__) . "/../vendor/autoload.php";
+
+$config = new ZugferdMailConfig();
+
+$account1 = $config->addAccount('de', '127.0.0.1', 993, 'imap', 'ssl', false, 'demouser', 'demopassword');
+$account1->addFolderToWatch('Accounts/invoice@mydomain.com');
+$account1->addMimeTypeToWatch('application/pdf');
+$account1->addMimeTypeToWatch('text/xml');
+$account1->addHandler(new ZugferdMailHandlerSaveToFile('/tmp', 'file.xml'));
+$account1->addCallback(function(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType) {
+    $document->getDocumentInformation($documentno, $documenttypecode, $documentdate, $invoiceCurrency, $taxCurrency, $documentname, $documentlanguage, $effectiveSpecifiedPeriod);
+    // Some business logic here...
+});
+
+$account2 = $config->addAccount('de', '172.10.10.10', 993, 'imap', 'ssl', false, 'demouser', 'demopassword');
+$account2->addFolderToWatch('Accounts/invoice@otheromain.com');
+$account2->addMimeTypeToWatch('application/pdf');
+$account2->addMimeTypeToWatch('text/xml');
+$account1->addCallback(function(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType) {
+    $document->getDocumentInformation($documentno, $documenttypecode, $documentdate, $invoiceCurrency, $taxCurrency, $documentname, $documentlanguage, $effectiveSpecifiedPeriod);
+    // Some other business logic here...
+});
+
+$reader = new ZugferdMailReader($config);
+$reader->checkAllAccounts();
+```
+
 ### Console
 
 This library also includes a console application with which it is possible to carry out corresponding operations via shell. To get an overview of the existing commands from the “zfmail” namespace, use:
@@ -245,3 +254,6 @@ Example usage
   --handler="horstoeko\zugferdmail\handlers\ZugferdMailHandlerSaveToFile,/tmp" \
   --enableublsupport
 ```
+
+
+[def]: #imappop3-watcher-for-e-documents
