@@ -2,6 +2,7 @@
 
 namespace horstoeko\zugferdmail\tests\testcases;
 
+use Closure;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
 use horstoeko\zugferdmail\handlers\ZugferdMailHandlerCli;
@@ -30,6 +31,7 @@ class MailAccountTest extends TestCase
         $this->assertEmpty($mailAccount->getFoldersTowatch());
         $this->assertEmpty($mailAccount->getMimeTypesToWatch());
         $this->assertEmpty($mailAccount->getHandlers());
+        $this->assertEmpty($mailAccount->getCallbacks());
     }
 
     public function testMailAccountSetIdInvalid(): void
@@ -312,7 +314,7 @@ class MailAccountTest extends TestCase
         $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccount->getHandlers()[1]);
     }
 
-    public function testMailAccountSetHandlersAllInvalid(): void
+    public function testMailAccountSetHandlersAllValid(): void
     {
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setHandlers([new ZugferdMailHandlerCli(), new ZugferdMailHandlerNull()]);
@@ -339,6 +341,58 @@ class MailAccountTest extends TestCase
         $this->assertArrayNotHasKey(2, $mailAccount->getHandlers());
         $this->assertInstanceOf(ZugferdMailHandlerCli::class, $mailAccount->getHandlers()[0]);
         $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccount->getHandlers()[1]);
+    }
+
+    public function testMailAccountSetCallbacksOneInvalid(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setCallbacks(
+            [null, function () {
+            }]
+        );
+
+        $this->assertArrayNotHasKey(0, $mailAccount->getCallbacks());
+        $this->assertArrayHasKey(1, $mailAccount->getCallbacks());
+        $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[1]);
+    }
+
+    public function testMailAccountSetCallbacksAllValid(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setCallbacks(
+            [function () {
+            }, function () {
+            }]
+        );
+
+        $this->assertArrayHasKey(0, $mailAccount->getCallbacks());
+        $this->assertArrayHasKey(1, $mailAccount->getCallbacks());
+        $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[0]);
+        $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[1]);
+    }
+
+    public function testMailAccountAddCallbacks(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->addCallback(
+            function () {
+            }
+        );
+
+        $this->assertArrayHasKey(0, $mailAccount->getCallbacks());
+        $this->assertArrayNotHasKey(1, $mailAccount->getCallbacks());
+        $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[0]);
+
+        $mailAccount->addCallback(
+            function () {
+            }
+        );
+
+        $this->assertArrayHasKey(0, $mailAccount->getCallbacks());
+        $this->assertArrayHasKey(1, $mailAccount->getCallbacks());
+        $this->assertArrayNotHasKey(2, $mailAccount->getCallbacks());
+        $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[0]);
+        $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[1]);
     }
 
     public function testGetMailAccountDefinition(): void
