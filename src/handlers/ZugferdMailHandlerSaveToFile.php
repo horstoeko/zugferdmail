@@ -9,13 +9,15 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
-use Throwable;
-use Webklex\PHPIMAP\Folder;
-use Webklex\PHPIMAP\Message;
 use InvalidArgumentException;
-use Webklex\PHPIMAP\Attachment;
+use Throwable;
+use horstoeko\mimedb\MimeDb;
+use horstoeko\stringmanagement\FileUtils;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Webklex\PHPIMAP\Attachment;
+use Webklex\PHPIMAP\Folder;
+use Webklex\PHPIMAP\Message;
 
 /**
  * Class representing a handler which saves the attachment (the invoice document)
@@ -30,6 +32,11 @@ use horstoeko\zugferdmail\config\ZugferdMailAccount;
 class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
 {
     /**
+     * Default filename pattern
+     */
+    protected const DEFAULTFILENAMEPATTEN = "{documentno}_{documentsellername}";
+
+    /**
      * The path to store the attachment (the invoice document)
      *
      * @var string
@@ -39,20 +46,20 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
     /**
      * The different filename to which the file is stored
      *
-     * @var string|null
+     * @var string
      */
-    protected $fileName = null;
+    protected $fileNamePattern = "";
 
     /**
      * Constructor
      *
-     * @param string      $filePath
-     * @param string|null $fileName
+     * @param string $filePath
+     * @param string $filenamePattern
      */
-    public function __construct(string $filePath, ?string $fileName = null)
+    public function __construct(string $filePath, string $filenamePattern)
     {
         $this->setFilePath($filePath);
-        $this->setFileName($fileName);
+        $this->setFileNamePattern($filenamePattern);
     }
 
     /**
@@ -60,12 +67,14 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
      */
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
+        $finalFilename = $this->buildFileNameFromPattern($document, $attachment);
+
         try {
-            $this->addLogMessageToMessageBag(sprintf('Saving attachment to %s%s', $this->getFilePath(), $this->getFileName()));
-            $attachment->save($this->getFilePath(), $this->getFileName());
-            $this->addLogMessageToMessageBag(sprintf('Successfully saved attachment to %s%s', $this->getFilePath(), $this->getFileName()));
+            $this->addLogMessageToMessageBag(sprintf('Saving attachment to %s%s', $this->getFilePath(), $finalFilename));
+            $attachment->save($this->getFilePath(), $finalFilename);
+            $this->addLogMessageToMessageBag(sprintf('Successfully saved attachment to %s%s', $this->getFilePath(), $finalFilename));
         } catch (Throwable $e) {
-            $this->addLogMessageToMessageBag(sprintf('Failed to save attachment to %s%s: %s', $this->getFilePath(), $this->getFileName(), $e->getMessage()));
+            $this->addLogMessageToMessageBag(sprintf('Failed to save attachment to %s%s: %s', $this->getFilePath(), $finalFilename, $e->getMessage()));
             throw $e;
         }
     }
@@ -106,29 +115,95 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
     /**
      * Returns the different file name to which the attachment (the invoice document) is stored
      *
-     * @return string|null
+     * @return string
      */
-    public function getFileName()
+    public function getFileNamePattern()
     {
-        return $this->fileName;
+        return $this->fileNamePattern;
     }
 
     /**
      * Sets the different file name to which the attachment (the invoice document) is stored
      *
-     * @param  string|null $filename
+     * @param  string $filenamePattern
      * @return ZugferdMailHandlerSaveToFile
      */
-    public function setFileName(?string $filename): ZugferdMailHandlerSaveToFile
+    public function setFileNamePattern(string $filenamePattern): ZugferdMailHandlerSaveToFile
     {
-        if (!is_null($filename)) {
-            if (empty($filename)) {
-                throw new InvalidArgumentException("The file name must not be empty");
-            }
+        if ($filenamePattern === "") {
+            $filenamePattern = static::DEFAULTFILENAMEPATTEN;
         }
 
-        $this->fileName = $filename;
+        $this->fileNamePattern = $filenamePattern;
 
         return $this;
+    }
+
+    /**
+     * Build a filename from the given filename pattern
+     *
+     * @param  ZugferdDocumentReader $document
+     * @param  Attachment            $attachment
+     * @return string
+     */
+    private function buildFileNameFromPattern(ZugferdDocumentReader $document, Attachment $attachment): string
+    {
+        $document->getDocumentInformation($documentNo, $documentTypeCode, $documentDate, $invoiceCurrency, $taxCurrency, $documentName, $documentLanguage, $effectiveSpecifiedPeriod);
+        $document->getDocumentSeller($documentSellerName, $documentSellerIds, $documentSellerDescription);
+        $document->getDocumentSellerAddress($documentSellerLineOne, $documentSellerLineTwo, $documentSellerLineThree, $documentSellerPostCode, $documentSellerCity, $documentSellerCountry, $documentSellerSubDivision);
+
+        $mappingTable = [];
+
+        $funcAddToMappingTable = function (array &$mappingTable, ?string $name, ?string $value) {
+            if (empty($name) || empty($value)) {
+                return;
+            }
+            $mappingTable[$name] = $value;
+        };
+
+        $funcAddToMappingTable($mappingTable, "documentno", $documentNo);
+        $funcAddToMappingTable($mappingTable, "documenttypecode", $documentTypeCode);
+        $funcAddToMappingTable($mappingTable, "documentdateymd", $documentDate ? $documentDate->format("Ymd") : null);
+        $funcAddToMappingTable($mappingTable, "documentdateymd2", $documentDate ? $documentDate->format("Y-m-d") : null);
+        $funcAddToMappingTable($mappingTable, "documentname", $documentName);
+        $funcAddToMappingTable($mappingTable, "documentlanguage", $documentLanguage);
+        $funcAddToMappingTable($mappingTable, "documentinvoicecurrency", $invoiceCurrency);
+        $funcAddToMappingTable($mappingTable, "documenttaxecurrency", $taxCurrency);
+        $funcAddToMappingTable($mappingTable, "documentspecifiedperiod", $effectiveSpecifiedPeriod ? $effectiveSpecifiedPeriod->format("Ymd") : null);
+
+        $funcAddToMappingTable($mappingTable, "documentsellerid0", $documentSellerIds[0] ?? "");
+        $funcAddToMappingTable($mappingTable, "documentsellerid1", $documentSellerIds[1] ?? "");
+        $funcAddToMappingTable($mappingTable, "documentsellername", $documentSellerName);
+        $funcAddToMappingTable($mappingTable, "documentsellerdescription", $documentSellerDescription);
+        $funcAddToMappingTable($mappingTable, "documentselleraddrline1", $documentSellerLineOne);
+        $funcAddToMappingTable($mappingTable, "documentselleraddrline2", $documentSellerLineTwo);
+        $funcAddToMappingTable($mappingTable, "documentselleraddrline3", $documentSellerLineThree);
+        $funcAddToMappingTable($mappingTable, "documentsellerpostcode", $documentSellerPostCode);
+        $funcAddToMappingTable($mappingTable, "documentsellercity", $documentSellerCity);
+        $funcAddToMappingTable($mappingTable, "documentsellercountry", $documentSellerCountry);
+        $funcAddToMappingTable($mappingTable, "documentsellersubvi0", $documentSellerSubDivision[0] ?? "");
+        $funcAddToMappingTable($mappingTable, "documentsellersubvi1", $documentSellerSubDivision[1] ?? "");
+
+        $funcAddToMappingTable($mappingTable, "guid", sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535)));
+        $funcAddToMappingTable($mappingTable, "hashsha256", hash('sha256', $document->serializeAsXml()));
+        $funcAddToMappingTable($mappingTable, "hashsha512", hash('sha512', $document->serializeAsXml()));
+
+        $fileExtension = MimeDb::singleton()->findFirstFileExtensionByMimeType($attachment->getMimeType());
+
+        $parsedFilename = preg_replace_callback(
+            '/\{(\w+)\}/',
+            function ($placeholderMatch) use ($mappingTable) {
+                $placeHolder = $placeholderMatch[1];
+                $placeHolderValhe = isset($mappingTable[$placeHolder]) ? $mappingTable[$placeHolder] : "";
+                return $placeHolderValhe;
+            },
+            $this->fileNamePattern
+        );
+
+        $parsedFilename = preg_replace('/_+/', '_', $parsedFilename);
+
+        $parsedFilename = $fileExtension ? FileUtils::combineFilenameWithFileextension($parsedFilename, $fileExtension) : $parsedFilename;
+
+        return $parsedFilename;
     }
 }
