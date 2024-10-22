@@ -74,7 +74,7 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
             $attachment->save($this->getFilePath(), $finalFilename);
             $this->addLogMessageToMessageBag(sprintf('Successfully saved attachment to %s%s', $this->getFilePath(), $finalFilename));
         } catch (Throwable $e) {
-            $this->addLogMessageToMessageBag(sprintf('Failed to save attachment to %s%s: %s', $this->getFilePath(), $finalFilename, $e->getMessage()));
+            $this->addErrorMessageToMessageBag(sprintf('Failed to save attachment to %s%s: %s', $this->getFilePath(), $finalFilename, $e->getMessage()));
             throw $e;
         }
     }
