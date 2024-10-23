@@ -155,11 +155,17 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
 
         $mappingTable = [];
 
-        $funcAddToMappingTable = function (array &$mappingTable, ?string $name, ?string $value) {
-            if (empty($name) || empty($value)) {
-                return;
+        $funcAddToMappingTable = function (array &$mappingTable, ?string $name, $value) {
+            if (!empty($name) && !empty($value)) {
+                if (is_array($value)) {
+                    foreach ($value as $valueKey => $valueData) {
+                        $mappingTableKey = sprintf("%s%s", $name, $valueKey);
+                        $mappingTable[$mappingTableKey] = $valueData;
+                    }
+                } else {
+                    $mappingTable[$name] = $value;
+                }
             }
-            $mappingTable[$name] = $value;
         };
 
         $funcAddToMappingTable($mappingTable, "documentno", $documentNo);
@@ -172,10 +178,8 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
         $funcAddToMappingTable($mappingTable, "documenttaxecurrency", $taxCurrency);
         $funcAddToMappingTable($mappingTable, "documentspecifiedperiod", $effectiveSpecifiedPeriod ? $effectiveSpecifiedPeriod->format("Ymd") : null);
 
-        $funcAddToMappingTable($mappingTable, "documentsellerid0", $documentSellerIds[0] ?? "");
-        $funcAddToMappingTable($mappingTable, "documentsellerid1", $documentSellerIds[1] ?? "");
-        $funcAddToMappingTable($mappingTable, "documentsellerglobalid0", $documentSellerGlobalIds[0] ?? "");
-        $funcAddToMappingTable($mappingTable, "documentsellerglobalid1", $documentSellerGlobalIds[1] ?? "");
+        $funcAddToMappingTable($mappingTable, "documentsellerid", $documentSellerIds);
+        $funcAddToMappingTable($mappingTable, "documentsellerglobalid", $documentSellerGlobalIds);
         $funcAddToMappingTable($mappingTable, "documentsellername", $documentSellerName);
         $funcAddToMappingTable($mappingTable, "documentsellerdescription", $documentSellerDescription);
         $funcAddToMappingTable($mappingTable, "documentselleraddrline1", $documentSellerLineOne);
@@ -184,12 +188,9 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
         $funcAddToMappingTable($mappingTable, "documentsellerpostcode", $documentSellerPostCode);
         $funcAddToMappingTable($mappingTable, "documentsellercity", $documentSellerCity);
         $funcAddToMappingTable($mappingTable, "documentsellercountry", $documentSellerCountry);
-        $funcAddToMappingTable($mappingTable, "documentsellersubvi0", $documentSellerSubDivision[0] ?? "");
-        $funcAddToMappingTable($mappingTable, "documentsellersubvi1", $documentSellerSubDivision[1] ?? "");
+        $funcAddToMappingTable($mappingTable, "documentsellersubdiv", $documentSellerSubDivision);
 
         $funcAddToMappingTable($mappingTable, "guid", sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535)));
-        $funcAddToMappingTable($mappingTable, "hashsha256", hash('sha256', $document->serializeAsXml()));
-        $funcAddToMappingTable($mappingTable, "hashsha512", hash('sha512', $document->serializeAsXml()));
 
         $fileExtension = $attachment->getExtension();
         $fileExtension = $fileExtension ?? MimeDb::singleton()->findFirstFileExtensionByMimeType($attachment->getMimeType());
