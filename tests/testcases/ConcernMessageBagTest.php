@@ -446,7 +446,20 @@ class ConcernMessageBagTest extends TestCase
         $this->assertIsString($messageBagAsString);
         $this->assertIsString($messageBagAsJson);
         $this->assertEquals($messageBagAsJson, $messageBagAsString);
+
         $this->assertJson($messageBagAsJson);
         $this->assertJson($messageBagAsString);
+
+        $messageBagJson = json_decode($messageBagAsString);
+
+        $this->assertIsArray($messageBagJson);
+        $this->assertArrayHasKey(0, $messageBagJson);
+        $this->assertArrayNotHasKey(1, $messageBagJson);
+        $this->assertIsObject($messageBagJson[0]);
+        $this->assertObjectHasProperty('type', $messageBagJson[0]);
+        $this->assertObjectHasProperty('source', $messageBagJson[0]);
+        $this->assertObjectHasProperty('message', $messageBagJson[0]);
+        $this->assertObjectHasProperty('additionalData', $messageBagJson[0]);
+        $this->assertObjectHasProperty('datetime', $messageBagJson[0]);
     }
 }
