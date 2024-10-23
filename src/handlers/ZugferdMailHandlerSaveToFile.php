@@ -150,6 +150,7 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
     {
         $document->getDocumentInformation($documentNo, $documentTypeCode, $documentDate, $invoiceCurrency, $taxCurrency, $documentName, $documentLanguage, $effectiveSpecifiedPeriod);
         $document->getDocumentSeller($documentSellerName, $documentSellerIds, $documentSellerDescription);
+        $document->getDocumentSellerGlobalId($documentSellerGlobalIds);
         $document->getDocumentSellerAddress($documentSellerLineOne, $documentSellerLineTwo, $documentSellerLineThree, $documentSellerPostCode, $documentSellerCity, $documentSellerCountry, $documentSellerSubDivision);
 
         $mappingTable = [];
@@ -173,6 +174,8 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
 
         $funcAddToMappingTable($mappingTable, "documentsellerid0", $documentSellerIds[0] ?? "");
         $funcAddToMappingTable($mappingTable, "documentsellerid1", $documentSellerIds[1] ?? "");
+        $funcAddToMappingTable($mappingTable, "documentsellerglobalid0", $documentSellerGlobalIds[0] ?? "");
+        $funcAddToMappingTable($mappingTable, "documentsellerglobalid1", $documentSellerGlobalIds[1] ?? "");
         $funcAddToMappingTable($mappingTable, "documentsellername", $documentSellerName);
         $funcAddToMappingTable($mappingTable, "documentsellerdescription", $documentSellerDescription);
         $funcAddToMappingTable($mappingTable, "documentselleraddrline1", $documentSellerLineOne);
