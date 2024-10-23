@@ -9,13 +9,14 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
+use InvalidArgumentException;
 use Throwable;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\concerns\ZugferdMailParsesPlaceholders;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
-use InvalidArgumentException;
-use Webklex\PHPIMAP\Attachment;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
 
 /**
  * Class representing a handler that moves a message to another folder
@@ -28,6 +29,8 @@ use horstoeko\zugferdmail\config\ZugferdMailAccount;
  */
 class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
 {
+    use ZugferdMailParsesPlaceholders;
+
     /**
      * The folder to move the message to
      *
@@ -51,11 +54,12 @@ class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         try {
-            $this->addLogMessageToMessageBag(sprintf('Moving mail to %s', $this->getMoveToFolder()));
-            $message->move($this->getMoveToFolder());
-            $this->addLogMessageToMessageBag(sprintf('Successfully moved mail to %s', $this->getMoveToFolder()));
+            $moveToFolder = $this->parsePlaceholdersByZugferdDocumentReader($document, $this->getMoveToFolder());
+            $this->addLogMessageToMessageBag(sprintf('Moving mail to %s', $moveToFolder));
+            $message->move($moveToFolder);
+            $this->addLogMessageToMessageBag(sprintf('Successfully moved mail to %s', $moveToFolder));
         } catch (Throwable $e) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to move mail to %s: %s', $this->getMoveToFolder(), $e->getMessage()));
+            $this->addErrorMessageToMessageBag(sprintf('Failed to move mail: %s', $e->getMessage()));
             throw $e;
         }
     }

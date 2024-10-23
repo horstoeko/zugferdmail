@@ -10,9 +10,10 @@
 namespace horstoeko\zugferdmail\handlers;
 
 use InvalidArgumentException;
-use horstoeko\zugferd\ZugferdDocumentReader;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use Throwable;
+use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\concerns\ZugferdMailParsesPlaceholders;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Folder;
 use Webklex\PHPIMAP\Message;
@@ -28,6 +29,8 @@ use Webklex\PHPIMAP\Message;
  */
 class ZugferdMailHandlerCopyMessage extends ZugferdMailHandlerAbstract
 {
+    use ZugferdMailParsesPlaceholders;
+
     /**
      * The folder to copy the message to
      *
@@ -51,11 +54,12 @@ class ZugferdMailHandlerCopyMessage extends ZugferdMailHandlerAbstract
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         try {
-            $this->addLogMessageToMessageBag(sprintf('Copying mail to %s', $this->getCopyToFolder()));
-            $message->copy($this->getCopyToFolder());
-            $this->addLogMessageToMessageBag(sprintf('Successfully copied mail to %s', $this->getCopyToFolder()));
+            $copyToFolder = $this->parsePlaceholdersByZugferdDocumentReader($document, $this->getCopyToFolder());
+            $this->addLogMessageToMessageBag(sprintf('Copying mail to %s', $copyToFolder));
+            $message->copy($copyToFolder);
+            $this->addLogMessageToMessageBag(sprintf('Successfully copied mail to %s', $copyToFolder));
         } catch (Throwable $e) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to copy mail to %s: %s', $this->getCopyToFolder(), $e->getMessage()));
+            $this->addErrorMessageToMessageBag(sprintf('Failed to copy mail: %s', $e->getMessage()));
             throw $e;
         }
     }

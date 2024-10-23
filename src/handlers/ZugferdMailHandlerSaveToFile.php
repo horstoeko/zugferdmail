@@ -14,6 +14,7 @@ use Throwable;
 use horstoeko\mimedb\MimeDb;
 use horstoeko\stringmanagement\FileUtils;
 use horstoeko\zugferd\ZugferdDocumentReader;
+use horstoeko\zugferdmail\concerns\ZugferdMailParsesPlaceholders;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use Webklex\PHPIMAP\Attachment;
 use Webklex\PHPIMAP\Folder;
@@ -31,8 +32,10 @@ use Webklex\PHPIMAP\Message;
  */
 class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
 {
+    use ZugferdMailParsesPlaceholders;
+
     /**
-     * Default filename pattern
+     * Default filename
      */
     protected const DEFAULTFILENAMEPATTEN = "{documentno}_{documentsellername}";
 
@@ -48,18 +51,18 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
      *
      * @var string
      */
-    protected $fileNamePattern = "";
+    protected $fileName = "";
 
     /**
      * Constructor
      *
      * @param string $filePath
-     * @param string $filenamePattern
+     * @param string $filename
      */
-    public function __construct(string $filePath, string $filenamePattern)
+    public function __construct(string $filePath, string $filename)
     {
         $this->setFilePath($filePath);
-        $this->setFileNamePattern($filenamePattern);
+        $this->setFileName($filename);
     }
 
     /**
@@ -67,14 +70,13 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
      */
     public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
-        $finalFilename = $this->buildFileNameFromPattern($document, $attachment);
-
         try {
+            $finalFilename = $this->buildFileNameFrom($document, $attachment);
             $this->addLogMessageToMessageBag(sprintf('Saving attachment to %s%s', $this->getFilePath(), $finalFilename));
             $attachment->save($this->getFilePath(), $finalFilename);
             $this->addLogMessageToMessageBag(sprintf('Successfully saved attachment to %s%s', $this->getFilePath(), $finalFilename));
         } catch (Throwable $e) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to save attachment to %s%s: %s', $this->getFilePath(), $finalFilename, $e->getMessage()));
+            $this->addErrorMessageToMessageBag(sprintf('Failed to save attachment: %s', $e->getMessage()));
             throw $e;
         }
     }
@@ -117,94 +119,42 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
      *
      * @return string
      */
-    public function getFileNamePattern()
+    public function getFileName()
     {
-        return $this->fileNamePattern;
+        return $this->fileName;
     }
 
     /**
      * Sets the different file name to which the attachment (the invoice document) is stored
      *
-     * @param  string $filenamePattern
+     * @param  string $filename
      * @return ZugferdMailHandlerSaveToFile
      */
-    public function setFileNamePattern(string $filenamePattern): ZugferdMailHandlerSaveToFile
+    public function setFileName(string $filename): ZugferdMailHandlerSaveToFile
     {
-        if ($filenamePattern === "") {
-            $filenamePattern = static::DEFAULTFILENAMEPATTEN;
+        if ($filename === "") {
+            $filename = static::DEFAULTFILENAMEPATTEN;
         }
 
-        $this->fileNamePattern = $filenamePattern;
+        $this->fileName = $filename;
 
         return $this;
     }
 
     /**
-     * Build a filename from the given filename pattern
+     * Build a filename from the given filename
      *
      * @param  ZugferdDocumentReader $document
      * @param  Attachment            $attachment
      * @return string
      */
-    private function buildFileNameFromPattern(ZugferdDocumentReader $document, Attachment $attachment): string
+    private function buildFileNameFrom(ZugferdDocumentReader $document, Attachment $attachment): string
     {
-        $document->getDocumentInformation($documentNo, $documentTypeCode, $documentDate, $invoiceCurrency, $taxCurrency, $documentName, $documentLanguage, $effectiveSpecifiedPeriod);
-        $document->getDocumentSeller($documentSellerName, $documentSellerIds, $documentSellerDescription);
-        $document->getDocumentSellerGlobalId($documentSellerGlobalIds);
-        $document->getDocumentSellerAddress($documentSellerLineOne, $documentSellerLineTwo, $documentSellerLineThree, $documentSellerPostCode, $documentSellerCity, $documentSellerCountry, $documentSellerSubDivision);
-
-        $mappingTable = [];
-
-        $funcAddToMappingTable = function (array &$mappingTable, ?string $name, $value) {
-            if (!empty($name) && !empty($value)) {
-                if (is_array($value)) {
-                    foreach ($value as $valueKey => $valueData) {
-                        $mappingTableKey = sprintf("%s%s", $name, $valueKey);
-                        $mappingTable[$mappingTableKey] = $valueData;
-                    }
-                } else {
-                    $mappingTable[$name] = $value;
-                }
-            }
-        };
-
-        $funcAddToMappingTable($mappingTable, "documentno", $documentNo);
-        $funcAddToMappingTable($mappingTable, "documenttypecode", $documentTypeCode);
-        $funcAddToMappingTable($mappingTable, "documentdateymd", $documentDate ? $documentDate->format("Ymd") : null);
-        $funcAddToMappingTable($mappingTable, "documentdateymd2", $documentDate ? $documentDate->format("Y-m-d") : null);
-        $funcAddToMappingTable($mappingTable, "documentname", $documentName);
-        $funcAddToMappingTable($mappingTable, "documentlanguage", $documentLanguage);
-        $funcAddToMappingTable($mappingTable, "documentinvoicecurrency", $invoiceCurrency);
-        $funcAddToMappingTable($mappingTable, "documenttaxecurrency", $taxCurrency);
-        $funcAddToMappingTable($mappingTable, "documentspecifiedperiod", $effectiveSpecifiedPeriod ? $effectiveSpecifiedPeriod->format("Ymd") : null);
-
-        $funcAddToMappingTable($mappingTable, "documentsellerid", $documentSellerIds);
-        $funcAddToMappingTable($mappingTable, "documentsellerglobalid", $documentSellerGlobalIds);
-        $funcAddToMappingTable($mappingTable, "documentsellername", $documentSellerName);
-        $funcAddToMappingTable($mappingTable, "documentsellerdescription", $documentSellerDescription);
-        $funcAddToMappingTable($mappingTable, "documentselleraddrline1", $documentSellerLineOne);
-        $funcAddToMappingTable($mappingTable, "documentselleraddrline2", $documentSellerLineTwo);
-        $funcAddToMappingTable($mappingTable, "documentselleraddrline3", $documentSellerLineThree);
-        $funcAddToMappingTable($mappingTable, "documentsellerpostcode", $documentSellerPostCode);
-        $funcAddToMappingTable($mappingTable, "documentsellercity", $documentSellerCity);
-        $funcAddToMappingTable($mappingTable, "documentsellercountry", $documentSellerCountry);
-        $funcAddToMappingTable($mappingTable, "documentsellersubdiv", $documentSellerSubDivision);
-
-        $funcAddToMappingTable($mappingTable, "guid", sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535)));
+        $parsedFilename = $this->parsePlaceholdersByZugferdDocumentReader($document, $this->getFileName());
 
         $fileExtension = $attachment->getExtension();
         $fileExtension = $fileExtension ?? MimeDb::singleton()->findFirstFileExtensionByMimeType($attachment->getMimeType());
         $fileExtension = $fileExtension ?? "";
-
-        $parsedFilename = preg_replace_callback(
-            '/\{(\w+)\}/',
-            function ($placeholderMatch) use ($mappingTable) {
-                $placeHolder = $placeholderMatch[1];
-                $placeHolderValhe = isset($mappingTable[$placeHolder]) ? $mappingTable[$placeHolder] : "";
-                return $placeHolderValhe;
-            },
-            $this->fileNamePattern
-        );
 
         $parsedFilename = preg_replace('/_+/', '_', $parsedFilename);
 
