@@ -188,7 +188,9 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
         $funcAddToMappingTable($mappingTable, "hashsha256", hash('sha256', $document->serializeAsXml()));
         $funcAddToMappingTable($mappingTable, "hashsha512", hash('sha512', $document->serializeAsXml()));
 
-        $fileExtension = MimeDb::singleton()->findFirstFileExtensionByMimeType($attachment->getMimeType());
+        $fileExtension = $attachment->getExtension();
+        $fileExtension = $fileExtension ?? MimeDb::singleton()->findFirstFileExtensionByMimeType($attachment->getMimeType());
+        $fileExtension = $fileExtension ?? "";
 
         $parsedFilename = preg_replace_callback(
             '/\{(\w+)\}/',

@@ -35,6 +35,7 @@
         "horstoeko/zugferdublbridge": "^1",
         "swaggest/json-schema": "^0.12.42",
         "symfony/console": "^5|^6|^7",
+        "symfony/mime": "^5|^6|^7",
         "webklex/php-imap": "^4|^5"
     },
     "require-dev": {
