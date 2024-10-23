@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-namespace horstoeko\zugferdmail\concerns;
+namespace horstoeko\zugferdmail\helpers;
 
 /**
- * Trait representing a collection of output helpers
+ * Class representing a collection of string tools
  *
  * @category ZugferdMail
  * @package  ZugferdMail
@@ -18,16 +18,16 @@ namespace horstoeko\zugferdmail\concerns;
  * @license  https://opensource.org/licenses/MIT MIT
  * @link     https://github.com/horstoeko/zugferdmail
  */
-trait ZugferdMailStringHelper
+class ZugferdMailStringHelper
 {
     /**
-     * Truncate a string. If string is longer than $maxLength, ellipsis will be added
+     * Truncate a string if longer than $maxLength and add ellipsis
      *
-     * @param  string $string
-     * @param  int    $maxLength
+     * @param  string  $string
+     * @param  integer $maxLength
      * @return string
      */
-    protected function zfMailTruncateString(string $string, int $maxLength): string
+    public static function truncateString(string $string, int $maxLength): string
     {
         return strlen($string) > $maxLength - 3 ? substr($string, 0, $maxLength - 3) . '...' : $string;
     }

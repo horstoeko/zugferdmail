@@ -7,6 +7,7 @@ use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
 use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
 use horstoeko\zugferdmail\tests\TestCase;
+use horstoeko\zugferdmail\ZugferdMailMessageBag;
 
 class ConcernMessageBagTest extends TestCase
 {
@@ -348,7 +349,7 @@ class ConcernMessageBagTest extends TestCase
         $this->assertArrayHasKey("errtrace", $message['additionalData']);
         $this->assertEquals(0, $message['additionalData']["errno"]);
         $this->assertStringContainsString("tests/testcases/ConcernMessageBagTest.php", $message['additionalData']["errfile"]);
-        $this->assertEquals(300, $message['additionalData']["errline"]);
+        $this->assertEquals(301, $message['additionalData']["errline"]);
         $this->assertNotEquals('', $message['additionalData']["errtrace"]);
         $this->assertNotNull($message['datetime']);
         $this->assertInstanceOf(\DateTime::class, $message['datetime']);
@@ -431,5 +432,21 @@ class ConcernMessageBagTest extends TestCase
         $this->assertEmpty($this->getSuccessMessagesFromMessageBag());
 
         $this->assertEmpty($this->getAllMessagesFromMessageBag());
+    }
+
+    public function testMessageBagToString()
+    {
+        $this->clearMessageBag();
+        $this->addLogMessageToMessageBag('Message 1');
+
+        $messageBag = ZugferdMailMessageBag::factory();
+        $messageBagAsString = (string)$messageBag;
+        $messageBagAsJson = $messageBag->toJson();
+
+        $this->assertIsString($messageBagAsString);
+        $this->assertIsString($messageBagAsJson);
+        $this->assertEquals($messageBagAsJson, $messageBagAsString);
+        $this->assertJson($messageBagAsJson);
+        $this->assertJson($messageBagAsString);
     }
 }

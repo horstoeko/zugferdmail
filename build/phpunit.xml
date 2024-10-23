@@ -7,7 +7,8 @@
         <testsuite name="MailAccount">
             <file>../tests/testcases/MailConfigTest.php</file>
             <file>../tests/testcases/MailAccountTest.php</file>
-            <file>../tests/testcases/ConcernStringhelperTest.php</file>
+            <file>../tests/testcases/StringHelperTest.php</file>
+            <file>../tests/testcases/PlaceholderHelperTest.php</file>
             <file>../tests/testcases/ConcernRaisesExceptionTest.php</file>
             <file>../tests/testcases/ConcernMessageBagTest.php</file>
             <file>../tests/testcases/BuiltinHandlersTest.php</file>

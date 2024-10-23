@@ -24,10 +24,10 @@ use horstoeko\zugferdmail\concerns\ZugferdMailClearsMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailRaisesExceptions;
 use horstoeko\zugferdmail\concerns\ZugferdMailReceivesMessagesFromMessageBag;
 use horstoeko\zugferdmail\concerns\ZugferdMailSendsMessagesToMessageBag;
-use horstoeko\zugferdmail\concerns\ZugferdMailStringHelper;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\consts\ZugferdMailReaderRecognitionType;
+use horstoeko\zugferdmail\helpers\ZugferdMailStringHelper;
 use horstoeko\zugferdublbridge\XmlConverterUblToCii;
 use Webklex\PHPIMAP\Exceptions\MaskNotFoundException;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
@@ -49,8 +49,7 @@ class ZugferdMailReader
     use ZugferdMailSendsMessagesToMessageBag,
         ZugferdMailReceivesMessagesFromMessageBag,
         ZugferdMailClearsMessageBag,
-        ZugferdMailRaisesExceptions,
-        ZugferdMailStringHelper;
+        ZugferdMailRaisesExceptions;
 
     /**
      * The config
@@ -201,7 +200,7 @@ class ZugferdMailReader
             "attachment" => $attachment,
         ];
 
-        $this->addLogMessageToMessageBag(sprintf("Checking attachment of mail %s, Subject: %s, Sender: %s", $message->getUid(), $this->zfMailTruncateString($message->getSubject(), 20), $this->zfMailTruncateString($message->getFrom(), 20)));
+        $this->addLogMessageToMessageBag(sprintf("Checking attachment of mail %s, Subject: %s, Sender: %s", $message->getUid(), ZugferdMailStringHelper::truncateString($message->getSubject(), 20), ZugferdMailStringHelper::truncateString($message->getFrom(), 20)));
 
         if (!in_array($attachment->getMimeType(), $account->getMimeTypesToWatch())) {
             $this->addLogMessageToMessageBag(sprintf("Mimetype %s does not match", $attachment->getMimeType()));
