@@ -46,12 +46,46 @@ class ConcernConsoleHandledMailAccountTest extends TestCase
     protected function setUp(): void
     {
         $this->definition = new InputDefinition();
-        $this->configureMailAccountOptions();
-        $this->configureMailAccountWatchOptions();
     }
 
-    public function testInputInterface(): void
+    public function testInputInterfaceNoWatches(): void
     {
+        $this->configureMailAccountOptions();
+
+        $arrayInput = new ArrayInput(
+            [
+                '--host' => '127.0.0.1',
+                '--port' => '993',
+                '--protocol' => 'pop3',
+                '--encryption' => 'tls',
+                '--validateCert' => null,
+                '--username' => 'demouser',
+                '--password' => 'demopassword',
+                '--authentication' => 'oauth',
+                '--timeout' => 60,
+            ],
+            $this->definition
+        );
+
+        $this->assertEquals('127.0.0.1', $arrayInput->getOption('host'));
+        $this->assertEquals('993', $arrayInput->getOption('port'));
+        $this->assertEquals('pop3', $arrayInput->getOption('protocol'));
+        $this->assertEquals('tls', $arrayInput->getOption('encryption'));
+        $this->assertTrue($arrayInput->getOption('validateCert'));
+        $this->assertEquals('demouser', $arrayInput->getOption('username'));
+        $this->assertEquals('demopassword', $arrayInput->getOption('password'));
+        $this->assertEquals('oauth', $arrayInput->getOption('authentication'));
+        $this->assertEquals(60, $arrayInput->getOption('timeout'));
+        $this->assertFalse($arrayInput->hasOption('folder'));
+        $this->assertFalse($arrayInput->hasOption('mimetype'));
+        $this->assertFalse($arrayInput->hasOption('handler'));
+    }
+
+    public function testInputInterfaceWithWatches(): void
+    {
+        $this->configureMailAccountOptions();
+        $this->configureMailAccountWatchOptions();
+
         $arrayInput = new ArrayInput(
             [
                 '--host' => '127.0.0.1',
@@ -93,8 +127,55 @@ class ConcernConsoleHandledMailAccountTest extends TestCase
         $this->assertCount(2, $arrayInput->getOption('handler'));
     }
 
-    public function testCreateMailAccountFromOptions(): void
+    public function testCreateMailAccountFromOptionsNoWatches(): void
     {
+        $this->configureMailAccountOptions();
+
+        $arrayInput = new ArrayInput(
+            [
+                '--host' => '127.0.0.1',
+                '--port' => '993',
+                '--protocol' => 'pop3',
+                '--encryption' => 'tls',
+                '--validateCert' => null,
+                '--username' => 'demouser',
+                '--password' => 'demopassword',
+                '--authentication' => 'oauth',
+                '--timeout' => 60,
+            ],
+            $this->definition
+        );
+
+        $account = $this->createMailAccountFromOptions($arrayInput);
+
+        $this->assertEquals('127.0.0.1', $account->getHost());
+        $this->assertEquals('993', $account->getPort());
+        $this->assertEquals('pop3', $account->getProtocol());
+        $this->assertEquals('tls', $account->getEncryption());
+        $this->assertTrue($account->getValidateCert());
+        $this->assertEquals('demouser', $account->getUsername());
+        $this->assertEquals('demopassword', $account->getPassword());
+        $this->assertEquals('oauth', $account->getAuthentication());
+        $this->assertEquals(60, $account->getTimeout());
+
+        $this->assertIsArray($account->getFoldersTowatch());
+        $this->assertEmpty($account->getFoldersTowatch());
+        $this->assertCount(0, $account->getFoldersTowatch());
+
+        $this->assertIsArray($account->getMimeTypesToWatch());
+        $this->assertEmpty($account->getMimeTypesToWatch());
+        $this->assertCount(0, $account->getMimeTypesToWatch());
+
+        $this->assertIsArray($account->getHandlers());
+        $this->assertEmpty($account->getHandlers());
+        $this->assertCount(0, $account->getHandlers());
+    }
+
+    public function testCreateMailAccountFromOptionsWithWatches(): void
+    {
+        $this->configureMailAccountOptions();
+        $this->configureMailAccountWatchOptions();
+
         $arrayInput = new ArrayInput(
             [
                 '--host' => '127.0.0.1',
@@ -140,6 +221,9 @@ class ConcernConsoleHandledMailAccountTest extends TestCase
 
     public function testWriteAccountInformation(): void
     {
+        $this->configureMailAccountOptions();
+        $this->configureMailAccountWatchOptions();
+
         $arrayInput = new ArrayInput(
             [
                 '--host' => '127.0.0.1',
@@ -182,6 +266,9 @@ class ConcernConsoleHandledMailAccountTest extends TestCase
 
     public function testWriteAccountFoldersToWatch(): void
     {
+        $this->configureMailAccountOptions();
+        $this->configureMailAccountWatchOptions();
+
         $arrayInput = new ArrayInput(
             [
                 '--host' => '127.0.0.1',
@@ -225,6 +312,9 @@ class ConcernConsoleHandledMailAccountTest extends TestCase
 
     public function testWriteAccountMimeTypesToWatch(): void
     {
+        $this->configureMailAccountOptions();
+        $this->configureMailAccountWatchOptions();
+
         $arrayInput = new ArrayInput(
             [
                 '--host' => '127.0.0.1',

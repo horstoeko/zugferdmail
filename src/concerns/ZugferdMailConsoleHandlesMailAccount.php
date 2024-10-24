@@ -77,65 +77,37 @@ trait ZugferdMailConsoleHandlesMailAccount
     {
         $account = new ZugferdMailAccount();
 
-        if ($input->hasOption('host')) {
-            $account->setHost($input->getOption('host'));
+        $account->setHost($input->getOption('host'));
+        $account->setPort($input->getOption('port'));
+        $account->setProtocol($input->getOption('protocol'));
+        $account->setEncryption(strcasecmp($input->getOption('encryption'), "none") === 0 ? false : $input->getOption('encryption'));
+        $account->setValidateCert($input->getOption('validateCert'));
+        $account->setUsername($input->getOption('username'));
+        $account->setPassword($input->getOption('password'));
+        $account->setAuthentication(strcasecmp($input->getOption('authentication'), "none") === 0 ? null : $input->getOption('authentication'));
+        $account->setTimeout($input->getOption('timeout'));
+
+        $foldersToWatch = $input->hasOption('folder') ? $input->getOption('folder') : [];
+        $mimeTypesToWatch = $input->hasOption('mimetype') ? $input->getOption('mimetype') : [];
+        $handlers = $input->hasOption('handler') ? $input->getOption('handler') : [];
+
+        foreach ($foldersToWatch as $folderToWatch) {
+            $account->addFolderToWatch($folderToWatch);
         }
 
-        if ($input->hasOption('port')) {
-            $account->setPort($input->getOption('port'));
+        foreach ($mimeTypesToWatch as $mimeTypeToWatch) {
+            $account->addMimeTypeToWatch($mimeTypeToWatch);
         }
 
-        if ($input->hasOption('protocol')) {
-            $account->setProtocol($input->getOption('protocol'));
-        }
+        foreach ($handlers as $handlerClassName) {
+            $args = explode(",", $handlerClassName);
+            $handlerClassName = $args[0];
+            unset($args[0]);
 
-        if ($input->hasOption('encryption')) {
-            $account->setEncryption(strcasecmp($input->getOption('encryption'), "none") === 0 ? false : $input->getOption('encryption'));
-        }
+            $reflection = new ReflectionClass($handlerClassName);
+            $handler = $reflection->newInstanceArgs($args);
 
-        if ($input->hasOption('validateCert')) {
-            $account->setValidateCert($input->getOption('validateCert'));
-        }
-
-        if ($input->hasOption('username')) {
-            $account->setUsername($input->getOption('username'));
-        }
-
-        if ($input->hasOption('password')) {
-            $account->setPassword($input->getOption('password'));
-        }
-
-        if ($input->hasOption('authentication')) {
-            $account->setAuthentication(strcasecmp($input->getOption('authentication'), "none") === 0 ? null : $input->getOption('authentication'));
-        }
-
-        if ($input->hasOption('timeout')) {
-            $account->setTimeout($input->getOption('timeout'));
-        }
-
-        if ($input->hasOption('folder')) {
-            foreach ($input->getOption('folder') as $folderToWatch) {
-                $account->addFolderToWatch($folderToWatch);
-            }
-        }
-
-        if ($input->hasOption('mimetype')) {
-            foreach ($input->getOption('mimetype') as $mimeTypeToWatch) {
-                $account->addMimeTypeToWatch($mimeTypeToWatch);
-            }
-        }
-
-        if ($input->hasOption('handler')) {
-            foreach ($input->getOption('handler') as $handlerClassName) {
-                $args = explode(",", $handlerClassName);
-                $handlerClassName = $args[0];
-                unset($args[0]);
-
-                $reflection = new ReflectionClass($handlerClassName);
-                $handler = $reflection->newInstanceArgs($args);
-
-                $account->addHandler($handler);
-            }
+            $account->addHandler($handler);
         }
 
         return $account;
