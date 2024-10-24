@@ -11,7 +11,6 @@ namespace horstoeko\zugferdmail\concerns;
 
 use Throwable;
 use horstoeko\zugferdmail\ZugferdMailMessageBag;
-use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
 
 /**
  * Trait representing general facillities to send
