@@ -2,7 +2,7 @@
 
 namespace horstoeko\zugferdmail\tests\testcases;
 
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccountOptions;
 use horstoeko\zugferdmail\handlers\ZugferdMailHandlerDeleteMessage;
 use horstoeko\zugferdmail\handlers\ZugferdMailHandlerNull;
 use horstoeko\zugferdmail\tests\helpers\TestOutputInterface;
@@ -12,9 +12,9 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
-class ConcernConsoleHandledMailAccountTest extends TestCase
+class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
 {
-    use ZugferdMailConsoleHandlesMailAccount;
+    use ZugferdMailConsoleHandlesMailAccountOptions;
 
     /**
      * Input definition

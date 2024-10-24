@@ -9,7 +9,7 @@
 
 namespace horstoeko\zugferdmail\console;
 
-use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccount;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccountOptions;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
 use Symfony\Component\Console\Command\Command;
@@ -27,7 +27,7 @@ use Webklex\PHPIMAP\Folder;
  */
 class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
-    use ZugferdMailConsoleHandlesMailAccount;
+    use ZugferdMailConsoleHandlesMailAccountOptions;
 
     /**
      * @inheritDoc

@@ -8,7 +8,7 @@ use horstoeko\zugferd\ZugferdProfiles;
 use horstoeko\zugferdmail\helpers\ZugferdMailPlaceholderHelper;
 use horstoeko\zugferdmail\tests\TestCase;
 
-class PlaceholderHelperTest extends TestCase
+class ZugferdMailPlaceholderHelperTest extends TestCase
 {
     public function testCreateFromEmptyArray(): void
     {

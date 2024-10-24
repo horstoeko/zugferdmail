@@ -7,7 +7,7 @@ use horstoeko\zugferd\ZugferdProfiles;
 use horstoeko\zugferdmail\concerns\ZugferdMailParsesPlaceholders;
 use horstoeko\zugferdmail\tests\TestCase;
 
-class ConcernParsesPlaceholdersTest extends TestCase
+class ZugferdMailConcernParsesPlaceholdersTest extends TestCase
 {
     use ZugferdMailParsesPlaceholders;
 

@@ -5,7 +5,7 @@ namespace horstoeko\zugferdmail\tests\testcases;
 use horstoeko\zugferdmail\helpers\ZugferdMailStringHelper;
 use horstoeko\zugferdmail\tests\TestCase;
 
-class StringHelperTest extends TestCase
+class ZugferdMailStringHelperTest extends TestCase
 {
     public function testTruncateString(): void
     {

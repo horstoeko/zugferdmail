@@ -10,7 +10,7 @@ use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
 use horstoeko\zugferdmail\tests\helpers\TestOutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
-class ConcernConsoleOutputsMessageBagMessagesTest extends TestCase
+class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 {
     use ZugferdMailConsoleOutputsMessageBagMessages,
         ZugferdMailClearsMessageBag,
@@ -152,14 +152,14 @@ class ConcernConsoleOutputsMessageBagMessagesTest extends TestCase
         $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(7, $outputs);
-        $this->assertEquals("┌─────────────────────┬───────────┬─────────────────────────────────────────────┐", $outputs[0]);
-        $this->assertEquals("│<info> Date                </info>│<info> Message   </info>│<info> Source                                      </info>│", $outputs[1]);
-        $this->assertEquals("├─────────────────────┼───────────┼─────────────────────────────────────────────┤", $outputs[2]);
+        $this->assertEquals("┌─────────────────────┬───────────┬────────────────────────────────────────────────────────┐", $outputs[0]);
+        $this->assertEquals("│<info> Date                </info>│<info> Message   </info>│<info> Source                                                 </info>│", $outputs[1]);
+        $this->assertEquals("├─────────────────────┼───────────┼────────────────────────────────────────────────────────┤", $outputs[2]);
         $this->assertStringContainsString("│ Message 1 │", $outputs[3]);
-        $this->assertStringContainsString("│ ConcernConsoleOutputsMessageBagMessagesTest │", $outputs[3]);
-        $this->assertEquals("│─────────────────────│───────────│─────────────────────────────────────────────│", $outputs[4]);
+        $this->assertStringContainsString("│ ZugferdMailConcernConsoleOutputsMessageBagMessagesTest │", $outputs[3]);
+        $this->assertEquals("│─────────────────────│───────────│────────────────────────────────────────────────────────│", $outputs[4]);
         $this->assertStringContainsString("│ Message 2 │", $outputs[5]);
-        $this->assertStringContainsString("│ ConcernConsoleOutputsMessageBagMessagesTest │", $outputs[5]);
-        $this->assertEquals("└─────────────────────┴───────────┴─────────────────────────────────────────────┘", $outputs[6]);
+        $this->assertStringContainsString("│ ZugferdMailConcernConsoleOutputsMessageBagMessagesTest │", $outputs[5]);
+        $this->assertEquals("└─────────────────────┴───────────┴────────────────────────────────────────────────────────┘", $outputs[6]);
     }
 }

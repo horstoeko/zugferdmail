@@ -9,7 +9,7 @@ use horstoeko\zugferdmail\consts\ZugferdMailMessageBagType;
 use horstoeko\zugferdmail\tests\TestCase;
 use horstoeko\zugferdmail\ZugferdMailMessageBag;
 
-class ConcernMessageBagTest extends TestCase
+class ZugferdMailConcernMessageBagTest extends TestCase
 {
     use ZugferdMailClearsMessageBag,
         ZugferdMailReceivesMessagesFromMessageBag,
@@ -85,7 +85,7 @@ class ConcernMessageBagTest extends TestCase
 
         $this->assertEquals("Message 1", $message['message']);
         $this->assertEquals(ZugferdMailMessageBagType::MESSAGETYPE_LOG, $message['type']);
-        $this->assertEquals("ConcernMessageBagTest", $message['source']);
+        $this->assertEquals("ZugferdMailConcernMessageBagTest", $message['source']);
         $this->assertIsArray($message['additionalData']);
         $this->assertEmpty($message['additionalData']);
         $this->assertNotNull($message['datetime']);
@@ -136,7 +136,7 @@ class ConcernMessageBagTest extends TestCase
 
         $this->assertEquals("Message 2", $message['message']);
         $this->assertEquals(ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY, $message['type']);
-        $this->assertEquals("ConcernMessageBagTest", $message['source']);
+        $this->assertEquals("ZugferdMailConcernMessageBagTest", $message['source']);
         $this->assertIsArray($message['additionalData']);
         $this->assertEmpty($message['additionalData']);
         $this->assertNotNull($message['datetime']);
@@ -187,7 +187,7 @@ class ConcernMessageBagTest extends TestCase
 
         $this->assertEquals("Message 3", $message['message']);
         $this->assertEquals(ZugferdMailMessageBagType::MESSAGETYPE_WARN, $message['type']);
-        $this->assertEquals("ConcernMessageBagTest", $message['source']);
+        $this->assertEquals("ZugferdMailConcernMessageBagTest", $message['source']);
         $this->assertIsArray($message['additionalData']);
         $this->assertEmpty($message['additionalData']);
         $this->assertNotNull($message['datetime']);
@@ -238,7 +238,7 @@ class ConcernMessageBagTest extends TestCase
 
         $this->assertEquals("Message 4", $message['message']);
         $this->assertEquals(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $message['type']);
-        $this->assertEquals("ConcernMessageBagTest", $message['source']);
+        $this->assertEquals("ZugferdMailConcernMessageBagTest", $message['source']);
         $this->assertIsArray($message['additionalData']);
         $this->assertEmpty($message['additionalData']);
         $this->assertNotNull($message['datetime']);
@@ -289,7 +289,7 @@ class ConcernMessageBagTest extends TestCase
 
         $this->assertEquals("Message 5", $message['message']);
         $this->assertEquals(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $message['type']);
-        $this->assertEquals("ConcernMessageBagTest", $message['source']);
+        $this->assertEquals("ZugferdMailConcernMessageBagTest", $message['source']);
         $this->assertIsArray($message['additionalData']);
         $this->assertEmpty($message['additionalData']);
         $this->assertNotNull($message['datetime']);
@@ -340,7 +340,7 @@ class ConcernMessageBagTest extends TestCase
 
         $this->assertEquals("ExceptionMessage 1", $message['message']);
         $this->assertEquals(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $message['type']);
-        $this->assertEquals("ConcernMessageBagTest", $message['source']);
+        $this->assertEquals("ZugferdMailConcernMessageBagTest", $message['source']);
         $this->assertIsArray($message['additionalData']);
         $this->assertNotEmpty($message['additionalData']);
         $this->assertArrayHasKey("errno", $message['additionalData']);
@@ -348,7 +348,7 @@ class ConcernMessageBagTest extends TestCase
         $this->assertArrayHasKey("errline", $message['additionalData']);
         $this->assertArrayHasKey("errtrace", $message['additionalData']);
         $this->assertEquals(0, $message['additionalData']["errno"]);
-        $this->assertStringContainsString("tests/testcases/ConcernMessageBagTest.php", $message['additionalData']["errfile"]);
+        $this->assertStringContainsString("tests/testcases/ZugferdMailConcernMessageBagTest.php", $message['additionalData']["errfile"]);
         $this->assertEquals(301, $message['additionalData']["errline"]);
         $this->assertNotEquals('', $message['additionalData']["errtrace"]);
         $this->assertNotNull($message['datetime']);
@@ -399,7 +399,7 @@ class ConcernMessageBagTest extends TestCase
 
         $this->assertEquals("Message 6", $message['message']);
         $this->assertEquals(ZugferdMailMessageBagType::MESSAGETYPE_LOG, $message['type']);
-        $this->assertEquals("ConcernMessageBagTest", $message['source']);
+        $this->assertEquals("ZugferdMailConcernMessageBagTest", $message['source']);
         $this->assertIsArray($message['additionalData']);
         $this->assertEmpty($message['additionalData']);
         $this->assertNotNull($message['datetime']);

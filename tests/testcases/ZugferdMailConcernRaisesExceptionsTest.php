@@ -6,7 +6,7 @@ use horstoeko\zugferdmail\concerns\ZugferdMailRaisesExceptions;
 use horstoeko\zugferdmail\tests\TestCase;
 use RuntimeException;
 
-class ConcernRaisesExceptionTest extends TestCase
+class ZugferdMailConcernRaisesExceptionsTest extends TestCase
 {
     use ZugferdMailRaisesExceptions;
 

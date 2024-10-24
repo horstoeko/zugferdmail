@@ -4,16 +4,20 @@
         <testsuite name="Basic">
             <file>../tests/testcases/BasicTest.php</file>
         </testsuite>
-        <testsuite name="MailAccount">
-            <file>../tests/testcases/MailConfigTest.php</file>
-            <file>../tests/testcases/MailAccountTest.php</file>
-            <file>../tests/testcases/StringHelperTest.php</file>
-            <file>../tests/testcases/PlaceholderHelperTest.php</file>
-            <file>../tests/testcases/ConcernRaisesExceptionTest.php</file>
-            <file>../tests/testcases/ConcernMessageBagTest.php</file>
-            <file>../tests/testcases/ConcernParsesPlaceholdersTest.php</file>
-            <file>../tests/testcases/ConcernConsoleOutputsMessageBagMessagesTest.php</file>
-            <file>../tests/testcases/ConcernConsoleHandlesMailAccountTest.php</file>
+        <testsuite name="Classes">
+            <file>../tests/testcases/ZugferdMailConfigTest.php</file>
+            <file>../tests/testcases/ZugferdMailAccountTest.php</file>
+            <file>../tests/testcases/ZugferdMailStringHelperTest.php</file>
+            <file>../tests/testcases/ZugferdMailPlaceholderHelperTest.php</file>
+        </testsuite>
+        <testsuite name="Concerns">
+            <file>../tests/testcases/ZugferdMailConcernRaisesExceptionsTest.php</file>
+            <file>../tests/testcases/ZugferdMailConcernMessageBagTest.php</file>
+            <file>../tests/testcases/ZugferdMailConcernParsesPlaceholdersTest.php</file>
+            <file>../tests/testcases/ZugferdMailConcernConsoleOutputsMessageBagMessagesTest.php</file>
+            <file>../tests/testcases/ZugferdMailConcernConsoleHandlesMailAccountOptionsTest.php</file>
+        </testsuite>
+        <testsuite name="Handlers">
             <file>../tests/testcases/BuiltinHandlersTest.php</file>
         </testsuite>
     </testsuites>

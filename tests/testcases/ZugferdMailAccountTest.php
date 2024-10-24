@@ -10,7 +10,7 @@ use horstoeko\zugferdmail\handlers\ZugferdMailHandlerNull;
 use horstoeko\zugferdmail\tests\TestCase;
 use InvalidArgumentException;
 
-class MailAccountTest extends TestCase
+class ZugferdMailAccountTest extends TestCase
 {
     public function testMailAccountInit(): void
     {

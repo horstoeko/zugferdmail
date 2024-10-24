@@ -13,7 +13,7 @@ use stdClass;
 use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
 
-class MailConfigTest extends TestCase
+class ZugferdMailConfigTest extends TestCase
 {
     public function testMailCondigInit(): void
     {
