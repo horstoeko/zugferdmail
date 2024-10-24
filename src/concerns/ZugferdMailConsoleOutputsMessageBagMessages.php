@@ -92,9 +92,6 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
      */
     private function formatMessageBagMessage(array $message): string
     {
-        if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_LOG) {
-            return sprintf("%s", $message["message"]);
-        }
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY) {
             return sprintf("<gray>%s</gray>", $message["message"]);
         }

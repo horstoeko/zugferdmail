@@ -11,6 +11,8 @@
             <file>../tests/testcases/PlaceholderHelperTest.php</file>
             <file>../tests/testcases/ConcernRaisesExceptionTest.php</file>
             <file>../tests/testcases/ConcernMessageBagTest.php</file>
+            <file>../tests/testcases/ConcernParsesPlaceholdersTest.php</file>
+            <file>../tests/testcases/ConcernConsoleOutputsMessageBagMessagesTest.php</file>
             <file>../tests/testcases/BuiltinHandlersTest.php</file>
         </testsuite>
     </testsuites>
