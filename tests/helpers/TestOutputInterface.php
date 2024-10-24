@@ -31,7 +31,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function write($messages, bool $newline = false, int $options = 0)
+    public function write($messages, bool $newline = false, int $options = 0): void
     {
         $this->outputs[] = $messages;
     }
@@ -39,7 +39,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function writeln($messages, int $options = 0)
+    public function writeln($messages, int $options = 0): void
     {
         $this->outputs[] = $messages;
     }
@@ -47,7 +47,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function setVerbosity(int $level)
+    public function setVerbosity(int $level): void
     {
         $this->verbosity = $level;
     }
@@ -63,7 +63,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function isQuiet()
+    public function isQuiet(): bool
     {
         return self::VERBOSITY_QUIET === $this->verbosity;
     }
@@ -71,7 +71,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function isVerbose()
+    public function isVerbose(): bool
     {
         return self::VERBOSITY_VERBOSE <= $this->verbosity;
     }
@@ -79,7 +79,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function isVeryVerbose()
+    public function isVeryVerbose(): bool
     {
         return self::VERBOSITY_VERY_VERBOSE <= $this->verbosity;
     }
@@ -87,7 +87,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function isDebug()
+    public function isDebug(): bool
     {
         return self::VERBOSITY_DEBUG <= $this->verbosity;
     }
@@ -95,7 +95,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function setDecorated(bool $decorated)
+    public function setDecorated(bool $decorated): void
     {
         $this->formatter->setDecorated($decorated);
     }
@@ -103,7 +103,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function isDecorated()
+    public function isDecorated(): bool
     {
         return $this->formatter->isDecorated();
     }
@@ -111,7 +111,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function setFormatter(OutputFormatterInterface $formatter)
+    public function setFormatter(OutputFormatterInterface $formatter): void
     {
         $this->formatter = $formatter;
     }
@@ -119,7 +119,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function getFormatter()
+    public function getFormatter(): OutputFormatterInterface
     {
         return $this->formatter;
     }
