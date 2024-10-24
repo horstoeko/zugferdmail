@@ -55,7 +55,7 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function getVerbosity()
+    public function getVerbosity(): int
     {
         return $this->verbosity;
     }

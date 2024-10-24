@@ -9,11 +9,12 @@
 
 namespace horstoeko\zugferdmail\concerns;
 
-use DivisionByZeroError;
 use ArithmeticError;
+use ReflectionClass;
+use DivisionByZeroError;
+use InvalidArgumentException as GlobalInvalidArgumentException;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
-use InvalidArgumentException as GlobalInvalidArgumentException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -51,6 +52,20 @@ trait ZugferdMailConsoleHandlesMailAccount
     }
 
     /**
+     * Add console options which all needed to define watches for an mail account
+     *
+     * @return static
+     */
+    protected function configureMailAccountWatchOptions()
+    {
+        $this->addOption('folder', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A folder to look into')
+            ->addOption('mimetype', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid mimetype for an message attachment')
+            ->addOption('handler', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'A valid handler class');
+
+        return $this;
+    }
+
+    /**
      * Create a mail account from console options
      *
      * @param  InputInterface $input
@@ -61,15 +76,67 @@ trait ZugferdMailConsoleHandlesMailAccount
     protected function createMailAccountFromOptions(InputInterface $input): ZugferdMailAccount
     {
         $account = new ZugferdMailAccount();
-        $account->setHost($input->getOption('host'));
-        $account->setPort($input->getOption('port'));
-        $account->setProtocol($input->getOption('protocol'));
-        $account->setEncryption(strcasecmp($input->getOption('encryption'), "none") === 0 ? false : $input->getOption('encryption'));
-        $account->setValidateCert($input->getOption('validateCert'));
-        $account->setUsername($input->getOption('username'));
-        $account->setPassword($input->getOption('password'));
-        $account->setAuthentication(strcasecmp($input->getOption('authentication'), "none") === 0 ? null : $input->getOption('authentication'));
-        $account->setTimeout($input->getOption('timeout'));
+
+        if ($input->hasOption('host')) {
+            $account->setHost($input->getOption('host'));
+        }
+
+        if ($input->hasOption('port')) {
+            $account->setPort($input->getOption('port'));
+        }
+
+        if ($input->hasOption('protocol')) {
+            $account->setProtocol($input->getOption('protocol'));
+        }
+
+        if ($input->hasOption('encryption')) {
+            $account->setEncryption(strcasecmp($input->getOption('encryption'), "none") === 0 ? false : $input->getOption('encryption'));
+        }
+
+        if ($input->hasOption('validateCert')) {
+            $account->setValidateCert($input->getOption('validateCert'));
+        }
+
+        if ($input->hasOption('username')) {
+            $account->setUsername($input->getOption('username'));
+        }
+
+        if ($input->hasOption('password')) {
+            $account->setPassword($input->getOption('password'));
+        }
+
+        if ($input->hasOption('authentication')) {
+            $account->setAuthentication(strcasecmp($input->getOption('authentication'), "none") === 0 ? null : $input->getOption('authentication'));
+        }
+
+        if ($input->hasOption('timeout')) {
+            $account->setTimeout($input->getOption('timeout'));
+        }
+
+        if ($input->hasOption('folder')) {
+            foreach ($input->getOption('folder') as $folderToWatch) {
+                $account->addFolderToWatch($folderToWatch);
+            }
+        }
+
+        if ($input->hasOption('mimetype')) {
+            foreach ($input->getOption('mimetype') as $mimeTypeToWatch) {
+                $account->addMimeTypeToWatch($mimeTypeToWatch);
+            }
+        }
+
+        if ($input->hasOption('handler')) {
+            foreach ($input->getOption('handler') as $handlerClassName) {
+                $args = explode(",", $handlerClassName);
+                $handlerClassName = $args[0];
+                unset($args[0]);
+
+                $reflection = new ReflectionClass($handlerClassName);
+                $handler = $reflection->newInstanceArgs($args);
+
+                $account->addHandler($handler);
+            }
+        }
 
         return $account;
     }
@@ -91,16 +158,16 @@ trait ZugferdMailConsoleHandlesMailAccount
         $table->setHeaders(['ID', 'Host', 'Port', 'Protocol', 'Encryption', 'ValidateCert', 'Authentication', 'Username']);
         $table->setRows(
             [
-            [
-                $account->getIdentifier(),
-                $account->getHost(),
-                $account->getPort(),
-                $account->getProtocol(),
-                $account->getEncryption(),
-                $account->getValidateCert() === true ? "Yes" : "No",
-                $account->getAuthentication() === null ? "None" : $account->getAuthentication(),
-                $account->getUsername(),
-            ],
+                [
+                    $account->getIdentifier(),
+                    $account->getHost(),
+                    $account->getPort(),
+                    $account->getProtocol(),
+                    $account->getEncryption(),
+                    $account->getValidateCert() === true ? "Yes" : "No",
+                    $account->getAuthentication() === null ? "None" : $account->getAuthentication(),
+                    $account->getUsername(),
+                ],
             ]
         );
         $table->render();

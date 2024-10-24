@@ -13,6 +13,7 @@
             <file>../tests/testcases/ConcernMessageBagTest.php</file>
             <file>../tests/testcases/ConcernParsesPlaceholdersTest.php</file>
             <file>../tests/testcases/ConcernConsoleOutputsMessageBagMessagesTest.php</file>
+            <file>../tests/testcases/ConcernConsoleHandlesMailAccountTest.php</file>
             <file>../tests/testcases/BuiltinHandlersTest.php</file>
         </testsuite>
     </testsuites>
