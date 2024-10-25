@@ -387,4 +387,14 @@ class ZugferdMailMessageBag
     {
         return $this->messageContainer;
     }
+
+    /**
+     * Returns true if there are any messages in messagebag, otherwise false
+     *
+     * @return boolean
+     */
+    public function hasAnyMessage(): bool
+    {
+        return !empty($this->getAllMessages());
+    }
 }

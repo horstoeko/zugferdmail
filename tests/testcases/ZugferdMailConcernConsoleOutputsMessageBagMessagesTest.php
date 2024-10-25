@@ -128,6 +128,8 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
+        $this->assertIsArray($outputs);
+        $this->assertEmpty($outputs);
         $this->assertCount(0, $outputs);
     }
 
@@ -138,6 +140,14 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
         $testOutputInterface->setFormatter($outputFormatter);
 
         $this->clearMessageBag();
+
+        $this->outputMessagesFromMessageBagAsTableToCli($testOutputInterface);
+
+        $outputs = $testOutputInterface->getOutputs();
+
+        $this->assertIsArray($outputs);
+        $this->assertEmpty($outputs);
+        $this->assertCount(0, $outputs);
 
         // One message
 

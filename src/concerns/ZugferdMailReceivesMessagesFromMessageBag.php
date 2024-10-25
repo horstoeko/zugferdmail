@@ -181,4 +181,14 @@ trait ZugferdMailReceivesMessagesFromMessageBag
     {
         return ZugferdMailMessageBag::factory()->getAllMessages();
     }
+
+    /**
+     * Returns true if there are any messages in messagebag, otherwise false
+     *
+     * @return boolean
+     */
+    public function getHasAnyMessageInMessageBag(): bool
+    {
+        return ZugferdMailMessageBag::factory()->hasAnyMessage();
+    }
 }

@@ -55,6 +55,10 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
      */
     protected function outputMessagesFromMessageBagAsTableToCli(OutputInterface $output): void
     {
+        if (!$this->getHasAnyMessageInMessageBag()) {
+            return;
+        }
+
         $messages = collect($this->getAllMessagesFromMessageBag());
 
         $messages = $messages->map(

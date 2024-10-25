@@ -39,6 +39,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEmpty($this->getSuccessMessagesFromMessageBag());
 
         $this->assertEmpty($this->getAllMessagesFromMessageBag());
+
+        $this->assertFalse($this->getHasAnyMessageInMessageBag());
     }
 
     public function testAddLogMessageToMessageBag(): void
@@ -73,6 +75,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(0, count($this->getSuccessMessagesFromMessageBag()));
 
         $this->assertEquals(1, count($this->getAllMessagesFromMessageBag()));
+
+        $this->assertTrue($this->getHasAnyMessageInMessageBag());
 
         $message = $this->getAllMessagesFromMessageBag()[0];
 
@@ -125,6 +129,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
 
         $this->assertEquals(2, count($this->getAllMessagesFromMessageBag()));
 
+        $this->assertTrue($this->getHasAnyMessageInMessageBag());
+
         $message = $this->getAllMessagesFromMessageBag()[1];
 
         $this->assertIsArray($message);
@@ -175,6 +181,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(0, count($this->getSuccessMessagesFromMessageBag()));
 
         $this->assertEquals(3, count($this->getAllMessagesFromMessageBag()));
+
+        $this->assertTrue($this->getHasAnyMessageInMessageBag());
 
         $message = $this->getAllMessagesFromMessageBag()[2];
 
@@ -227,6 +235,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
 
         $this->assertEquals(4, count($this->getAllMessagesFromMessageBag()));
 
+        $this->assertTrue($this->getHasAnyMessageInMessageBag());
+
         $message = $this->getAllMessagesFromMessageBag()[3];
 
         $this->assertIsArray($message);
@@ -277,6 +287,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(1, count($this->getSuccessMessagesFromMessageBag()));
 
         $this->assertEquals(5, count($this->getAllMessagesFromMessageBag()));
+
+        $this->assertTrue($this->getHasAnyMessageInMessageBag());
 
         $message = $this->getAllMessagesFromMessageBag()[4];
 
@@ -329,6 +341,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
 
         $this->assertEquals(6, count($this->getAllMessagesFromMessageBag()));
 
+        $this->assertTrue($this->getHasAnyMessageInMessageBag());
+
         $message = $this->getAllMessagesFromMessageBag()[5];
 
         $this->assertIsArray($message);
@@ -349,7 +363,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertArrayHasKey("errtrace", $message['additionalData']);
         $this->assertEquals(0, $message['additionalData']["errno"]);
         $this->assertStringContainsString("tests/testcases/ZugferdMailConcernMessageBagTest.php", $message['additionalData']["errfile"]);
-        $this->assertEquals(301, $message['additionalData']["errline"]);
+        $this->assertEquals(313, $message['additionalData']["errline"]);
         $this->assertNotEquals('', $message['additionalData']["errtrace"]);
         $this->assertNotNull($message['datetime']);
         $this->assertInstanceOf(\DateTime::class, $message['datetime']);
@@ -387,6 +401,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(1, count($this->getSuccessMessagesFromMessageBag()));
 
         $this->assertEquals(7, count($this->getAllMessagesFromMessageBag()));
+
+        $this->assertTrue($this->getHasAnyMessageInMessageBag());
 
         $message = $this->getAllMessagesFromMessageBag()[6];
 
@@ -432,6 +448,8 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEmpty($this->getSuccessMessagesFromMessageBag());
 
         $this->assertEmpty($this->getAllMessagesFromMessageBag());
+
+        $this->assertFalse($this->getHasAnyMessageInMessageBag());
     }
 
     public function testMessageBagToString()
