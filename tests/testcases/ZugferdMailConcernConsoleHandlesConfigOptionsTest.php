@@ -54,6 +54,7 @@ class ZugferdMailConcernConsoleHandlesConfigOptionsTest extends TestCase
                 '--enablesymfonyvalidation' => null,
                 '--enablexsdvalidation' => null,
                 '--enablekositvalidation' => null,
+                '--enableunseenonly' => null,
             ],
             $this->definition
         );
@@ -62,6 +63,7 @@ class ZugferdMailConcernConsoleHandlesConfigOptionsTest extends TestCase
         $this->assertTrue($arrayInput->hasOption('enablesymfonyvalidation'));
         $this->assertTrue($arrayInput->hasOption('enablexsdvalidation'));
         $this->assertTrue($arrayInput->hasOption('enablekositvalidation'));
+        $this->assertTrue($arrayInput->hasOption('enableunseenonly'));
     }
 
     public function testCreateConfigFromOptions(): void
@@ -74,6 +76,7 @@ class ZugferdMailConcernConsoleHandlesConfigOptionsTest extends TestCase
                 '--enablesymfonyvalidation' => null,
                 '--enablexsdvalidation' => null,
                 '--enablekositvalidation' => null,
+                '--enableunseenonly' => null,
             ],
             $this->definition
         );
@@ -84,5 +87,6 @@ class ZugferdMailConcernConsoleHandlesConfigOptionsTest extends TestCase
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());
         $this->assertTrue($config->getKositValidationEnabled());
+        $this->assertTrue($config->getProcessUnseenMessagesOnlyEnabled());
     }
 }

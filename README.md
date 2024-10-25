@@ -240,6 +240,10 @@ This has the following parameters:
 | mimetype | An attachment mimetype to check | | :heavy_check_mark: |
 | handler | A handler to use | | :heavy_check_mark: |
 | enableublsupport | If given the application will check for UBL syntax too | false | :x: |
+| enablesymfonyvalidation | If given the application will validate the XML using symfony validator against the yaml definitions | false | :x: |
+| enablexsdvalidation | If given the application will validate the XML against the XSD definitions | false | :x: |
+| enablekositvalidation | If given the application will validate the XML using the KosIT validator (JAVA required) | false | :x: |
+| enableunseenonly | If given only unseen message are processed | false | :x: |
 
 Example usage
 

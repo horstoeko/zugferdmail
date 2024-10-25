@@ -7,6 +7,7 @@
         "symfonyValidationEnabled",
         "xsdValidationEnabled",
         "kositValidationEnabled",
+        "processUnseenMessagesOnlyEnabled",
         "accounts"
     ],
     "properties": {
@@ -23,6 +24,9 @@
             "type": "boolean"
         },
         "kositValidationEnabled": {
+            "type": "boolean"
+        },
+        "processUnseenMessagesOnlyEnabled": {
             "type": "boolean"
         },
         "accounts": {
