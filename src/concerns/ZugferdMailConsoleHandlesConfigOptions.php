@@ -41,7 +41,7 @@ trait ZugferdMailConsoleHandlesConfigOptions
     }
 
     /**
-     * Create a mail config from console options
+     * Create a general config from console options
      *
      * @param  InputInterface $input
      * @return ZugferdMailConfig
