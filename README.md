@@ -114,6 +114,8 @@ $reader->checkAllAccounts();
 | ZugferdMailHandlerCopyMessage | _Copies the message to another (different) directory_ |
 | ZugferdMailHandlerMoveMessage| _Moves the message to another (different) directory_ |
 | ZugferdMailHandlerDeleteMessage | _Deletes the message_ |
+| ZugferdMailHandlerMarkSeenMessage | _Marks the message as seen_ |
+| ZugferdMailHandlerMarkUnseenMessage | _Marks the message as unseen_ |
 | ZugferdMailHandlerSaveToFile | _Saves the E-Document to a specified directory, optionally with a different filename_ |
 
 ### Implement your own handler
