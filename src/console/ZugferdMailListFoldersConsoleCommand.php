@@ -11,7 +11,6 @@ namespace horstoeko\zugferdmail\console;
 
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesConfigOptions;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccountOptions;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -62,7 +61,8 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
             function (Folder $folder) {
                 return [
                     $folder->full_name,
-                    $folder->messages()->all()->count()
+                    count($folder->children),
+                    $folder->messages()->all()->count(),
                 ];
             },
             $folders[0]["folders"]
@@ -70,7 +70,7 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 
         $table = new Table($this->outputInterface);
         $table->setStyle('box');
-        $table->setHeaders(['Foldername', "Messages"]);
+        $table->setHeaders(['Foldername', "Subfolders", "Messages"]);
         $table->setRows($folders);
         $table->render();
 
