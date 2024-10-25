@@ -9,6 +9,7 @@
 
 namespace horstoeko\zugferdmail\console;
 
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesConfigOptions;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccountOptions;
 use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
@@ -27,7 +28,8 @@ use Webklex\PHPIMAP\Folder;
  */
 class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
-    use ZugferdMailConsoleHandlesMailAccountOptions;
+    use ZugferdMailConsoleHandlesConfigOptions,
+        ZugferdMailConsoleHandlesMailAccountOptions;
 
     /**
      * @inheritDoc
@@ -50,7 +52,7 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 
         $this->writeAccountInformation($this->outputInterface, $account);
 
-        $config = new ZugferdMailConfig();
+        $config = $this->createConfigFromOptions($this->inputInterface);
         $config->addAccountObject($account);
 
         $reader = new ZugferdMailReader($config);

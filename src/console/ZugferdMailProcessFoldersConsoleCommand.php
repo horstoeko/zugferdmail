@@ -9,13 +9,11 @@
 
 namespace horstoeko\zugferdmail\console;
 
-use ReflectionClass;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesConfigOptions;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccountOptions;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\ZugferdMailReader;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Class representing a console command for processing messages in folders of an email account
@@ -28,7 +26,8 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
-    use ZugferdMailConsoleHandlesMailAccountOptions,
+    use ZugferdMailConsoleHandlesConfigOptions,
+        ZugferdMailConsoleHandlesMailAccountOptions,
         ZugferdMailConsoleOutputsMessageBagMessages;
 
     /**
@@ -42,10 +41,7 @@ class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleComm
             ->setHelp('Process mails and their attachments')
             ->configureMailAccountOptions()
             ->configureMailAccountWatchOptions()
-            ->addOption('enableublsupport', null, InputOption::VALUE_NONE, 'Enable UBL support')
-            ->addOption('enablesymfonyvalidation', null, InputOption::VALUE_NONE, 'Enable Symfony validation')
-            ->addOption('enablexsdvalidation', null, InputOption::VALUE_NONE, 'Enable XSD validation')
-            ->addOption('enablekositvalidation', null, InputOption::VALUE_NONE, 'Enable Kosit validation');
+            ->configureConfigOptions();
     }
 
     /**
@@ -59,12 +55,8 @@ class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleComm
         $this->writeAccountFoldersToWatch($this->outputInterface, $account);
         $this->writeAccountMimeTypesToWatch($this->outputInterface, $account);
 
-        $config = new ZugferdMailConfig();
+        $config = $this->createConfigFromOptions($this->inputInterface);
         $config->addAccountObject($account);
-        $config->setUblSupportEnabled($this->inputInterface->getOption('enableublsupport'));
-        $config->setSymfonyValidationEnabled($this->inputInterface->getOption('enablesymfonyvalidation'));
-        $config->setXsdValidationEnabled($this->inputInterface->getOption('enablexsdvalidation'));
-        $config->setKositValidationEnabled($this->inputInterface->getOption('enablekositvalidation'));
 
         $reader = new ZugferdMailReader($config);
         $reader->checkAllAccounts();

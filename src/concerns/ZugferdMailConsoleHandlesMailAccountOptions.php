@@ -21,7 +21,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Trait representing the output of mail account informations to the console
+ * Trait representing configuring the console options for defining
+ * a mail account and output the information to the console
  *
  * @category ZugferdMail
  * @package  ZugferdMail
