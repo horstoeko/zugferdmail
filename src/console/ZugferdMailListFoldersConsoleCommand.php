@@ -11,6 +11,7 @@ namespace horstoeko\zugferdmail\console;
 
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesConfigOptions;
 use horstoeko\zugferdmail\concerns\ZugferdMailConsoleHandlesMailAccountOptions;
+use horstoeko\zugferdmail\concerns\ZugferdMailConsoleOutputsMessageBagMessages;
 use horstoeko\zugferdmail\ZugferdMailReader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -28,7 +29,8 @@ use Webklex\PHPIMAP\Folder;
 class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
     use ZugferdMailConsoleHandlesConfigOptions,
-        ZugferdMailConsoleHandlesMailAccountOptions;
+        ZugferdMailConsoleHandlesMailAccountOptions,
+        ZugferdMailConsoleOutputsMessageBagMessages;
 
     /**
      * @inheritDoc
@@ -73,6 +75,8 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
         $table->setHeaders(['Foldername', "Subfolders", "Messages"]);
         $table->setRows($folders);
         $table->render();
+
+        $this->outputMessagesFromMessageBagAsTableToCli($this->outputInterface);
 
         return Command::SUCCESS;
     }
