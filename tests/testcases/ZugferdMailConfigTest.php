@@ -20,7 +20,8 @@ class ZugferdMailConfigTest extends TestCase
         $config = new ZugferdMailConfig();
 
         $this->assertNotNull($config);
-        $this->assertEquals("d-M-Y", $config->getDateFormat());
+        $this->assertEquals("d-M-Y", $config->getDateFormatIdentifier());
+        $this->assertEquals("list", $config->getMessageKeyIdentifier());
         $this->assertEquals(false, $config->getUblSupportEnabled());
         $this->assertEquals(false, $config->getSymfonyValidationEnabled());
         $this->assertEquals(false, $config->getSymfonyValidationEnabled());
@@ -30,20 +31,38 @@ class ZugferdMailConfigTest extends TestCase
         $this->assertEmpty($config->getAccounts());
     }
 
-    public function testMailConfigSetDateFormarInvalid(): void
+    public function testMailConfigSetDateFormatInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("dummy is not a valid date format");
 
         $config = new ZugferdMailConfig();
-        $config->setDateFormat("dummy");
+        $config->setDateFormatIdentifier("dummy");
     }
 
-    public function testMailConfigSetDateFormarValid(): void
+    public function testMailConfigSetDateFormatValid(): void
     {
         $config = new ZugferdMailConfig();
-        $config->setDateFormat("d M y");
+        $config->setDateFormatIdentifier("d M y");
 
-        $this->assertEquals("d M y", $config->getDateFormat());
+        $this->assertEquals("d M y", $config->getDateFormatIdentifier());
+    }
+
+    public function testMailConfigSetMessageKeyInvalid(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("dummy is not a valid message key identifier");
+
+        $config = new ZugferdMailConfig();
+        $config->setMessageKeyIdentifier("dummy");
+    }
+
+    public function testMailConfigSetMessageKeyValid(): void
+    {
+        $config = new ZugferdMailConfig();
+        $config->setMessageKeyIdentifier("id");
+
+        $this->assertEquals("id", $config->getMessageKeyIdentifier());
     }
 
     public function testMailConfigActivateUblSupport(): void
@@ -299,7 +318,8 @@ class ZugferdMailConfigTest extends TestCase
 
         $this->assertNotNull($config);
         $this->assertInstanceOf(ZugferdMailConfig::class, $config);
-        $this->assertEquals("d-M-Y", $config->getDateFormat());
+        $this->assertEquals("d-M-Y", $config->getDateFormatIdentifier());
+        $this->assertEquals("id", $config->getMessageKeyIdentifier());
         $this->assertTrue($config->getUblSupportEnabled());
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());
@@ -440,7 +460,8 @@ class ZugferdMailConfigTest extends TestCase
 
         $this->assertNotNull($config);
         $this->assertInstanceOf(ZugferdMailConfig::class, $config);
-        $this->assertEquals("d-M-Y", $config->getDateFormat());
+        $this->assertEquals("d-M-Y", $config->getDateFormatIdentifier());
+        $this->assertEquals("list", $config->getMessageKeyIdentifier());
         $this->assertFalse($config->getUblSupportEnabled());
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());

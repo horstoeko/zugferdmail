@@ -3,6 +3,7 @@
     "type": "object",
     "required": [
         "dateFormat",
+        "messageKeyIdentifier",
         "ublSupportEnabled",
         "symfonyValidationEnabled",
         "xsdValidationEnabled",

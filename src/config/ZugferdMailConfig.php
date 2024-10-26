@@ -34,7 +34,14 @@ class ZugferdMailConfig
      *
      * @var string
      */
-    protected $dateFormat = "d-M-Y";
+    protected $dateFormatIdentifier = "d-M-Y";
+
+    /**
+     * Message key identifier to use
+     *
+     * @var string
+     */
+    protected $messageKeyIdentifier = "list";
 
     /**
      * UBL support enabled (using horstoeko/zugferdublbridge)
@@ -83,25 +90,54 @@ class ZugferdMailConfig
      *
      * @return string
      */
-    public function getDateFormat(): string
+    public function getDateFormatIdentifier(): string
     {
-        return $this->dateFormat;
+        return $this->dateFormatIdentifier;
     }
 
     /**
      * Set the date format to use
+     * Allowed values: "d-M-Y", "d-M-y", "d M y"
      *
-     * @param  string $dateFormat
+     * @param  string $dateFormatIdentifier
      * @return ZugferdMailConfig
      * @throws InvalidArgumentException
      */
-    public function setDateFormat(string $dateFormat): ZugferdMailConfig
+    public function setDateFormatIdentifier(string $dateFormatIdentifier): ZugferdMailConfig
     {
-        if (!in_array($dateFormat, ["d-M-Y", "d-M-y", "d M y"])) {
-            throw new InvalidArgumentException(sprintf("%s is not a valid date format", $dateFormat));
+        if (!in_array($dateFormatIdentifier, ["d-M-Y", "d-M-y", "d M y"])) {
+            throw new InvalidArgumentException(sprintf("%s is not a valid date format", $dateFormatIdentifier));
         }
 
-        $this->dateFormat = $dateFormat;
+        $this->dateFormatIdentifier = $dateFormatIdentifier;
+
+        return $this;
+    }
+
+    /**
+     * Get the message key identifier to use
+     *
+     * @return string
+     */
+    public function getMessageKeyIdentifier(): string
+    {
+        return $this->messageKeyIdentifier;
+    }
+
+    /**
+     * Set the message key identifier to use
+     * Allowed values: "id", "list", "uid"
+     *
+     * @param  string $messageKeyIdentifier
+     * @return ZugferdMailConfig
+     */
+    public function setMessageKeyIdentifier(string $messageKeyIdentifier): ZugferdMailConfig
+    {
+        if (!in_array($messageKeyIdentifier, ["id", "list", "uid"])) {
+            throw new InvalidArgumentException(sprintf("%s is not a valid message key identifier", $messageKeyIdentifier));
+        }
+
+        $this->messageKeyIdentifier = $messageKeyIdentifier;
 
         return $this;
     }
@@ -410,7 +446,8 @@ class ZugferdMailConfig
     {
         $config = [];
 
-        $config['date_format'] = $this->getDateFormat();
+        $config['date_format'] = $this->getDateFormatIdentifier();
+        $config['message_key'] = $this->getMessageKeyIdentifier();
         $config['default'] = false;
 
         foreach ($this->accounts as $account) {
@@ -452,7 +489,8 @@ class ZugferdMailConfig
         }
 
         $config = new ZugferdMailConfig;
-        $config->setDateFormat($jsonObject->dateFormat);
+        $config->setDateFormatIdentifier($jsonObject->dateFormat);
+        $config->setMessageKeyIdentifier($jsonObject->messageKeyIdentifier);
         $config->setUblSupportEnabled($jsonObject->ublSupportEnabled);
         $config->setSymfonyValidationEnabled($jsonObject->symfonyValidationEnabled);
         $config->setXsdValidationEnabled($jsonObject->xsdValidationEnabled);
@@ -495,7 +533,8 @@ class ZugferdMailConfig
     public function saveToFile(string $filename): ZugferdMailConfig
     {
         $jsonObject = new stdClass;
-        $jsonObject->dateFormat = $this->getDateFormat();
+        $jsonObject->dateFormat = $this->getDateFormatIdentifier();
+        $jsonObject->messageKeyIdentifier = $this->getMessageKeyIdentifier();
         $jsonObject->ublSupportEnabled = $this->getUblSupportEnabled();
         $jsonObject->symfonyValidationEnabled = $this->getSymfonyValidationEnabled();
         $jsonObject->xsdValidationEnabled = $this->getXsdValidationEnabled();

@@ -1,5 +1,6 @@
 {
     "dateFormat": "d-M-Y",
+    "messageKeyIdentifier": "id",
     "ublSupportEnabled": true,
     "symfonyValidationEnabled": true,
     "xsdValidationEnabled": true,
