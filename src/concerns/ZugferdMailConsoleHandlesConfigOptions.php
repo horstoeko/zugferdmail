@@ -35,8 +35,7 @@ trait ZugferdMailConsoleHandlesConfigOptions
         $this->addOption('enableublsupport', null, InputOption::VALUE_NONE, 'Enable UBL support')
             ->addOption('enablesymfonyvalidation', null, InputOption::VALUE_NONE, 'Enable Symfony validation')
             ->addOption('enablexsdvalidation', null, InputOption::VALUE_NONE, 'Enable XSD validation')
-            ->addOption('enablekositvalidation', null, InputOption::VALUE_NONE, 'Enable Kosit validation')
-            ->addOption('enableunseenonly', null, InputOption::VALUE_NONE, 'Process only unseen messages');
+            ->addOption('enablekositvalidation', null, InputOption::VALUE_NONE, 'Enable Kosit validation');
 
         return $this;
     }
@@ -55,7 +54,6 @@ trait ZugferdMailConsoleHandlesConfigOptions
         $config->setSymfonyValidationEnabled($input->hasOption('enablesymfonyvalidation') ? $input->getOption('enablesymfonyvalidation') : false);
         $config->setXsdValidationEnabled($input->hasOption('enablexsdvalidation') ? $input->getOption('enablexsdvalidation') : false);
         $config->setKositValidationEnabled($input->hasOption('enablekositvalidation') ? $input->getOption('enablekositvalidation') : false);
-        $config->setUnseenMessagesOnlyEnabled($input->hasOption('enableunseenonly') ? $input->getOption('enableunseenonly') : false);
 
         return $config;
     }

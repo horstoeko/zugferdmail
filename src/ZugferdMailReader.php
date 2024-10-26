@@ -152,11 +152,6 @@ class ZugferdMailReader
     {
         if (in_array($folder->full_name, $account->getFoldersTowatch())) {
             $folder->messages()->all()->when(
-                $this->config->getUnseenMessagesOnlyEnabled(),
-                function ($query) {
-                    return $query->unseen();
-                }
-            )->when(
                 $account->getUnseenMessagesOnlyEnabled(),
                 function ($query) {
                     return $query->unseen();

@@ -72,13 +72,6 @@ class ZugferdMailConfig
     protected $kositValidationEnabled = false;
 
     /**
-     * Look for unseen messages only
-     *
-     * @var boolean
-     */
-    protected $unseenMessagesOnlyEnabled = false;
-
-    /**
      * List of defined accounts
      *
      * @var array<ZugferdMailAccount>
@@ -315,49 +308,6 @@ class ZugferdMailConfig
     }
 
     /**
-     * Returns true if only unssen messages are processed, otherwise false
-     *
-     * @return boolean
-     */
-    public function getUnseenMessagesOnlyEnabled(): bool
-    {
-        return $this->unseenMessagesOnlyEnabled;
-    }
-
-    /**
-     * Activate or deactivate the processing only of unseen messages
-     *
-     * @param  boolean $unseenMessagesOnly
-     * @return ZugferdMailConfig
-     */
-    public function setUnseenMessagesOnlyEnabled(bool $unseenMessagesOnly): ZugferdMailConfig
-    {
-        $this->unseenMessagesOnlyEnabled = $unseenMessagesOnly;
-
-        return $this;
-    }
-
-    /**
-     * Activate the processing only of unseen messages
-     *
-     * @return ZugferdMailConfig
-     */
-    public function activateUnseenMessagesOnly(): ZugferdMailConfig
-    {
-        return $this->setUnseenMessagesOnlyEnabled(true);
-    }
-
-    /**
-     * Deactivate the processing only of unseen messages
-     *
-     * @return ZugferdMailConfig
-     */
-    public function deactivateUnseenMessagesOnly(): ZugferdMailConfig
-    {
-        return $this->setUnseenMessagesOnlyEnabled(false);
-    }
-
-    /**
      * Add an account definition
      *
      * @param  string        $identifier
@@ -495,7 +445,6 @@ class ZugferdMailConfig
         $config->setSymfonyValidationEnabled($jsonObject->symfonyValidationEnabled);
         $config->setXsdValidationEnabled($jsonObject->xsdValidationEnabled);
         $config->setKositValidationEnabled($jsonObject->kositValidationEnabled);
-        $config->setUnseenMessagesOnlyEnabled($jsonObject->unseenMessagesOnlyEnabled);
 
         foreach ($jsonObject->accounts as $accountDefinition) {
             $account = new ZugferdMailAccount();
@@ -540,7 +489,6 @@ class ZugferdMailConfig
         $jsonObject->symfonyValidationEnabled = $this->getSymfonyValidationEnabled();
         $jsonObject->xsdValidationEnabled = $this->getXsdValidationEnabled();
         $jsonObject->kositValidationEnabled = $this->getKositValidationEnabled();
-        $jsonObject->unseenMessagesOnlyEnabled = $this->getUnseenMessagesOnlyEnabled();
         $jsonObject->accounts = [];
 
         foreach ($this->getAccounts() as $account) {

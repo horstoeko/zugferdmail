@@ -5,7 +5,6 @@
     "symfonyValidationEnabled": true,
     "xsdValidationEnabled": true,
     "kositValidationEnabled": true,
-    "unseenMessagesOnlyEnabled": true,
     "accounts": [
         {
             "identifier": "DC38517A-6410-421E-947D-0E971A1F9A28",
