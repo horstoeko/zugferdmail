@@ -161,8 +161,7 @@ class ZugferdMailReader
                 function ($query) {
                     return $query->unseen();
                 }
-            )
-            ->get()->each(
+            )->get()->each(
                 function (Message $message) use ($account, $folder) {
                     $this->checkSingleMessage($account, $folder, $message);
                 }
