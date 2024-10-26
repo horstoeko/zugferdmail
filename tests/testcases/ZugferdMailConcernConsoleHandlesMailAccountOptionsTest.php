@@ -63,6 +63,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
                 '--password' => 'demopassword',
                 '--authentication' => 'oauth',
                 '--timeout' => 60,
+                '--enableunseenonly' => null,
             ],
             $this->definition
         );
@@ -76,6 +77,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $this->assertEquals('demopassword', $arrayInput->getOption('password'));
         $this->assertEquals('oauth', $arrayInput->getOption('authentication'));
         $this->assertEquals(60, $arrayInput->getOption('timeout'));
+        $this->assertTrue($arrayInput->getOption('enableunseenonly'));
         $this->assertFalse($arrayInput->hasOption('folder'));
         $this->assertFalse($arrayInput->hasOption('mimetype'));
         $this->assertFalse($arrayInput->hasOption('handler'));
@@ -97,6 +99,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
                 '--password' => 'demopassword',
                 '--authentication' => 'oauth',
                 '--timeout' => 60,
+                '--enableunseenonly' => null,
                 '--folder' => ['INBOX', 'Accounts/invoice@nowhere.all'],
                 '--mimetype' => ['text/xml', 'application/pdf'],
                 '--handler' => [ZugferdMailHandlerNull::class, ZugferdMailHandlerDeleteMessage::class],
@@ -113,6 +116,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $this->assertEquals('demopassword', $arrayInput->getOption('password'));
         $this->assertEquals('oauth', $arrayInput->getOption('authentication'));
         $this->assertEquals(60, $arrayInput->getOption('timeout'));
+        $this->assertTrue($arrayInput->getOption('enableunseenonly'));
 
         $this->assertIsArray($arrayInput->getOption('folder'));
         $this->assertNotEmpty($arrayInput->getOption('folder'));
@@ -142,6 +146,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
                 '--password' => 'demopassword',
                 '--authentication' => 'oauth',
                 '--timeout' => 60,
+                '--enableunseenonly' => null,
             ],
             $this->definition
         );
@@ -157,6 +162,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $this->assertEquals('demopassword', $account->getPassword());
         $this->assertEquals('oauth', $account->getAuthentication());
         $this->assertEquals(60, $account->getTimeout());
+        $this->assertTrue($arrayInput->getOption('enableunseenonly'));
 
         $this->assertIsArray($account->getFoldersTowatch());
         $this->assertEmpty($account->getFoldersTowatch());
@@ -187,6 +193,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
                 '--password' => 'demopassword',
                 '--authentication' => 'oauth',
                 '--timeout' => 60,
+                '--enableunseenonly' => null,
                 '--folder' => ['INBOX', 'Accounts/invoice@nowhere.all'],
                 '--mimetype' => ['text/xml', 'application/pdf'],
                 '--handler' => [ZugferdMailHandlerNull::class, ZugferdMailHandlerDeleteMessage::class],
@@ -205,6 +212,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $this->assertEquals('demopassword', $account->getPassword());
         $this->assertEquals('oauth', $account->getAuthentication());
         $this->assertEquals(60, $account->getTimeout());
+        $this->assertTrue($arrayInput->getOption('enableunseenonly'));
 
         $this->assertIsArray($account->getFoldersTowatch());
         $this->assertNotEmpty($account->getFoldersTowatch());
@@ -235,6 +243,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
                 '--password' => 'demopassword',
                 '--authentication' => 'oauth',
                 '--timeout' => 60,
+                '--enableunseenonly' => null,
                 '--folder' => ['INBOX', 'Accounts/invoice@nowhere.all'],
                 '--mimetype' => ['text/xml', 'application/pdf'],
                 '--handler' => [ZugferdMailHandlerNull::class, ZugferdMailHandlerDeleteMessage::class],
@@ -280,6 +289,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
                 '--password' => 'demopassword',
                 '--authentication' => 'oauth',
                 '--timeout' => 60,
+                '--enableunseenonly' => null,
                 '--folder' => ['INBOX', 'Accounts/invoice@nowhere.all'],
                 '--mimetype' => ['text/xml', 'application/pdf'],
                 '--handler' => [ZugferdMailHandlerNull::class, ZugferdMailHandlerDeleteMessage::class],
@@ -326,6 +336,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
                 '--password' => 'demopassword',
                 '--authentication' => 'oauth',
                 '--timeout' => 60,
+                '--enableunseenonly' => null,
                 '--folder' => ['INBOX', 'Accounts/invoice@nowhere.all'],
                 '--mimetype' => ['text/xml', 'application/pdf'],
                 '--handler' => [ZugferdMailHandlerNull::class, ZugferdMailHandlerDeleteMessage::class],

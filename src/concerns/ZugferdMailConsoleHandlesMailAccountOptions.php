@@ -47,7 +47,8 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
             ->addOption('username', null, InputOption::VALUE_REQUIRED, 'The username to use for authentication', '')
             ->addOption('password', null, InputOption::VALUE_REQUIRED, 'The password to use for authentication', '')
             ->addOption('authentication', null, InputOption::VALUE_REQUIRED, 'The authentication method to use. Must be one of none, oauth', 'none')
-            ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'Connection timeout in seconds', 30);
+            ->addOption('timeout', null, InputOption::VALUE_REQUIRED, 'Connection timeout in seconds', 30)
+            ->addOption('enableunseenonly', null, InputOption::VALUE_NONE, 'Process unseen messages only');
 
         return $this;
     }
@@ -87,6 +88,7 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
         $account->setPassword($input->getOption('password'));
         $account->setAuthentication(strcasecmp($input->getOption('authentication'), "none") === 0 ? null : $input->getOption('authentication'));
         $account->setTimeout($input->getOption('timeout'));
+        $account->setUnseenMessagesOnlyEnabled($input->getOption('enableunseenonly'));
 
         $foldersToWatch = $input->hasOption('folder') ? $input->getOption('folder') : [];
         $mimeTypesToWatch = $input->hasOption('mimetype') ? $input->getOption('mimetype') : [];
