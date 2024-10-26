@@ -237,7 +237,7 @@ class ZugferdMailAccount
     public function setProtocol(string $protocol): ZugferdMailAccount
     {
         if (!in_array($protocol, ['imap', 'legacy-imap', 'pop3', 'nntp'])) {
-            throw new InvalidArgumentException("The protocol must be one of imap, legacy-imap, pop3 or nntp");
+            throw new InvalidArgumentException(sprintf("The protocol must be one of imap, legacy-imap, pop3 or nntp, %s given", $protocol));
         }
 
         $this->protocol = $protocol;
