@@ -85,3 +85,5 @@ _backup*
 /examples/config.json
 !/src/bin
 /tests/assets/config.save.json
+
+.env
