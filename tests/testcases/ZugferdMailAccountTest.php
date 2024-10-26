@@ -32,6 +32,7 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertEmpty($mailAccount->getMimeTypesToWatch());
         $this->assertEmpty($mailAccount->getHandlers());
         $this->assertEmpty($mailAccount->getCallbacks());
+        $this->assertFalse($mailAccount->getUnseenMessagesOnlyEnabled());
     }
 
     public function testMailAccountSetIdInvalid(): void
@@ -393,6 +394,32 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertArrayNotHasKey(2, $mailAccount->getCallbacks());
         $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[0]);
         $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[1]);
+    }
+
+    public function testSetUnseenMessagesOnlyEnabled(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+
+        $this->assertFalse($mailAccount->getUnseenMessagesOnlyEnabled());
+
+        $mailAccount->setUnseenMessagesOnlyEnabled(true);
+
+        $this->assertTrue($mailAccount->getUnseenMessagesOnlyEnabled());
+    }
+
+    public function testActivateDeactivateUnseenMessagesOnly(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+
+        $this->assertFalse($mailAccount->getUnseenMessagesOnlyEnabled());
+
+        $mailAccount->activateUnseenMessagesOnly();
+
+        $this->assertTrue($mailAccount->getUnseenMessagesOnlyEnabled());
+
+        $mailAccount->deactivateUnseenMessagesOnly();
+
+        $this->assertFalse($mailAccount->getUnseenMessagesOnlyEnabled());
     }
 
     public function testGetMailAccountDefinition(): void

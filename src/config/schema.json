@@ -8,7 +8,7 @@
         "symfonyValidationEnabled",
         "xsdValidationEnabled",
         "kositValidationEnabled",
-        "processUnseenMessagesOnlyEnabled",
+        "unseenMessagesOnlyEnabled",
         "accounts"
     ],
     "properties": {
@@ -27,7 +27,7 @@
         "kositValidationEnabled": {
             "type": "boolean"
         },
-        "processUnseenMessagesOnlyEnabled": {
+        "unseenMessagesOnlyEnabled": {
             "type": "boolean"
         },
         "accounts": {
@@ -47,7 +47,8 @@
                     "timeout",
                     "foldersToWatch",
                     "mimeTypesToWatch",
-                    "handlers"
+                    "handlers",
+                    "unseenMessagesOnlyEnabled"
                 ],
                 "properties": {
                     "identifier": {
@@ -152,6 +153,9 @@
                                 }
                             }
                         }
+                    },
+                    "unseenMessagesOnlyEnabled": {
+                        "type": "boolean"
                     }
                 }
             }

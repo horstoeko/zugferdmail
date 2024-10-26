@@ -122,6 +122,13 @@ class ZugferdMailAccount
     protected $callBacks = [];
 
     /**
+     * Look for unseen messages only
+     *
+     * @var boolean
+     */
+    protected $unseenMessagesOnlyEnabled = false;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -556,6 +563,49 @@ class ZugferdMailAccount
         $this->callBacks[] = $callback;
 
         return $this;
+    }
+
+    /**
+     * Returns true if only unssen messages are visible, otherwise false
+     *
+     * @return boolean
+     */
+    public function getUnseenMessagesOnlyEnabled(): bool
+    {
+        return $this->unseenMessagesOnlyEnabled;
+    }
+
+    /**
+     * Activate or deactivate the filter for only unseen messages
+     *
+     * @param  boolean $unseenMessagesOnly
+     * @return ZugferdMailAccount
+     */
+    public function setUnseenMessagesOnlyEnabled(bool $unseenMessagesOnly): ZugferdMailAccount
+    {
+        $this->unseenMessagesOnlyEnabled = $unseenMessagesOnly;
+
+        return $this;
+    }
+
+    /**
+     * Activate the filtering only of unseen messages
+     *
+     * @return ZugferdMailAccount
+     */
+    public function activateUnseenMessagesOnly(): ZugferdMailAccount
+    {
+        return $this->setUnseenMessagesOnlyEnabled(true);
+    }
+
+    /**
+     * Deactivate the filtering only of unseen messages
+     *
+     * @return ZugferdMailAccount
+     */
+    public function deactivateUnseenMessagesOnly(): ZugferdMailAccount
+    {
+        return $this->setUnseenMessagesOnlyEnabled(false);
     }
 
     /**

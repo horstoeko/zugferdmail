@@ -87,6 +87,6 @@ class ZugferdMailConcernConsoleHandlesConfigOptionsTest extends TestCase
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());
         $this->assertTrue($config->getKositValidationEnabled());
-        $this->assertTrue($config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertTrue($config->getUnseenMessagesOnlyEnabled());
     }
 }

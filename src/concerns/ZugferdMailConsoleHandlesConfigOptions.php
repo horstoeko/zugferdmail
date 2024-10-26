@@ -55,7 +55,7 @@ trait ZugferdMailConsoleHandlesConfigOptions
         $config->setSymfonyValidationEnabled($input->hasOption('enablesymfonyvalidation') ? $input->getOption('enablesymfonyvalidation') : false);
         $config->setXsdValidationEnabled($input->hasOption('enablexsdvalidation') ? $input->getOption('enablexsdvalidation') : false);
         $config->setKositValidationEnabled($input->hasOption('enablekositvalidation') ? $input->getOption('enablekositvalidation') : false);
-        $config->setProcessUnseenMessagesOnlyEnabled($input->hasOption('enableunseenonly') ? $input->getOption('enableunseenonly') : false);
+        $config->setUnseenMessagesOnlyEnabled($input->hasOption('enableunseenonly') ? $input->getOption('enableunseenonly') : false);
 
         return $config;
     }

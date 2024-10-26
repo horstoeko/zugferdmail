@@ -72,11 +72,11 @@ class ZugferdMailConfig
     protected $kositValidationEnabled = false;
 
     /**
-     * Look for unseen messages
+     * Look for unseen messages only
      *
      * @var boolean
      */
-    protected $processUnseenMessagesOnlyEnabled = false;
+    protected $unseenMessagesOnlyEnabled = false;
 
     /**
      * List of defined accounts
@@ -319,20 +319,20 @@ class ZugferdMailConfig
      *
      * @return boolean
      */
-    public function getProcessUnseenMessagesOnlyEnabled(): bool
+    public function getUnseenMessagesOnlyEnabled(): bool
     {
-        return $this->processUnseenMessagesOnlyEnabled;
+        return $this->unseenMessagesOnlyEnabled;
     }
 
     /**
      * Activate or deactivate the processing only of unseen messages
      *
-     * @param  boolean $processUnseenMessagesOnly
+     * @param  boolean $unseenMessagesOnly
      * @return ZugferdMailConfig
      */
-    public function setProcessUnseenMessagesOnlyEnabled(bool $processUnseenMessagesOnly): ZugferdMailConfig
+    public function setUnseenMessagesOnlyEnabled(bool $unseenMessagesOnly): ZugferdMailConfig
     {
-        $this->processUnseenMessagesOnlyEnabled = $processUnseenMessagesOnly;
+        $this->unseenMessagesOnlyEnabled = $unseenMessagesOnly;
 
         return $this;
     }
@@ -342,9 +342,9 @@ class ZugferdMailConfig
      *
      * @return ZugferdMailConfig
      */
-    public function activateProcessUnseenMessagesOnly(): ZugferdMailConfig
+    public function activateUnseenMessagesOnly(): ZugferdMailConfig
     {
-        return $this->setProcessUnseenMessagesOnlyEnabled(true);
+        return $this->setUnseenMessagesOnlyEnabled(true);
     }
 
     /**
@@ -352,9 +352,9 @@ class ZugferdMailConfig
      *
      * @return ZugferdMailConfig
      */
-    public function deactivateProcessUnseenMessagesOnly(): ZugferdMailConfig
+    public function deactivateUnseenMessagesOnly(): ZugferdMailConfig
     {
-        return $this->setProcessUnseenMessagesOnlyEnabled(false);
+        return $this->setUnseenMessagesOnlyEnabled(false);
     }
 
     /**
@@ -495,7 +495,7 @@ class ZugferdMailConfig
         $config->setSymfonyValidationEnabled($jsonObject->symfonyValidationEnabled);
         $config->setXsdValidationEnabled($jsonObject->xsdValidationEnabled);
         $config->setKositValidationEnabled($jsonObject->kositValidationEnabled);
-        $config->setProcessUnseenMessagesOnlyEnabled($jsonObject->processUnseenMessagesOnlyEnabled);
+        $config->setUnseenMessagesOnlyEnabled($jsonObject->unseenMessagesOnlyEnabled);
 
         foreach ($jsonObject->accounts as $accountDefinition) {
             $account = new ZugferdMailAccount();
@@ -511,6 +511,7 @@ class ZugferdMailConfig
             $account->setTimeout($accountDefinition->timeout);
             $account->setFoldersToWatch($accountDefinition->foldersToWatch);
             $account->setMimeTypesToWatch($accountDefinition->mimeTypesToWatch);
+            $account->setUnseenMessagesOnlyEnabled($accountDefinition->unseenMessagesOnlyEnabled);
 
             foreach ($accountDefinition->handlers as $accountHandlerDefinition) {
                 $reflection = new \ReflectionClass($accountHandlerDefinition->classname);
@@ -539,7 +540,7 @@ class ZugferdMailConfig
         $jsonObject->symfonyValidationEnabled = $this->getSymfonyValidationEnabled();
         $jsonObject->xsdValidationEnabled = $this->getXsdValidationEnabled();
         $jsonObject->kositValidationEnabled = $this->getKositValidationEnabled();
-        $jsonObject->processUnseenMessagesOnlyEnabled = $this->getProcessUnseenMessagesOnlyEnabled();
+        $jsonObject->unseenMessagesOnlyEnabled = $this->getUnseenMessagesOnlyEnabled();
         $jsonObject->accounts = [];
 
         foreach ($this->getAccounts() as $account) {
@@ -556,6 +557,7 @@ class ZugferdMailConfig
             $jsonAccountObject->timeout = $account->getTimeout();
             $jsonAccountObject->foldersToWatch = $account->getFoldersTowatch();
             $jsonAccountObject->mimeTypesToWatch = $account->getMimeTypesToWatch();
+            $jsonAccountObject->unseenMessagesOnlyEnabled = $account->getUnseenMessagesOnlyEnabled();
             $jsonAccountObject->handlers = [];
 
             foreach ($account->getHandlers() as $handler) {

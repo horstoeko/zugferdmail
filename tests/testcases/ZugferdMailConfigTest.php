@@ -27,7 +27,7 @@ class ZugferdMailConfigTest extends TestCase
         $this->assertEquals(false, $config->getSymfonyValidationEnabled());
         $this->assertEquals(false, $config->getXsdValidationEnabled());
         $this->assertEquals(false, $config->getKositValidationEnabled());
-        $this->assertEquals(false, $config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertEquals(false, $config->getUnseenMessagesOnlyEnabled());
         $this->assertEmpty($config->getAccounts());
     }
 
@@ -173,26 +173,26 @@ class ZugferdMailConfigTest extends TestCase
     {
         $config = new ZugferdMailConfig();
 
-        $this->assertEquals(false, $config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertEquals(false, $config->getUnseenMessagesOnlyEnabled());
 
-        $config->activateProcessUnseenMessagesOnly();
+        $config->activateUnseenMessagesOnly();
 
-        $this->assertEquals(true, $config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertEquals(true, $config->getUnseenMessagesOnlyEnabled());
     }
 
     public function testMailConfigDeactivateProcessUnseenMessagesOnly(): void
     {
         $config = new ZugferdMailConfig();
 
-        $this->assertEquals(false, $config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertEquals(false, $config->getUnseenMessagesOnlyEnabled());
 
-        $config->activateProcessUnseenMessagesOnly();
+        $config->activateUnseenMessagesOnly();
 
-        $this->assertEquals(true, $config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertEquals(true, $config->getUnseenMessagesOnlyEnabled());
 
-        $config->deactivateProcessUnseenMessagesOnly();
+        $config->deactivateUnseenMessagesOnly();
 
-        $this->assertEquals(false, $config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertEquals(false, $config->getUnseenMessagesOnlyEnabled());
     }
 
     public function testMailConfigMakeClientManager(): void
@@ -324,7 +324,7 @@ class ZugferdMailConfigTest extends TestCase
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());
         $this->assertTrue($config->getKositValidationEnabled());
-        $this->assertTrue($config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertTrue($config->getUnseenMessagesOnlyEnabled());
 
         $this->assertNotEmpty($config->getAccounts());
         $this->assertArrayHasKey(0, $config->getAccounts());
@@ -451,7 +451,7 @@ class ZugferdMailConfigTest extends TestCase
         $config->activateSymfonyValidation();
         $config->activateXsdValidation();
         $config->activateKositValidation();
-        $config->activateProcessUnseenMessagesOnly();
+        $config->activateUnseenMessagesOnly();
         $config->saveToFile($configFilename);
 
         // Load formerly saved config file
@@ -466,7 +466,7 @@ class ZugferdMailConfigTest extends TestCase
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());
         $this->assertTrue($config->getKositValidationEnabled());
-        $this->assertTrue($config->getProcessUnseenMessagesOnlyEnabled());
+        $this->assertTrue($config->getUnseenMessagesOnlyEnabled());
 
         $this->assertNotEmpty($config->getAccounts());
         $this->assertArrayHasKey(0, $config->getAccounts());
