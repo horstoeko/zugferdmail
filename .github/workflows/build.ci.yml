@@ -120,5 +120,5 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Build log artifacts for ${{ runner.os }} ${{ matrix.phpversion }}
+          name: Build log artifacts for ${{ matrix.operating-system }} ${{ matrix.phpversion }}
           path: build/logs
