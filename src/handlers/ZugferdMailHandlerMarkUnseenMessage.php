@@ -17,7 +17,7 @@ use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 
 /**
- * Class representing a handler that marks a message as "seen"
+ * Class representing a handler that marks a message as "unseen"
  *
  * @category ZugferdMail
  * @package  ZugferdMail
