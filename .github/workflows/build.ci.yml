@@ -117,8 +117,8 @@ jobs:
         with:
           files: "build/logs/junit.xml"
 
-      - name: Upload build artifacts
+      - name: Publish Build Logs
         uses: actions/upload-artifact@v4
         with:
-          name: Build log artifacts for ${{ matrix.operating-system }} ${{ matrix.phpversion }}
+          name: Build log artifacts for ${{ matrix.operating-system }} PHP ${{ matrix.phpversion }}
           path: build/logs
