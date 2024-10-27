@@ -116,3 +116,9 @@ jobs:
         if: github.event_name != 'pull_request'
         with:
           files: "build/logs/junit.xml"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build log artifacts for ${{ runner.os }} ${{ matrix.phpversion }}
+          path: build/logs
