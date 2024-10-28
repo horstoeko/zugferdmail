@@ -127,7 +127,7 @@ class ZugferdMailPlaceholderHelper
     }
 
     /**
-     * Parses placeholders in $originalString by the internal mapping table
+     * Parses placeholders in $subject by the internal mapping table
      *
      * @param  string $subject
      * @return string
