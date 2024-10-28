@@ -39,7 +39,7 @@ trait ZugferdMailParsesPlaceholders
     /**
      * Parses a string ($subject) with values from an array ($keyValuePairs)
      *
-     * @param  array<string,string> $keyValuePairs
+     * @param  array<string, mixed> $keyValuePairs
      * @param  string $subject
      * @return string
      */
