@@ -35,4 +35,16 @@ trait ZugferdMailParsesPlaceholders
     {
         return ZugferdMailPlaceholderHelper::fromZugferdDocumentReader($document)->parseString($subject);
     }
+
+    /**
+     * Parses a string ($subject) with values from an array ($keyValuePairs)
+     *
+     * @param  array<string,string> $keyValuePairs
+     * @param  string $subject
+     * @return string
+     */
+    protected function parsePlaceholdersByArray(array $keyValuePairs, string $subject): string
+    {
+        return ZugferdMailPlaceholderHelper::fromArray($keyValuePairs)->parseString($subject);
+    }
 }
