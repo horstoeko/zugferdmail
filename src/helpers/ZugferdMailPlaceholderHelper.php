@@ -129,10 +129,10 @@ class ZugferdMailPlaceholderHelper
     /**
      * Parses placeholders in $originalString by the internal mapping table
      *
-     * @param  string $originalString
+     * @param  string $subject
      * @return string
      */
-    public function parseString(string $originalString): string
+    public function parseString(string $subject): string
     {
         return preg_replace_callback(
             '/\{(\w+)\}/',
@@ -141,7 +141,7 @@ class ZugferdMailPlaceholderHelper
                 $placeHolderValhe = isset($this->mappingTable[$placeHolderName]) ? $this->mappingTable[$placeHolderName] : "";
                 return $placeHolderValhe;
             },
-            $originalString
+            $subject
         );
     }
 }
