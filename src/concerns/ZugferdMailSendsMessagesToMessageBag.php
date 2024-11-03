@@ -124,6 +124,291 @@ trait ZugferdMailSendsMessagesToMessageBag
     }
 
     /**
+     * Helper function for adding messages to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  string  $type
+     * @param  string  $message
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addMessageToMessageBagIf(bool $condition, string $type, string $message, array $additionalData = [])
+    {
+        return $condition === true ? $this->addMessageToMessageBag($type, $message, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding a log entry to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  string  $message
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addLogMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
+    {
+        return $condition === true ? $this->addLogMessageToMessageBag($message, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding a secondary log entry to message bag if $condition evaluates to true
+     *
+     * @param  string $message
+     * @param  array  $additionalData
+     * @return static
+     */
+    protected function addLogSecondaryMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
+    {
+        return $condition === true ? $this->addLogSecondaryMessageToMessageBag($message, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding a warning entry to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  string  $message
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addWarningMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
+    {
+        return $condition === true ? $this->addWarningMessageToMessageBag($message, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding a error entry to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  string  $message
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addErrorMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
+    {
+        return $condition === true ? $this->addErrorMessageToMessageBag($message, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding a success entry to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  string  $message
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addSuccessMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
+    {
+        return $condition === true ? $this->addSuccessMessageToMessageBag($message, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding an throwable (Exception) to message bag if $condition evaluates to true
+     *
+     * @param  boolean   $condition
+     * @param  Throwable $throwable
+     * @param  array     $additionalData
+     * @return static
+     */
+    protected function addThrowableToMessageBagIf(bool $condition, Throwable $throwable, array $additionalData = [])
+    {
+        return $condition === true ? $this->addThrowableToMessageBag($throwable, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding multiple messages to message bag
+     *
+     * @param  string $type
+     * @param  array  $messages
+     * @param  array  $additionalData
+     * @return static
+     */
+    protected function addMultipleMessagesToMessageBag(string $type, array $messages, array $additionalData = [])
+    {
+        array_walk(
+            $messages,
+            function ($message) use ($type, $additionalData) {
+                $this->addMessageToMessageBag($type, $message, $additionalData);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding multiple log entries to message bag
+     *
+     * @param  array $messages
+     * @param  array $additionalData
+     * @return static
+     */
+    protected function addMultipleLogMessagesToMessageBag(array $messages, array $additionalData = [])
+    {
+        array_walk(
+            $messages,
+            function ($message) use ($additionalData) {
+                $this->addLogMessageToMessageBag($message, $additionalData);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding multiple secondary log entries to message bag
+     *
+     * @param  array $messages
+     * @param  array $additionalData
+     * @return static
+     */
+    protected function addMultipleLogSecondaryMessagesToMessageBag(array $messages, array $additionalData = [])
+    {
+        array_walk(
+            $messages,
+            function ($message) use ($additionalData) {
+                $this->addLogSecondaryMessageToMessageBag($message, $additionalData);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding multiple warning entries to message bag
+     *
+     * @param  array $messages
+     * @param  array $additionalData
+     * @return static
+     */
+    protected function addMultipleWarningMessagesToMessageBag(array $messages, array $additionalData = [])
+    {
+        array_walk(
+            $messages,
+            function ($message) use ($additionalData) {
+                $this->addWarningMessageToMessageBag($message, $additionalData);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding multiple error entries to message bag
+     *
+     * @param  array $messages
+     * @param  array $additionalData
+     * @return static
+     */
+    protected function addMultipleErrorMessagesToMessageBag(array $messages, array $additionalData = [])
+    {
+        array_walk(
+            $messages,
+            function ($message) use ($additionalData) {
+                $this->addErrorMessageToMessageBag($message, $additionalData);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding multiple success entries to message bag
+     *
+     * @param  array $messages
+     * @param  array $additionalData
+     * @return static
+     */
+    protected function addMultipleSuccessMessagesToMessageBag(array $messages, array $additionalData = [])
+    {
+        array_walk(
+            $messages,
+            function ($message) use ($additionalData) {
+                $this->addSuccessMessageToMessageBag($message, $additionalData);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Helper function for adding multiple messages to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  string  $type
+     * @param  array   $messages
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addMultipleMessagesToMessageBagIf(bool $condition, string $type, array $messages, array $additionalData = [])
+    {
+        return $condition === true ? $this->addMultipleMessagesToMessageBag($type, $messages, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding multiple log entries to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  array   $messages
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addMultipleLogMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
+    {
+        return $condition === true ? $this->addMultipleLogMessagesToMessageBag($messages, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding multiple secondary log entries to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  array   $messages
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addMultipleLogSecondaryMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
+    {
+        return $condition === true ? $this->addMultipleLogSecondaryMessagesToMessageBag($messages, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding multiple warning entries to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  array   $messages
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addMultipleWarningMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
+    {
+        return $condition === true ? $this->addMultipleWarningMessagesToMessageBag($messages, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding multiple error entries to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  array   $messages
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addMultipleErrorMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
+    {
+        return $condition === true ? $this->addMultipleErrorMessagesToMessageBag($messages, $additionalData) : $this;
+    }
+
+    /**
+     * Helper function for adding multiple success entries to message bag if $condition evaluates to true
+     *
+     * @param  boolean $condition
+     * @param  array   $messages
+     * @param  array   $additionalData
+     * @return static
+     */
+    protected function addMultipleSuccessMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
+    {
+        return $condition === true ? $this->addMultipleSuccessMessagesToMessageBag($messages, $additionalData) : $this;
+    }
+
+    /**
      * Helper function for getting the source from a current classname
      *
      * @return string

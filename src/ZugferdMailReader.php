@@ -276,7 +276,7 @@ class ZugferdMailReader
     {
         if ($this->config->getSymfonyValidationEnabled()) {
             $validator = new ZugferdDocumentValidator($document);
-            $this->raiseRuntimeExceptionIf(count($validator->validateDocument()) != 0, "Validation against Symfony-Validation failed");
+            $this->raiseRuntimeExceptionIf($validator->validateDocument()->count() != 0, "Validation against Symfony-Validation failed");
             $this->addSuccessMessageToMessageBag('The document was successfully validated against Symfony validator', $messageAdditionalData);
         } else {
             $this->addLogSecondaryMessageToMessageBag('The document was not validated against Symfony validator (Disabled)', $messageAdditionalData);

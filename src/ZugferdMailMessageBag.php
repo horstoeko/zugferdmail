@@ -215,16 +215,11 @@ class ZugferdMailMessageBag
      */
     private function getMessageBagFilteredByType(string $messageType): array
     {
-        return array_map(
-            function ($data) {
-                return $data["message"];
-            },
-            array_filter(
-                $this->messageContainer,
-                function ($data) use ($messageType) {
-                    return $data['type'] == $messageType;
-                }
-            )
+        return array_filter(
+            $this->messageContainer,
+            function ($data) use ($messageType) {
+                return $data['type'] == $messageType;
+            }
         );
     }
 
