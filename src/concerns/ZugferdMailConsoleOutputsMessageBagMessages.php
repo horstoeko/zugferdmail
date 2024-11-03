@@ -96,22 +96,29 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
      */
     private function formatMessageBagMessage(array $message): string
     {
+        //$messageText = ZugferdMailStringHelper::truncateString($message["message"], 100);
+        $messageText = wordwrap($message["message"], 100);
+
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY) {
-            return sprintf("<gray>%s</gray>", $message["message"]);
+            return sprintf("<gray>%s</gray>", $messageText);
         }
+
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_WARN) {
-            return sprintf("<comment>%s</comment>", $message["message"]);
+            return sprintf("<comment>%s</comment>", $messageText);
         }
+
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_ERROR) {
             if (isset($message["additionalData"]["errno"])) {
-                return sprintf("<error>%s in %s:%s</error>", $message["message"], $message["additionalData"]["errfile"], $message["additionalData"]["errline"]);
+                return sprintf("<red-text>%s in %s:%s</red-text>", $messageText, $message["additionalData"]["errfile"], $message["additionalData"]["errline"]);
             } else {
-                return sprintf("<error>%s</error>", $message["message"]);
+                return sprintf("<red-text>%s</red-text>", $messageText);
             }
         }
+
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS) {
-            return sprintf("<info>%s</info>", $message["message"]);
+            return sprintf("<info>%s</info>", $messageText);
         }
-        return $message["message"];
+
+        return $messageText;
     }
 }

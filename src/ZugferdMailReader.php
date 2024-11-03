@@ -275,24 +275,29 @@ class ZugferdMailReader
     private function validateDocument(ZugferdDocument $document, array $messageAdditionalData): void
     {
         if ($this->config->getSymfonyValidationEnabled()) {
-            $validator = new ZugferdDocumentValidator($document);
-            $this->raiseRuntimeExceptionIf($validator->validateDocument()->count() != 0, "Validation against Symfony-Validation failed");
+            $validator = (new ZugferdDocumentValidator($document))->validateDocument();
+            $this->raiseRuntimeExceptionIf($validator->count() != 0, "Validation against Symfony-Validation failed");
             $this->addSuccessMessageToMessageBag('The document was successfully validated against Symfony validator', $messageAdditionalData);
         } else {
             $this->addLogSecondaryMessageToMessageBag('The document was not validated against Symfony validator (Disabled)', $messageAdditionalData);
         }
 
         if ($this->config->getXsdValidationEnabled()) {
-            $validator = new ZugferdXsdValidator($document);
-            $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against XSD-Validation failed");
+            $validator = (new ZugferdXsdValidator($document))->validate();
+            $this->addMultipleErrorMessagesToMessageBagIf($validator->hasValidationErrors(), $validator->validationErrors());
+            $this->raiseRuntimeExceptionIf($validator->hasValidationErrors(), "Validation against XSD-Validation failed");
             $this->addSuccessMessageToMessageBag('The document was successfully validated against XSD scheme', $messageAdditionalData);
         } else {
             $this->addLogSecondaryMessageToMessageBag('The document was not validated against XSD scheme (Disabled)', $messageAdditionalData);
         }
 
         if ($this->config->getKositValidationEnabled()) {
-            $validator = new ZugferdKositValidator($document);
-            $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against KosIT Validation failed");
+            $validator = (new ZugferdKositValidator($document))->validate();
+            $this->addMultipleLogSecondaryMessagesToMessageBagIf($validator->hasNoValidationInformation(), $validator->getValidationInformation());
+            $this->addMultipleWarningMessagesToMessageBagIf($validator->hasValidationWarnings(), $validator->getValidationWarnings());
+            $this->addMultipleErrorMessagesToMessageBagIf($validator->hasValidationErrors(), $validator->getValidationErrors());
+            $this->addMultipleErrorMessagesToMessageBagIf($validator->hasProcessErrors(), $validator->getProcessErrors());
+            $this->raiseRuntimeExceptionIf($validator->hasValidationErrors(), "Validation against KosIT Validation failed");
             $this->addSuccessMessageToMessageBag('The document was successfully validated against the KosIT validator', $messageAdditionalData);
         } else {
             $this->addLogSecondaryMessageToMessageBag('The document was not validated against the KosIT validator (Disabled)', $messageAdditionalData);
