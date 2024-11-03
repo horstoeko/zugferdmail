@@ -51,7 +51,7 @@ abstract class ZugferdMailBaseConsoleCommand extends Command
     {
         $outputStyle = new OutputFormatterStyle('bright-blue', '#000', []);
         $this->outputInterface->getFormatter()->setStyle('gray', $outputStyle);
-        $outputStyle = new OutputFormatterStyle('red', '#000', []);
+        $outputStyle = new OutputFormatterStyle('bright-red', '#000', []);
         $this->outputInterface->getFormatter()->setStyle('red-text', $outputStyle);
     }
 
