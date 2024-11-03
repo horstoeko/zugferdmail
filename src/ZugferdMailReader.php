@@ -221,7 +221,6 @@ class ZugferdMailReader
             try {
                 $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
                 $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
-                $this->raiseRuntimeExceptionIf(is_null($document), "No document returned");
                 $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
                 $this->validateDocument($document, $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
@@ -282,6 +281,7 @@ class ZugferdMailReader
         } else {
             $this->addLogSecondaryMessageToMessageBag('The document was not validated against Symfony validator (Disabled)', $messageAdditionalData);
         }
+
         if ($this->config->getXsdValidationEnabled()) {
             $validator = new ZugferdXsdValidator($document);
             $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against XSD-Validation failed");
@@ -289,6 +289,7 @@ class ZugferdMailReader
         } else {
             $this->addLogSecondaryMessageToMessageBag('The document was not validated against XSD scheme (Disabled)', $messageAdditionalData);
         }
+
         if ($this->config->getKositValidationEnabled()) {
             $validator = new ZugferdKositValidator($document);
             $this->raiseRuntimeExceptionIf($validator->validate()->hasValidationErrors(), "Validation against KosIT Validation failed");
