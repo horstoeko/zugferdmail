@@ -81,7 +81,7 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
         $this->assertEquals("Message 1", $outputs[0]);
         $this->assertEquals("<gray>Message 2</gray>", $outputs[1]);
         $this->assertEquals("<comment>Message 3</comment>", $outputs[2]);
-        $this->assertEquals("<error>Message 4</error>", $outputs[3]);
+        $this->assertEquals("<red-text>Message 4</red-text>", $outputs[3]);
 
         // Five messages
 
@@ -97,7 +97,7 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
         $this->assertEquals("Message 1", $outputs[0]);
         $this->assertEquals("<gray>Message 2</gray>", $outputs[1]);
         $this->assertEquals("<comment>Message 3</comment>", $outputs[2]);
-        $this->assertEquals("<error>Message 4</error>", $outputs[3]);
+        $this->assertEquals("<red-text>Message 4</red-text>", $outputs[3]);
         $this->assertEquals("<info>Message 5</info>", $outputs[4]);
 
         // Six messages
@@ -114,11 +114,11 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
         $this->assertEquals("Message 1", $outputs[0]);
         $this->assertEquals("<gray>Message 2</gray>", $outputs[1]);
         $this->assertEquals("<comment>Message 3</comment>", $outputs[2]);
-        $this->assertEquals("<error>Message 4</error>", $outputs[3]);
+        $this->assertEquals("<red-text>Message 4</red-text>", $outputs[3]);
         $this->assertEquals("<info>Message 5</info>", $outputs[4]);
-        $this->assertStringContainsString("<error>ExceptionMessage 1 in", $outputs[5]);
+        $this->assertStringContainsString("<red-text>ExceptionMessage 1 in", $outputs[5]);
         $this->assertStringContainsString("ConcernConsoleOutputsMessageBagMessagesTest.php", $outputs[5]);
-        $this->assertStringContainsString("</error>", $outputs[5]);
+        $this->assertStringContainsString("</red-text", $outputs[5]);
 
         // Clear message bag
 
