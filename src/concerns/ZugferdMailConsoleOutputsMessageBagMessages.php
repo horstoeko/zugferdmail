@@ -96,7 +96,6 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
      */
     private function formatMessageBagMessage(array $message): string
     {
-        //$messageText = ZugferdMailStringHelper::truncateString($message["message"], 100);
         $messageText = trim(wordwrap($message["message"], 100));
 
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY) {
