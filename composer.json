@@ -28,7 +28,7 @@
         }
     },
     "require": {
-        "php": "^7.3|^7.4|^8",
+        "php": ">=7.3",
         "horstoeko/mimedb": "^1",
         "horstoeko/stringmanagement": "^1.0",
         "horstoeko/zugferd": "^1",
