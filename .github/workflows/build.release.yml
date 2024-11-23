@@ -8,6 +8,7 @@ on:
       - "**.md"
       - ".github/**"
       - "examples/**"
+      - "make/**"
 
 env:
   PHPDOCUMENTORURL: https://phpdoc.org/phpDocumentor.phar
