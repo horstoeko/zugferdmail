@@ -162,8 +162,8 @@ The parameter $recognitionType is one of the constants from ```ZugferdMailReader
 
 | Name | Vakue | Description |
 | :------ | :------ | :------ |
-| ZFMAIL_RECOGNITION_TYPE_PDF | 0 | The document was recognized from a ZUGFeRD/Factur-X PDF attachment
-| ZFMAIL_RECOGNITION_TYPE_XML | 1 | The document was recognized from a ZUGFeRD/Factur-X XML attachment
+| ZFMAIL_RECOGNITION_TYPE_PDF_CII | 0 | The document was recognized from a ZUGFeRD/Factur-X PDF attachment
+| ZFMAIL_RECOGNITION_TYPE_XML_CII | 1 | The document was recognized from a ZUGFeRD/Factur-X XML attachment
 | ZFMAIL_RECOGNITION_TYPE_XML_UBL | 2 | The document was recognized from a ZUGFeRD/Factur-X XML attachment (in UBL-Syntax)
 
 ### A small example
