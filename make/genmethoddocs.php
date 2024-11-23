@@ -1,16 +1,20 @@
 <?php
 
-use horstoeko\stringmanagement\StringUtils;
-use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
-use horstoeko\zugferdmail\ZugferdMailReader;
-use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Printer;
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use Nette\PhpGenerator\ClassType;
+use horstoeko\stringmanagement\StringUtils;
+use horstoeko\zugferdmail\ZugferdMailReader;
 use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\Exception\PcreException;
 use Webmozart\Assert\InvalidArgumentException;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use horstoeko\zugferdmail\config\ZugferdMailConfig;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use horstoeko\zugferdmail\config\ZugferdMailAccount;
+use phpDocumentor\Reflection\Exception\PcreException;
+use horstoeko\zugferdmail\helpers\ZugferdMailStringHelper;
+use horstoeko\zugferdmail\helpers\ZugferdMailPlaceholderHelper;
+use horstoeko\zugferdmail\console\ZugferdMailListFoldersConsoleCommand;
+use horstoeko\zugferdmail\console\ZugferdMailProcessFoldersConsoleCommand;
 
 require dirname(__FILE__) . "/../vendor/autoload.php";
 
@@ -322,6 +326,8 @@ class MarkDownGenerator
                 $methodData["return"]["type"] == 'callable[]'
             ) {
                 $phpMethod->setReturnType('array');
+            } elseif ($methodData["return"]["type"] == '$this') {
+                $phpMethod->setReturnType('static');
             } else {
                 $phpMethod->setReturnType($methodData["return"]["type"]);
             }
@@ -655,4 +661,8 @@ BatchMarkDownGenerator::generate([
     ZugferdMailReader::class => dirname(__FILE__) . '/Class-ZugferdMailReader.md',
     ZugferdMailConfig::class => dirname(__FILE__) . '/Class-ZugferdMailConfig.md',
     ZugferdMailAccount::class => dirname(__FILE__) . '/Class-ZugferdMailAccount.md',
+    ZugferdMailPlaceholderHelper::class => dirname(__FILE__) . '/Class-ZugferdMailPlaceholderHelper.md',
+    ZugferdMailStringHelper::class => dirname(__FILE__) . '/Class-ZugferdMailStringHelper.md',
+    ZugferdMailListFoldersConsoleCommand::class => dirname(__FILE__) . '/Class-ZugferdMailListFoldersConsoleCommand.md',
+    ZugferdMailProcessFoldersConsoleCommand::class => dirname(__FILE__) . '/Class-ZugferdMailProcessFoldersConsoleCommand.md',
 ]);
