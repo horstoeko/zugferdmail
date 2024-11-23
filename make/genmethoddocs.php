@@ -256,11 +256,11 @@ class MarkDownGenerator
         $phpClass = new ClassType($this->extractor->getClassBasename());
 
         if (!empty($metaData['class']['summary'])) {
-            $this->addLine($metaData['class']['summary'] ?? "")->addEmptyLine();
+            $this->addLine($this->removeSprintfPlaceholder($metaData['class']['summary'] ?? ""))->addEmptyLine();
         }
 
         if (!empty($metaData['class']['description'])) {
-            $this->addLine($metaData['class']['description'] ?? "")->addEmptyLine();
+            $this->addLine($this->removeSprintfPlaceholder($metaData['class']['description'] ?? ""))->addEmptyLine();
         }
 
         if (!empty($metaData['class']['deprecated'])) {
@@ -303,11 +303,11 @@ class MarkDownGenerator
             $this->addLineH4("Summary");
 
             if (!empty($methodData["methodDetails"]["summary"])) {
-                $this->addLineItalic($methodData["methodDetails"]["summary"])->addEmptyLine();
+                $this->addLineItalic($this->removeSprintfPlaceholder($methodData["methodDetails"]["summary"]))->addEmptyLine();
             }
 
             if (!empty($methodData["methodDetails"]["description"])) {
-                $this->addLineItalic($methodData["methodDetails"]["description"])->addEmptyLine();
+                $this->addLineItalic($this->removeSprintfPlaceholder($methodData["methodDetails"]["description"]))->addEmptyLine();
             }
 
             $this->addLineH4("Signature");
@@ -366,7 +366,7 @@ class MarkDownGenerator
                 $this->addEmptyLine();
             }
 
-            if (!empty($methodData["return"]["type"])) {
+            if ($methodData["return"]["type"] && $methodData["return"]["type"] != "void") {
                 $this->addLineH4("Returns");
                 $this->addLineRaw(sprintf("Returns a value of type __%s__", $methodData["return"]["type"]));
                 $this->addEmptyLine();
@@ -617,6 +617,19 @@ class MarkDownGenerator
         $string = str_replace("__BT-, From __", "", $string);
         $string = str_replace("__BT-, From", "__BT-??, From", $string);
         $string = trim($string);
+
+        return $string;
+    }
+
+    /**
+     * Remove sprintf placeholders
+     *
+     * @param string $string
+     * @return string
+     */
+    private function removeSprintfPlaceholder(string $string): string
+    {
+        $string = str_replace("%", "", $string);
 
         return $string;
     }
