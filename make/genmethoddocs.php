@@ -1,20 +1,20 @@
 <?php
 
-use Nette\PhpGenerator\Printer;
-use Nette\PhpGenerator\ClassType;
 use horstoeko\stringmanagement\StringUtils;
-use horstoeko\zugferdmail\ZugferdMailReader;
-use phpDocumentor\Reflection\DocBlockFactory;
-use Webmozart\Assert\InvalidArgumentException;
-use phpDocumentor\Reflection\DocBlock\Tags\Param;
-use horstoeko\zugferdmail\config\ZugferdMailConfig;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
-use phpDocumentor\Reflection\Exception\PcreException;
-use horstoeko\zugferdmail\helpers\ZugferdMailStringHelper;
-use horstoeko\zugferdmail\helpers\ZugferdMailPlaceholderHelper;
+use horstoeko\zugferdmail\config\ZugferdMailConfig;
 use horstoeko\zugferdmail\console\ZugferdMailListFoldersConsoleCommand;
 use horstoeko\zugferdmail\console\ZugferdMailProcessFoldersConsoleCommand;
+use horstoeko\zugferdmail\helpers\ZugferdMailPlaceholderHelper;
+use horstoeko\zugferdmail\helpers\ZugferdMailStringHelper;
+use horstoeko\zugferdmail\ZugferdMailReader;
+use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\Printer;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\Exception\PcreException;
+use Webmozart\Assert\InvalidArgumentException;
 
 require dirname(__FILE__) . "/../vendor/autoload.php";
 
@@ -311,8 +311,6 @@ class MarkDownGenerator
             }
 
             $this->addLineH4("Signature");
-
-            echo $methodName . PHP_EOL;
 
             $phpMethod = $phpClass->addMethod($methodName);
             $phpMethod->setPublic();
