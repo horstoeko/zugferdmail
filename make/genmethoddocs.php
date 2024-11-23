@@ -317,24 +317,13 @@ class MarkDownGenerator
             $phpMethod->setStatic($methodData["methodDetails"]["static"] === true);
             $phpMethod->setAbstract($methodData["methodDetails"]["abstract"] === true);
             $phpMethod->setFinal($methodData["methodDetails"]["final"] === true);
-            if (
-                $methodData["return"]["type"] == 'string[]' ||
-                $methodData["return"]["type"] == '\ZugferdMailAccount[]' ||
-                $methodData["return"]["type"] == '\ZugferdMailHandlerAbstract[]' ||
-                $methodData["return"]["type"] == 'callable[]'
-            ) {
-                $phpMethod->setReturnType('array');
-            } elseif ($methodData["return"]["type"] == '$this') {
-                $phpMethod->setReturnType('static');
-            } else {
-                $phpMethod->setReturnType($methodData["return"]["type"]);
-            }
+            $phpMethod->setReturnType($this->fixPhpType($methodData["return"]["type"]));
             $phpMethod->setBody(null);
 
             foreach ($methodData["parameters"] as $parameter) {
                 $phpParameter = $phpMethod
                     ->addParameter($parameter["name"])
-                    ->setType($parameter["type"])
+                    ->setType($this->fixPhpType($parameter["type"]))
                     ->setNullable($parameter["isNullable"]);
 
                 if ($parameter['defaultValueavailable'] === true) {
@@ -597,7 +586,7 @@ class MarkDownGenerator
         $exampleFileContent = str_replace(array("\r\n", "\r", "\n"), "\n", $exampleFileContent);
 
         foreach (explode("\n", $exampleFileContent) as $exampleFileContentLine) {
-            $this->lines[] = $exampleFileContentLine;
+            $this->lines[]= $exampleFileContentLine;
         }
 
         $this->addEmptyLine();
@@ -630,6 +619,24 @@ class MarkDownGenerator
     private function removeSprintfPlaceholder(string $string): string
     {
         $string = str_replace("%", "", $string);
+
+        return $string;
+    }
+
+    /**
+     * Fix the PHP type
+     *
+     * @param string $string
+     * @return string
+     */
+    private function fixPhpType(string $string): string
+    {
+        if (stripos($string, '[]') !== false) {
+            $string = 'array';
+        }
+        if ($string == '$this') {
+            $string = 'static';
+        }
 
         return $string;
     }
