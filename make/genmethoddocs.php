@@ -168,23 +168,23 @@ class ExtractClass
             foreach ($method->getParameters() as $parameter) {
                 $parameterName = $parameter->getName();
                 $parameterType = $parameter->getType();
-
-                $parameterTypeName = "";
+                $parameterTypeString = "";
 
                 if ($parameterType instanceof ReflectionUnionType) {
-                    foreach ($parameterType->getTypes() as $parameterTypeType) {
-                        if ($parameterTypeName) {
-                            $parameterTypeName = $parameterTypeName . '|';
-                        }
-                        $parameterTypeName .= $parameterTypeType->getName();
+                    $types = $parameterType->getTypes();
+                    foreach ($types as $type) {
+                        $parameterTypeString .= $type->getName() . '|';
                     }
+                    $parameterTypeString = rtrim($parameterTypeString, '|');
+                } elseif ($parameterType instanceof ReflectionNamedType) {
+                    $parameterTypeString = $parameterType->getName();
                 } else {
-                    $parameterTypeName = $parameterType->getName();
+                    $parameterTypeString = 'Unbekannter Typ';
                 }
 
                 $parameters[] = [
                     'name' => $parameterName,
-                    'type' => $parameterType ? $parameterTypeName : 'mixed',
+                    'type' => $parameterType ? $parameterType->getName() : 'mixed',
                     'isNullable' => $parameterType && $parameterType->allowsNull(),
                     'defaultValueavailable' => $parameter->isOptional() ? ($parameter->isDefaultValueAvailable() ? true : false) : false,
                     'defaultValue' => $parameter->isOptional() ? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null) : null,
