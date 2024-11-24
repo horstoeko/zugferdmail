@@ -13,6 +13,7 @@ on:
 env:
   PHPDOCUMENTORURL: https://phpdoc.org/phpDocumentor.phar
   PHPDOCUMENTORFILENAME: phpDocumentor.phar
+  GH_PAT: ${{ secrets.UPDATEWIKITOKEN }}
 
 jobs:
   build:
@@ -123,6 +124,19 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: "build/logs/junit.xml"
+
+      - name: Update Wiki
+        continue-on-error: true
+        run: |
+          php -f make/genmethoddocs.php
+          git clone https://$GH_PAT@github.com/horstoeko/zugferdmail.wiki.git wiki
+          mv make/*.md wiki
+          cd wiki
+          git config user.name "HorstOeko"
+          git config user.email "horstoeko@erling.com.de"
+          git add -A
+          git commit -m "Automatische Aktualisierung des Wikis"
+          git push
 
       - name: Make Release
         uses: "marvinpinto/action-automatic-releases@latest"
