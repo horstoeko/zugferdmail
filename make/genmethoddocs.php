@@ -179,7 +179,7 @@ class ExtractClass
                 } elseif ($parameterType instanceof ReflectionNamedType) {
                     $parameterTypeString = $parameterType->getName();
                 } else {
-                    $parameterTypeString = 'Unbekannter Typ';
+                    $parameterTypeString = 'mixed';
                 }
 
                 $parameters[] = [
