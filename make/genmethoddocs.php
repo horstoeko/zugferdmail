@@ -169,6 +169,19 @@ class ExtractClass
                 $parameterName = $parameter->getName();
                 $parameterType = $parameter->getType();
 
+                $parameterTypeName = "";
+
+                if ($parameterType instanceof ReflectionUnionType) {
+                    foreach ($parameterType->getTypes() as $parameterTypeType) {
+                        if ($parameterTypeName) {
+                            $parameterTypeName = $parameterTypeName . '|';
+                        }
+                        $parameterTypeName .= $parameterTypeType->getName();
+                    }
+                } else {
+                    $parameterTypeName = $parameterType->getName();
+                }
+
                 $parameters[] = [
                     'name' => $parameterName,
                     'type' => $parameterType ? $parameterType->getName() : 'mixed',
@@ -586,7 +599,7 @@ class MarkDownGenerator
         $exampleFileContent = str_replace(array("\r\n", "\r", "\n"), "\n", $exampleFileContent);
 
         foreach (explode("\n", $exampleFileContent) as $exampleFileContentLine) {
-            $this->lines[]= $exampleFileContentLine;
+            $this->lines[] = $exampleFileContentLine;
         }
 
         $this->addEmptyLine();
