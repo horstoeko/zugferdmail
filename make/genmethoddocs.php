@@ -184,7 +184,7 @@ class ExtractClass
 
                 $parameters[] = [
                     'name' => $parameterName,
-                    'type' => $parameterType ? $parameterType->getName() : 'mixed',
+                    'type' => $parameterTypeString ? $parameterTypeString : 'mixed',
                     'isNullable' => $parameterType && $parameterType->allowsNull(),
                     'defaultValueavailable' => $parameter->isOptional() ? ($parameter->isDefaultValueAvailable() ? true : false) : false,
                     'defaultValue' => $parameter->isOptional() ? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null) : null,
