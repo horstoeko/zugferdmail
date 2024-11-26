@@ -96,6 +96,7 @@ class ExtractClass
         $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC); // Only public methods
         $docBlockFactory = DocBlockFactory::createInstance();
         $result = [];
+        $result['methods'] = [];
 
         if ($classDocComment !== false) {
             $classDocBlock = $docBlockFactory->create($classDocComment);
