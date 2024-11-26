@@ -114,6 +114,10 @@ class ExtractClass
         }
 
         foreach ($methods as $method) {
+            if ($method->getDeclaringClass()->getName() != $this->className) {
+                continue;
+            }
+
             $docComment = $method->getDocComment();
             $parameters = [];
             $returnDetails = [
