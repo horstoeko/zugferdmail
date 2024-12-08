@@ -38,13 +38,22 @@ class ExtractClass
     protected $className = "";
 
     /**
+     * Class + method name to ignore in inheritance check
+     *
+     * @var array
+     */
+    protected $ignoreInheritance = [];
+
+    /**
      * Constructor
      *
      * @param string $className
+     * @param array  $ignoreInheritance
      */
-    public function __construct(string $className)
+    public function __construct(string $className, array $ignoreInheritance = [])
     {
         $this->className = $className;
+        $this->ignoreInheritance = $ignoreInheritance;
     }
 
     /**
@@ -116,7 +125,9 @@ class ExtractClass
 
         foreach ($methods as $method) {
             if ($method->getDeclaringClass()->getName() != $this->className) {
-                continue;
+                if (!in_array(sprintf('%s::%s', $this->className, $method->getName()), $this->ignoreInheritance)) {
+                    continue;
+                }
             }
 
             $docComment = $method->getDocComment();
@@ -682,10 +693,10 @@ class BatchMarkDownGenerator
      * @throws PcreException
      * @throws LogicException
      */
-    public static function generate(array $classes)
+    public static function generate(array $classes, array $ignoreInheritance = [])
     {
         foreach ($classes as $className => $toFilename) {
-            $extractor = new ExtractClass($className);
+            $extractor = new ExtractClass($className, $ignoreInheritance);
             $generator = new MarkDownGenerator($extractor);
             $generator->generateMarkdown();
             $generator->saveToFile($toFilename);
