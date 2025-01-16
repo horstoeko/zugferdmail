@@ -154,7 +154,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $account = $this->createMailAccountFromOptions($arrayInput);
 
         $this->assertSame('127.0.0.1', $account->getHost());
-        $this->assertSame('993', $account->getPort());
+        $this->assertSame(993, $account->getPort());
         $this->assertSame('pop3', $account->getProtocol());
         $this->assertEquals('tls', $account->getEncryption());
         $this->assertTrue($account->getValidateCert());
@@ -204,7 +204,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $account = $this->createMailAccountFromOptions($arrayInput);
 
         $this->assertSame('127.0.0.1', $account->getHost());
-        $this->assertSame('993', $account->getPort());
+        $this->assertSame(993, $account->getPort());
         $this->assertSame('pop3', $account->getProtocol());
         $this->assertEquals('tls', $account->getEncryption());
         $this->assertTrue($account->getValidateCert());
