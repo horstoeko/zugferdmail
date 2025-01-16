@@ -138,7 +138,7 @@ class ZugferdMailPlaceholderHelper
             '/\{(\w+)\}/',
             function ($placeholderMatch) {
                 $placeHolderName = $placeholderMatch[1];
-                $placeHolderValhe = isset($this->mappingTable[$placeHolderName]) ? $this->mappingTable[$placeHolderName] : "";
+                $placeHolderValhe = $this->mappingTable[$placeHolderName] ?? "";
                 return $placeHolderValhe;
             },
             $subject

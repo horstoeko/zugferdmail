@@ -140,7 +140,7 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
                     $account->getProtocol(),
                     $account->getEncryption(),
                     $account->getValidateCert() === true ? "Yes" : "No",
-                    $account->getAuthentication() === null ? "None" : $account->getAuthentication(),
+                    $account->getAuthentication() ?? "None",
                     $account->getUsername(),
                 ],
             ]

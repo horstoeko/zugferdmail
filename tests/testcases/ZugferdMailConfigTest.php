@@ -260,12 +260,12 @@ class ZugferdMailConfigTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        ZugferdMailConfig::loadFromFile(dirname(__FILE__) . '/../assets/unknown.json');
+        ZugferdMailConfig::loadFromFile(__DIR__ . '/../assets/unknown.json');
     }
 
     public function testLoadConfigWithContentWhichIsNoJson(): void
     {
-        $configFilename = dirname(__FILE__) . '/../assets/config.nojson.json';
+        $configFilename = __DIR__ . '/../assets/config.nojson.json';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf('The file %s does not seem to be a valid json.', $configFilename));
@@ -275,7 +275,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testLoadConfigWithContentWhichIsInvalidJson(): void
     {
-        $configFilename = dirname(__FILE__) . '/../assets/config.invalid.json';
+        $configFilename = __DIR__ . '/../assets/config.invalid.json';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf('The file %s could not be identified as a valid JSON file', $configFilename));
@@ -285,7 +285,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testLoadConfigWithValidJson(): void
     {
-        $configFilename = dirname(__FILE__) . '/../assets/config.valid.json';
+        $configFilename = __DIR__ . '/../assets/config.valid.json';
 
         $config = ZugferdMailConfig::loadFromFile($configFilename);
 
@@ -348,7 +348,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testSaveConfigToInvalidFilename(): void
     {
-        $configFilename = dirname(__FILE__) . '/../somefolder/config.save.json';
+        $configFilename = __DIR__ . '/../somefolder/config.save.json';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Directory of file %s does not exist.', $configFilename));
@@ -374,7 +374,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testSaveConfigToValidFilename(): void
     {
-        $configFilename = dirname(__FILE__) . '/../assets/config.save.json';
+        $configFilename = __DIR__ . '/../assets/config.save.json';
 
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setHost("127.0.0.1");
@@ -400,7 +400,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testSaveAndLoadConfigSameFile(): void
     {
-        $configFilename = dirname(__FILE__) . '/../assets/config.save.json';
+        $configFilename = __DIR__ . '/../assets/config.save.json';
 
         // Create config and save to config file
 

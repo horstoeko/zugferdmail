@@ -13,7 +13,7 @@ class ZugferdMailConcernParsesPlaceholdersTest extends TestCase
 
     public function testParsePlaceholdersByZugferdDocumentReaderEn16931(): void
     {
-        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(dirname(__FILE__) . "/../assets/fx_en16931.xml");
+        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_en16931.xml");
 
         $this->assertNotNull($documentReader);
         $this->assertEquals(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
@@ -27,7 +27,7 @@ class ZugferdMailConcernParsesPlaceholdersTest extends TestCase
 
     public function testParsePlaceholdersByZugferdDocumentReaderExtended(): void
     {
-        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(dirname(__FILE__) . "/../assets/fx_extended.xml");
+        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_extended.xml");
 
         $this->assertNotNull($documentReader);
         $this->assertEquals(ZugferdProfiles::PROFILE_EXTENDED, $documentReader->getProfileId());

@@ -560,7 +560,7 @@ class ZugferdMailConfig
     {
         $result = true;
 
-        $schemaJson = file_get_contents(dirname(__FILE__) . "/schema.json");
+        $schemaJson = file_get_contents(__DIR__ . "/schema.json");
 
         try {
             Schema::import(
