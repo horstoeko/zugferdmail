@@ -18,7 +18,7 @@ class ZugferdMailAccountTest extends TestCase
 
         $this->assertNotNull($mailAccount);
         $this->assertNotEmpty($mailAccount->getIdentifier());
-        $this->assertRegExp("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier());
+        $this->assertMatchesRegularExpression("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier());
         $this->assertSame("", $mailAccount->getHost());
         $this->assertSame(0, $mailAccount->getPort());
         $this->assertSame("imap", $mailAccount->getProtocol());
@@ -40,7 +40,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setIdentifier("");
 
-        $this->assertRegExp("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier());
+        $this->assertMatchesRegularExpression("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier());
     }
 
     public function testMailAccountSetIdValid(): void
