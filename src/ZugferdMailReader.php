@@ -131,7 +131,7 @@ class ZugferdMailReader
     protected function checkSingleAccount(ZugferdMailAccount $account): void
     {
         $this->clientManager->account($account->getIdentifier())->connect()->getFolders()->each(
-            function (Folder $folder) use ($account) {
+            function (Folder $folder) use ($account): void {
                 $this->checkSingleAccountFolder($account, $folder);
             }
         );
@@ -156,14 +156,14 @@ class ZugferdMailReader
                     return $query->unseen();
                 }
             )->get()->each(
-                function (Message $message) use ($account, $folder) {
+                function (Message $message) use ($account, $folder): void {
                     $this->checkSingleMessage($account, $folder, $message);
                 }
             );
         }
 
         collect($folder->children)->each(
-            function (Folder $subFolder) use ($account) {
+            function (Folder $subFolder) use ($account): void {
                 $this->checkSingleAccountFolder($account, $subFolder);
             }
         );
@@ -180,7 +180,7 @@ class ZugferdMailReader
     protected function checkSingleMessage(ZugferdMailAccount $account, Folder $folder, Message $message): void
     {
         $message->attachments()->each(
-            function (Attachment $attachment) use ($account, $folder, $message) {
+            function (Attachment $attachment) use ($account, $folder, $message): void {
                 $this->checkSingleMessageAttachment($account, $folder, $message, $attachment);
             }
         );

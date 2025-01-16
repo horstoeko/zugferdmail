@@ -62,7 +62,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
         $messages = collect($this->getAllMessagesFromMessageBag());
 
         $messages = $messages->map(
-            function ($message, int $messageKey) use ($messages) {
+            function (array $message, int $messageKey) use ($messages): array {
                 $result = [];
 
                 if ($message["message"] == "" || $message["message"] == "<T-SEP>") {

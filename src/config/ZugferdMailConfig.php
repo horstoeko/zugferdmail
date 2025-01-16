@@ -369,7 +369,7 @@ class ZugferdMailConfig
     {
         $this->accounts = array_filter(
             $this->accounts,
-            function ($account) use ($identifier) {
+            function ($account) use ($identifier): bool {
                 return strcasecmp($account->getIdentifier(), $identifier) != 0;
             }
         );

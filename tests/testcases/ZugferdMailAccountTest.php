@@ -349,7 +349,7 @@ class ZugferdMailAccountTest extends TestCase
     {
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setCallbacks(
-            [null, function () {
+            [null, function (): void {
             }]
         );
 
@@ -362,8 +362,8 @@ class ZugferdMailAccountTest extends TestCase
     {
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setCallbacks(
-            [function () {
-            }, function () {
+            [function (): void {
+            }, function (): void {
             }]
         );
 
@@ -377,7 +377,7 @@ class ZugferdMailAccountTest extends TestCase
     {
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->addCallback(
-            function () {
+            function (): void {
             }
         );
 
@@ -386,7 +386,7 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[0]);
 
         $mailAccount->addCallback(
-            function () {
+            function (): void {
             }
         );
 

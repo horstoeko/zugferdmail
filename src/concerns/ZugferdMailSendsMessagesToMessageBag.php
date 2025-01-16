@@ -226,7 +226,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($type, $additionalData) {
+            function ($message) use ($type, $additionalData): void {
                 $this->addMessageToMessageBag($type, $message, $additionalData);
             }
         );
@@ -245,7 +245,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData) {
+            function ($message) use ($additionalData): void {
                 $this->addLogMessageToMessageBag($message, $additionalData);
             }
         );
@@ -264,7 +264,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData) {
+            function ($message) use ($additionalData): void {
                 $this->addLogSecondaryMessageToMessageBag($message, $additionalData);
             }
         );
@@ -283,7 +283,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData) {
+            function ($message) use ($additionalData): void {
                 $this->addWarningMessageToMessageBag($message, $additionalData);
             }
         );
@@ -302,7 +302,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData) {
+            function ($message) use ($additionalData): void {
                 $this->addErrorMessageToMessageBag($message, $additionalData);
             }
         );
@@ -321,7 +321,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData) {
+            function ($message) use ($additionalData): void {
                 $this->addSuccessMessageToMessageBag($message, $additionalData);
             }
         );

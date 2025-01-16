@@ -513,7 +513,7 @@ class ZugferdMailAccount
     {
         $this->handlers = array_filter(
             $handlers,
-            function ($handler) {
+            function ($handler): bool {
                 return $handler instanceof ZugferdMailHandlerAbstract;
             }
         );
@@ -531,7 +531,7 @@ class ZugferdMailAccount
     {
         $this->callBacks = array_filter(
             $callbacks,
-            function ($callback) {
+            function ($callback): bool {
                 return is_callable($callback);
             }
         );

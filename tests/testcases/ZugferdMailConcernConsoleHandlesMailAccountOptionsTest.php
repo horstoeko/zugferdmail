@@ -33,7 +33,7 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
      * @param  mixed        $default
      * @return static
      */
-    protected function addOption(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null)
+    protected function addOption(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null): self
     {
         $this->definition->addOption(new InputOption($name, $shortcut, $mode, $description, $default));
 

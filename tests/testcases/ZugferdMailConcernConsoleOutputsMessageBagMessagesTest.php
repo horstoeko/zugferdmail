@@ -16,7 +16,7 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
     use ZugferdMailClearsMessageBag;
     use ZugferdMailReceivesMessagesFromMessageBag;
     use ZugferdMailSendsMessagesToMessageBag;
-    public function testOutputMessagesFromMessageBagToCli()
+    public function testOutputMessagesFromMessageBagToCli(): void
     {
         $outputFormatter = new OutputFormatter();
         $testOutputInterface = new TestOutputInterface;
@@ -132,7 +132,7 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
         $this->assertCount(0, $outputs);
     }
 
-    public function testOutputMessagesFromMessageBagAsTableToCli()
+    public function testOutputMessagesFromMessageBagAsTableToCli(): void
     {
         $outputFormatter = new OutputFormatter();
         $testOutputInterface = new TestOutputInterface;

@@ -421,7 +421,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertInstanceOf(\DateTime::class, $message['datetime']);
     }
 
-    public function testClearMessageBag()
+    public function testClearMessageBag(): void
     {
         $this->clearMessageBag();
 
@@ -451,7 +451,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertFalse($this->getHasAnyMessageInMessageBag());
     }
 
-    public function testMessageBagToString()
+    public function testMessageBagToString(): void
     {
         $this->clearMessageBag();
         $this->addLogMessageToMessageBag('Message 1');
@@ -480,7 +480,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertObjectHasProperty('datetime', $messageBagJson[0]);
     }
 
-    public function testAddMultipleMessagesToMessageBag()
+    public function testAddMultipleMessagesToMessageBag(): void
     {
         $this->clearMessageBag();
 
@@ -497,7 +497,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(2, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleLogMessagesToMessageBag()
+    public function testAddMultipleLogMessagesToMessageBag(): void
     {
         $this->clearMessageBag();
 
@@ -514,7 +514,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(3, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleLogSecondaryMessagesToMessageBag()
+    public function testAddMultipleLogSecondaryMessagesToMessageBag(): void
     {
         $this->clearMessageBag();
 
@@ -531,7 +531,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(3, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleWarningMessagesToMessageBag()
+    public function testAddMultipleWarningMessagesToMessageBag(): void
     {
         $this->clearMessageBag();
 
@@ -548,7 +548,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(3, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleErrorMessagesToMessageBag()
+    public function testAddMultipleErrorMessagesToMessageBag(): void
     {
         $this->clearMessageBag();
 
@@ -565,7 +565,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(3, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleSuccessMessagesToMessageBag()
+    public function testAddMultipleSuccessMessagesToMessageBag(): void
     {
         $this->clearMessageBag();
 
@@ -743,7 +743,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals("Message 2", $this->getErrorMessagesFromMessageBag()[0]["message"]);
     }
 
-    public function testAddMultipleMessagesToMessageBagIf()
+    public function testAddMultipleMessagesToMessageBagIf(): void
     {
         $this->clearMessageBag();
 
@@ -764,7 +764,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(2, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleLogMessagesToMessageBagIf()
+    public function testAddMultipleLogMessagesToMessageBagIf(): void
     {
         $this->clearMessageBag();
 
@@ -785,7 +785,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(2, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleLogSecondaryMessagesToMessageBagIf()
+    public function testAddMultipleLogSecondaryMessagesToMessageBagIf(): void
     {
         $this->clearMessageBag();
 
@@ -806,7 +806,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(2, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleWarningMessagesToMessageBagIf()
+    public function testAddMultipleWarningMessagesToMessageBagIf(): void
     {
         $this->clearMessageBag();
 
@@ -827,7 +827,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(2, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleErrorMessagesToMessageBagIf()
+    public function testAddMultipleErrorMessagesToMessageBagIf(): void
     {
         $this->clearMessageBag();
 
@@ -848,7 +848,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertEquals(2, count($this->getAllMessagesFromMessageBag()));
     }
 
-    public function testAddMultipleSuccessMessagesToMessageBagIf()
+    public function testAddMultipleSuccessMessagesToMessageBagIf(): void
     {
         $this->clearMessageBag();
 
