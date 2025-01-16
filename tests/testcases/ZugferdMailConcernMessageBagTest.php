@@ -11,10 +11,9 @@ use horstoeko\zugferdmail\ZugferdMailMessageBag;
 
 class ZugferdMailConcernMessageBagTest extends TestCase
 {
-    use ZugferdMailClearsMessageBag,
-        ZugferdMailReceivesMessagesFromMessageBag,
-        ZugferdMailSendsMessagesToMessageBag;
-
+    use ZugferdMailClearsMessageBag;
+    use ZugferdMailReceivesMessagesFromMessageBag;
+    use ZugferdMailSendsMessagesToMessageBag;
     public function testInitialMessageBag(): void
     {
         $this->assertTrue($this->hasNoLogMessagesInMessageBag());

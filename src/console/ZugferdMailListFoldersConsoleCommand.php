@@ -28,10 +28,9 @@ use Webklex\PHPIMAP\Folder;
  */
 class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
-    use ZugferdMailConsoleHandlesConfigOptions,
-        ZugferdMailConsoleHandlesMailAccountOptions,
-        ZugferdMailConsoleOutputsMessageBagMessages;
-
+    use ZugferdMailConsoleHandlesConfigOptions;
+    use ZugferdMailConsoleHandlesMailAccountOptions;
+    use ZugferdMailConsoleOutputsMessageBagMessages;
     /**
      * @inheritDoc
      */

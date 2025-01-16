@@ -36,9 +36,9 @@ class ZugferdMailHandlerDeleteMessage extends ZugferdMailHandlerAbstract
             $this->addLogMessageToMessageBag(sprintf('Deleting message with %s', $message->getUid()));
             $message->delete();
             $this->addLogMessageToMessageBag(sprintf('Successfully deleted message with %s', $message->getUid()));
-        } catch (Throwable $e) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to delete message with id %s: %s', $message->getUid(), $e->getMessage()));
-            throw $e;
+        } catch (Throwable $throwable) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to delete message with id %s: %s', $message->getUid(), $throwable->getMessage()));
+            throw $throwable;
         }
     }
 }

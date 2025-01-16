@@ -568,7 +568,7 @@ class ZugferdMailConfig
             )->in(
                 $jsonObject,
             );
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             $result = false;
         }
 

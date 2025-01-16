@@ -118,6 +118,7 @@ class ZugferdMailPlaceholderHelper
                 foreach ($placeHolderValue as $placeHolderValueKey => $placeHolderValueData) {
                     $this->addPlaceholder(sprintf("%s_%s", $placeholderName, $placeHolderValueKey), $placeHolderValueData);
                 }
+
                 break;
             default:
                 break;

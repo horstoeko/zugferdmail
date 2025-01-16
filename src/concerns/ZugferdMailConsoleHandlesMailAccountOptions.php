@@ -166,6 +166,7 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
         foreach ($account->getFoldersTowatch() as $folderToWatch) {
             $table->addRow([$folderToWatch]);
         }
+
         $table->render();
     }
 
@@ -187,6 +188,7 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
         foreach ($account->getMimeTypesToWatch() as $mimeTypeToWatch) {
             $table->addRow([$mimeTypeToWatch]);
         }
+
         $table->render();
     }
 }

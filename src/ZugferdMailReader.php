@@ -46,11 +46,10 @@ use Webklex\PHPIMAP\Exceptions\RuntimeException;
  */
 class ZugferdMailReader
 {
-    use ZugferdMailSendsMessagesToMessageBag,
-        ZugferdMailReceivesMessagesFromMessageBag,
-        ZugferdMailClearsMessageBag,
-        ZugferdMailRaisesExceptions;
-
+    use ZugferdMailSendsMessagesToMessageBag;
+    use ZugferdMailReceivesMessagesFromMessageBag;
+    use ZugferdMailClearsMessageBag;
+    use ZugferdMailRaisesExceptions;
     /**
      * The config
      *

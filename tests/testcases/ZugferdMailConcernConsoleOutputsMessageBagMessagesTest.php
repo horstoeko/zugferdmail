@@ -12,11 +12,10 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 {
-    use ZugferdMailConsoleOutputsMessageBagMessages,
-        ZugferdMailClearsMessageBag,
-        ZugferdMailReceivesMessagesFromMessageBag,
-        ZugferdMailSendsMessagesToMessageBag;
-
+    use ZugferdMailConsoleOutputsMessageBagMessages;
+    use ZugferdMailClearsMessageBag;
+    use ZugferdMailReceivesMessagesFromMessageBag;
+    use ZugferdMailSendsMessagesToMessageBag;
     public function testOutputMessagesFromMessageBagToCli()
     {
         $outputFormatter = new OutputFormatter();

@@ -36,9 +36,9 @@ class ZugferdMailHandlerMarkSeenMessage extends ZugferdMailHandlerAbstract
             $this->addLogMessageToMessageBag(sprintf('Marking mail %s as seen', $message->getUid()));
             $message->setFlag('Seen');
             $this->addLogMessageToMessageBag(sprintf('Successfully marked mail %s as seen', $message->getUid()));
-        } catch (Throwable $e) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to mark mail as seen: %s', $e->getMessage()));
-            throw $e;
+        } catch (Throwable $throwable) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to mark mail as seen: %s', $throwable->getMessage()));
+            throw $throwable;
         }
     }
 }

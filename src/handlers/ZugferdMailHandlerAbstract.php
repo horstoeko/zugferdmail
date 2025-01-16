@@ -19,9 +19,8 @@ use Webklex\PHPIMAP\Message;
 
 abstract class ZugferdMailHandlerAbstract
 {
-    use ZugferdMailSendsMessagesToMessageBag,
-        ZugferdMailReceivesMessagesFromMessageBag;
-
+    use ZugferdMailSendsMessagesToMessageBag;
+    use ZugferdMailReceivesMessagesFromMessageBag;
     /**
      * The method will be call when a document was found. This method can perform
      * anything you want

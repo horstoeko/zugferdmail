@@ -58,9 +58,9 @@ class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
             $this->addLogMessageToMessageBag(sprintf('Moving mail to %s', $moveToFolder));
             $message->move($moveToFolder);
             $this->addLogMessageToMessageBag(sprintf('Successfully moved mail to %s', $moveToFolder));
-        } catch (Throwable $e) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to move mail: %s', $e->getMessage()));
-            throw $e;
+        } catch (Throwable $throwable) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to move mail: %s', $throwable->getMessage()));
+            throw $throwable;
         }
     }
 

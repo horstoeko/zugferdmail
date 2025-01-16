@@ -58,9 +58,9 @@ class ZugferdMailHandlerCopyMessage extends ZugferdMailHandlerAbstract
             $this->addLogMessageToMessageBag(sprintf('Copying mail to %s', $copyToFolder));
             $message->copy($copyToFolder);
             $this->addLogMessageToMessageBag(sprintf('Successfully copied mail to %s', $copyToFolder));
-        } catch (Throwable $e) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to copy mail: %s', $e->getMessage()));
-            throw $e;
+        } catch (Throwable $throwable) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to copy mail: %s', $throwable->getMessage()));
+            throw $throwable;
         }
     }
 
