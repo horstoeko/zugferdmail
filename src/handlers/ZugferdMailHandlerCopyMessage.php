@@ -82,7 +82,7 @@ class ZugferdMailHandlerCopyMessage extends ZugferdMailHandlerAbstract
      */
     public function setCopyToFolder(string $copyToFolder): ZugferdMailHandlerCopyMessage
     {
-        if (empty($copyToFolder)) {
+        if ($copyToFolder === '' || $copyToFolder === '0') {
             throw new InvalidArgumentException("The destination folder must not be empty");
         }
 

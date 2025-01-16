@@ -158,7 +158,7 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
 
         $parsedFilename = preg_replace('/_+/', '_', $parsedFilename);
 
-        $parsedFilename = $fileExtension ? FileUtils::combineFilenameWithFileextension($parsedFilename, $fileExtension) : $parsedFilename;
+        $parsedFilename = $fileExtension !== '' && $fileExtension !== '0' ? FileUtils::combineFilenameWithFileextension($parsedFilename, $fileExtension) : $parsedFilename;
 
         return $parsedFilename;
     }

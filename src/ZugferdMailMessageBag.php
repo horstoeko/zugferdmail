@@ -240,7 +240,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoLogMessages(): bool
     {
-        return empty($this->getLogMessages());
+        return $this->getLogMessages() === [];
     }
 
     /**
@@ -270,7 +270,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoLogSecondaryMessages(): bool
     {
-        return empty($this->getLogSecondaryMessages());
+        return $this->getLogSecondaryMessages() === [];
     }
 
     /**
@@ -300,7 +300,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoWarningMessages(): bool
     {
-        return empty($this->getWarningMessages());
+        return $this->getWarningMessages() === [];
     }
 
     /**
@@ -330,7 +330,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoErrorMessages(): bool
     {
-        return empty($this->getErrorMessages());
+        return $this->getErrorMessages() === [];
     }
 
     /**
@@ -360,7 +360,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoSuccessMessages(): bool
     {
-        return empty($this->getSuccessMessages());
+        return $this->getSuccessMessages() === [];
     }
 
     /**
@@ -390,6 +390,6 @@ class ZugferdMailMessageBag
      */
     public function hasAnyMessage(): bool
     {
-        return !empty($this->getAllMessages());
+        return $this->getAllMessages() !== [];
     }
 }

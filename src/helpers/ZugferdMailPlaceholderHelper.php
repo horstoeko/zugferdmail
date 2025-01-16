@@ -102,7 +102,7 @@ class ZugferdMailPlaceholderHelper
      */
     public function addPlaceholder(string $placeholderName, $placeHolderValue): ZugferdMailPlaceholderHelper
     {
-        if (empty($placeholderName) || empty($placeHolderValue)) {
+        if ($placeholderName === '' || $placeholderName === '0' || empty($placeHolderValue)) {
             return $this;
         }
 

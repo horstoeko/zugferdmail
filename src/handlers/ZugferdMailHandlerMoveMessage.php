@@ -82,7 +82,7 @@ class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
      */
     public function setMoveToFolder(string $moveToFolder): ZugferdMailHandlerMoveMessage
     {
-        if (empty($moveToFolder)) {
+        if ($moveToFolder === '' || $moveToFolder === '0') {
             throw new InvalidArgumentException("The destination folder must not be empty");
         }
 

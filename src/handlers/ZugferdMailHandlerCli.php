@@ -54,7 +54,7 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
         $this->addLogMessageToMessageBag(sprintf(" - Document name      %s", $documentname));
         $this->addLogMessageToMessageBag(sprintf(" - Document language  %s", $documentlanguage));
 
-        if ($effectiveSpecifiedPeriod !== null) {
+        if ($effectiveSpecifiedPeriod instanceof \DateTime) {
             $this->addLogMessageToMessageBag(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
         }
     }

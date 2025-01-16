@@ -86,7 +86,7 @@ class ZugferdMailAccountTest extends TestCase
     public function testMailAccountSetProtocolInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf("The protocol must be one of imap, legacy-imap, pop3 or nntp, unknown given"));
+        $this->expectExceptionMessage("The protocol must be one of imap, legacy-imap, pop3 or nntp, unknown given");
 
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setProtocol("unknown");
