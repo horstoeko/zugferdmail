@@ -11,7 +11,7 @@ class ZugferdMailStringHelperTest extends TestCase
     {
         $testString = "012345678901234567890123456789";
 
-        $this->assertEquals("012345678901234567890123456...", ZugferdMailStringHelper::truncateString($testString, 30));
-        $this->assertEquals("012345678901234567890123456789", ZugferdMailStringHelper::truncateString($testString, 40));
+        $this->assertSame("012345678901234567890123456...", ZugferdMailStringHelper::truncateString($testString, 30));
+        $this->assertSame("012345678901234567890123456789", ZugferdMailStringHelper::truncateString($testString, 40));
     }
 }

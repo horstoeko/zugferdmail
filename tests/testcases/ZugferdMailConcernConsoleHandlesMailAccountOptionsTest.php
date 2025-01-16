@@ -153,15 +153,15 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
 
         $account = $this->createMailAccountFromOptions($arrayInput);
 
-        $this->assertEquals('127.0.0.1', $account->getHost());
-        $this->assertEquals('993', $account->getPort());
-        $this->assertEquals('pop3', $account->getProtocol());
+        $this->assertSame('127.0.0.1', $account->getHost());
+        $this->assertSame('993', $account->getPort());
+        $this->assertSame('pop3', $account->getProtocol());
         $this->assertEquals('tls', $account->getEncryption());
         $this->assertTrue($account->getValidateCert());
-        $this->assertEquals('demouser', $account->getUsername());
-        $this->assertEquals('demopassword', $account->getPassword());
-        $this->assertEquals('oauth', $account->getAuthentication());
-        $this->assertEquals(60, $account->getTimeout());
+        $this->assertSame('demouser', $account->getUsername());
+        $this->assertSame('demopassword', $account->getPassword());
+        $this->assertSame('oauth', $account->getAuthentication());
+        $this->assertSame(60, $account->getTimeout());
         $this->assertTrue($arrayInput->getOption('enableunseenonly'));
 
         $this->assertIsArray($account->getFoldersTowatch());
@@ -203,15 +203,15 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
 
         $account = $this->createMailAccountFromOptions($arrayInput);
 
-        $this->assertEquals('127.0.0.1', $account->getHost());
-        $this->assertEquals('993', $account->getPort());
-        $this->assertEquals('pop3', $account->getProtocol());
+        $this->assertSame('127.0.0.1', $account->getHost());
+        $this->assertSame('993', $account->getPort());
+        $this->assertSame('pop3', $account->getProtocol());
         $this->assertEquals('tls', $account->getEncryption());
         $this->assertTrue($account->getValidateCert());
-        $this->assertEquals('demouser', $account->getUsername());
-        $this->assertEquals('demopassword', $account->getPassword());
-        $this->assertEquals('oauth', $account->getAuthentication());
-        $this->assertEquals(60, $account->getTimeout());
+        $this->assertSame('demouser', $account->getUsername());
+        $this->assertSame('demopassword', $account->getPassword());
+        $this->assertSame('oauth', $account->getAuthentication());
+        $this->assertSame(60, $account->getTimeout());
         $this->assertTrue($arrayInput->getOption('enableunseenonly'));
 
         $this->assertIsArray($account->getFoldersTowatch());

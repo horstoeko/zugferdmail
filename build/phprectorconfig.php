@@ -2,38 +2,41 @@
 
 declare(strict_types=1);
 
-use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\Config\RectorConfig;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
+use Rector\Set\ValueObject\SetList;
 use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
+use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
-use Rector\Set\ValueObject\SetList;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/../examples',
-        __DIR__ . '/../make',
         __DIR__ . '/../src',
         __DIR__ . '/../tests',
     ])
     ->withSkip([
-        RemoveUselessParamTagRector::class,
-        RemoveUselessReturnTagRector::class,
+        __DIR__ . '/../examples',
+        __DIR__ . '/../make',
     ])
-    ->withPhp73Sets()
-    ->withSets([
-        SetList::DEAD_CODE,
-        SetList::CODE_QUALITY,
-        SetList::CODING_STYLE,
+    ->withSkip([
+        //ClassPropertyAssignToConstructorPromotionRector::class
     ])
+    ->withPhpSets(php73: true)
     ->withConfiguredRule(EncapsedStringsToSprintfRector::class, [
         'always' => true,
     ])
-    ->withRules([
-        RenamePropertyToMatchTypeRector::class,
-        RenameParamToMatchTypeRector::class,
-        RenameVariableToMatchNewTypeRector::class,
-    ])
-    ->withTypeCoverageLevel(0);
+    ->withPreparedSets(
+        codeQuality: true,
+        codingStyle: true,
+        deadCode: false,
+        typeDeclarations: true,
+        privatization: true,
+        naming: false,
+        instanceOf: true,
+        earlyReturn: true,
+        strictBooleans: true,
+        phpunitCodeQuality: true
+    );

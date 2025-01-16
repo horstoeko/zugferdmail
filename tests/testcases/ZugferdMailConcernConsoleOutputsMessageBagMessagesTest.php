@@ -16,6 +16,7 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
     use ZugferdMailClearsMessageBag;
     use ZugferdMailReceivesMessagesFromMessageBag;
     use ZugferdMailSendsMessagesToMessageBag;
+    
     public function testOutputMessagesFromMessageBagToCli(): void
     {
         $outputFormatter = new OutputFormatter();
