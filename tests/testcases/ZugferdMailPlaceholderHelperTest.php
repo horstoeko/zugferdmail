@@ -109,8 +109,7 @@ class ZugferdMailPlaceholderHelperTest extends TestCase
     {
         $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_en16931.xml");
 
-        $this->assertNotNull($documentReader);
-        $this->assertSame(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
+            $this->assertSame(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
 
         $placeholderHelper = ZugferdMailPlaceholderHelper::fromZugferdDocumentReader($documentReader);
 
@@ -147,7 +146,6 @@ class ZugferdMailPlaceholderHelperTest extends TestCase
     {
         $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_extended.xml");
 
-        $this->assertNotNull($documentReader);
         $this->assertSame(ZugferdProfiles::PROFILE_EXTENDED, $documentReader->getProfileId());
 
         $placeholderHelper = ZugferdMailPlaceholderHelper::fromZugferdDocumentReader($documentReader);

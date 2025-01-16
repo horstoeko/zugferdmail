@@ -16,7 +16,7 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
     use ZugferdMailClearsMessageBag;
     use ZugferdMailReceivesMessagesFromMessageBag;
     use ZugferdMailSendsMessagesToMessageBag;
-    
+
     public function testOutputMessagesFromMessageBagToCli(): void
     {
         $outputFormatter = new OutputFormatter();
@@ -33,7 +33,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(1, $outputs);
         $this->assertEquals("Message 1", $outputs[0]);
@@ -46,7 +45,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(2, $outputs);
         $this->assertEquals("Message 1", $outputs[0]);
@@ -60,7 +58,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(3, $outputs);
         $this->assertEquals("Message 1", $outputs[0]);
@@ -75,7 +72,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(4, $outputs);
         $this->assertEquals("Message 1", $outputs[0]);
@@ -91,7 +87,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(5, $outputs);
         $this->assertEquals("Message 1", $outputs[0]);
@@ -108,7 +103,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(6, $outputs);
         $this->assertEquals("Message 1", $outputs[0]);
@@ -128,7 +122,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertEmpty($outputs);
         $this->assertCount(0, $outputs);
     }
@@ -145,7 +138,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertEmpty($outputs);
         $this->assertCount(0, $outputs);
 
@@ -159,7 +151,6 @@ class ZugferdMailConcernConsoleOutputsMessageBagMessagesTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(7, $outputs);
         $this->assertEquals("┌─────────────────────┬───────────┬────────────────────────────────────────────────────────┐", $outputs[0]);

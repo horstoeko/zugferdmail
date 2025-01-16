@@ -15,13 +15,11 @@ class ZugferdMailConcernParsesPlaceholdersTest extends TestCase
     {
         $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_en16931.xml");
 
-        $this->assertNotNull($documentReader);
         $this->assertSame(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
 
         $testString = "Invoice_{documentno}_{documentsellername}";
         $parsedString = $this->parsePlaceholdersByZugferdDocumentReader($documentReader, $testString);
 
-        $this->assertIsString($parsedString);
         $this->assertSame("Invoice_471102_Lieferant GmbH", $parsedString);
     }
 
@@ -29,13 +27,11 @@ class ZugferdMailConcernParsesPlaceholdersTest extends TestCase
     {
         $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_extended.xml");
 
-        $this->assertNotNull($documentReader);
         $this->assertSame(ZugferdProfiles::PROFILE_EXTENDED, $documentReader->getProfileId());
 
         $testString = "Invoice_{documentno}_{documentsellername}";
         $parsedString = $this->parsePlaceholdersByZugferdDocumentReader($documentReader, $testString);
 
-        $this->assertIsString($parsedString);
         $this->assertSame("Invoice_471102_Lieferant GmbH", $parsedString);
     }
 }

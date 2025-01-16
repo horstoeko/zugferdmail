@@ -506,17 +506,12 @@ class ZugferdMailAccount
     /**
      * Sets multiuple handlers to run when a document was found
      *
-     * @param  array<ZugferdMailHandlerAbstract> $handlers
+     * @param  array<int, ZugferdMailHandlerAbstract> $handlers
      * @return ZugferdMailAccount
      */
     public function setHandlers(array $handlers): ZugferdMailAccount
     {
-        $this->handlers = array_filter(
-            $handlers,
-            function ($handler): bool {
-                return $handler instanceof ZugferdMailHandlerAbstract;
-            }
-        );
+        $this->handlers = $handlers;
 
         return $this;
     }
@@ -529,12 +524,7 @@ class ZugferdMailAccount
      */
     public function setCallbacks(array $callbacks): ZugferdMailAccount
     {
-        $this->callBacks = array_filter(
-            $callbacks,
-            function ($callback): bool {
-                return is_callable($callback);
-            }
-        );
+        $this->callBacks = $callbacks;
 
         return $this;
     }

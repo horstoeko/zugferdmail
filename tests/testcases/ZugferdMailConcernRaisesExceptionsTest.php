@@ -20,25 +20,11 @@ class ZugferdMailConcernRaisesExceptionsTest extends TestCase
         $this->raiseExceptionClassIf(true, RuntimeException::class, static::EXCEPTIONMESSAGE);
     }
 
-    public function testRaiseExceptionClassIfWithFalse(): void
-    {
-        $this->assertTrue(true); // We need one assertion in this test
-
-        $this->raiseExceptionClassIf(false, RuntimeException::class, static::EXCEPTIONMESSAGE);
-    }
-
     public function testRaiseRuntimeExceptionClassIfWithTrue(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(static::EXCEPTIONMESSAGE);
 
         $this->raiseRuntimeExceptionIf(true, static::EXCEPTIONMESSAGE);
-    }
-
-    public function testRaiseRuntimeExceptionClassIfWithFalse(): void
-    {
-        $this->assertTrue(true); // We need one assertion in this test
-
-        $this->raiseRuntimeExceptionIf(false, static::EXCEPTIONMESSAGE);
     }
 }

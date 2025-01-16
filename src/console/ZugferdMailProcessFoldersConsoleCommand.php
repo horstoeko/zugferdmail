@@ -29,6 +29,7 @@ class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleComm
     use ZugferdMailConsoleHandlesConfigOptions;
     use ZugferdMailConsoleHandlesMailAccountOptions;
     use ZugferdMailConsoleOutputsMessageBagMessages;
+
     /**
      * @inheritDoc
      */

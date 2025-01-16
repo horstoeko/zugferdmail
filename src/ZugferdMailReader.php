@@ -50,6 +50,7 @@ class ZugferdMailReader
     use ZugferdMailReceivesMessagesFromMessageBag;
     use ZugferdMailClearsMessageBag;
     use ZugferdMailRaisesExceptions;
+
     /**
      * The config
      *
@@ -216,17 +217,15 @@ class ZugferdMailReader
 
         $document = null;
 
-        if (is_null($document)) {
-            try {
-                $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
-                $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
-                $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
-                $this->validateDocument($document, $messageAdditionalData);
-                $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
-                $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
-            } catch (Throwable $e) {
-                $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
-            }
+        try {
+            $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
+            $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
+            $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
+            $this->validateDocument($document, $messageAdditionalData);
+            $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
+            $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
+        } catch (Throwable $e) {
+            $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
         }
 
         if (is_null($document)) {

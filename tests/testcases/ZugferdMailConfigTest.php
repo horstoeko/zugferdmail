@@ -19,7 +19,6 @@ class ZugferdMailConfigTest extends TestCase
     {
         $config = new ZugferdMailConfig();
 
-        $this->assertNotNull($config);
         $this->assertSame("d-M-Y", $config->getDateFormatIdentifier());
         $this->assertSame("list", $config->getMessageKeyIdentifier());
         $this->assertEquals(false, $config->getUblSupportEnabled());
@@ -175,9 +174,7 @@ class ZugferdMailConfigTest extends TestCase
 
         $clientManagher = $config->makeClientManager();
 
-        $this->assertNotNull($clientManagher);
         $this->assertInstanceOf(ClientManager::class, $clientManagher);
-        $this->assertNotNull($clientManagher->account("test"));
         $this->assertInstanceOf(Client::class, $clientManagher->account("test"));
         $this->assertSame("127.0.0.1", $clientManagher->account("test")->host);
         $this->assertSame(993, $clientManagher->account("test")->port);
@@ -289,7 +286,6 @@ class ZugferdMailConfigTest extends TestCase
 
         $config = ZugferdMailConfig::loadFromFile($configFilename);
 
-        $this->assertNotNull($config);
         $this->assertInstanceOf(ZugferdMailConfig::class, $config);
         $this->assertSame("d-M-Y", $config->getDateFormatIdentifier());
         $this->assertSame("id", $config->getMessageKeyIdentifier());
@@ -429,7 +425,6 @@ class ZugferdMailConfigTest extends TestCase
 
         $config = ZugferdMailConfig::loadFromFile($configFilename);
 
-        $this->assertNotNull($config);
         $this->assertInstanceOf(ZugferdMailConfig::class, $config);
         $this->assertSame("d-M-Y", $config->getDateFormatIdentifier());
         $this->assertSame("list", $config->getMessageKeyIdentifier());

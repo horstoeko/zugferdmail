@@ -164,15 +164,12 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $this->assertSame(60, $account->getTimeout());
         $this->assertTrue($arrayInput->getOption('enableunseenonly'));
 
-        $this->assertIsArray($account->getFoldersTowatch());
         $this->assertEmpty($account->getFoldersTowatch());
         $this->assertCount(0, $account->getFoldersTowatch());
 
-        $this->assertIsArray($account->getMimeTypesToWatch());
         $this->assertEmpty($account->getMimeTypesToWatch());
         $this->assertCount(0, $account->getMimeTypesToWatch());
 
-        $this->assertIsArray($account->getHandlers());
         $this->assertEmpty($account->getHandlers());
         $this->assertCount(0, $account->getHandlers());
     }
@@ -214,15 +211,12 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
         $this->assertSame(60, $account->getTimeout());
         $this->assertTrue($arrayInput->getOption('enableunseenonly'));
 
-        $this->assertIsArray($account->getFoldersTowatch());
         $this->assertNotEmpty($account->getFoldersTowatch());
         $this->assertCount(2, $account->getFoldersTowatch());
 
-        $this->assertIsArray($account->getMimeTypesToWatch());
         $this->assertNotEmpty($account->getMimeTypesToWatch());
         $this->assertCount(2, $account->getMimeTypesToWatch());
 
-        $this->assertIsArray($account->getHandlers());
         $this->assertNotEmpty($account->getHandlers());
         $this->assertCount(2, $account->getHandlers());
     }
@@ -262,7 +256,6 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(5, $outputs);
 
@@ -308,7 +301,6 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(6, $outputs);
 
@@ -355,7 +347,6 @@ class ZugferdMailConcernConsoleHandlesMailAccountOptionsTest extends TestCase
 
         $outputs = $testOutputInterface->getOutputs();
 
-        $this->assertIsArray($outputs);
         $this->assertNotEmpty($outputs);
         $this->assertCount(6, $outputs);
 

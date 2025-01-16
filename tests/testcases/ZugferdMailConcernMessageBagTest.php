@@ -461,8 +461,6 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $messageBagAsString = (string)$messageBag;
         $messageBagAsJson = $messageBag->toJson();
 
-        $this->assertIsString($messageBagAsString);
-        $this->assertIsString($messageBagAsJson);
         $this->assertSame($messageBagAsJson, $messageBagAsString);
 
         $this->assertJson($messageBagAsJson);
