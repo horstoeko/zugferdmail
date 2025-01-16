@@ -139,8 +139,8 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
                     $account->getPort(),
                     $account->getProtocol(),
                     $account->getEncryption(),
-                    $account->getValidateCert() ? "Yes" : "No",
-                    $account->getAuthentication() ?? "None",
+                    $account->getValidateCert() === true ? "Yes" : "No",
+                    $account->getAuthentication() === null ? "None" : $account->getAuthentication(),
                     $account->getUsername(),
                 ],
             ]
@@ -166,7 +166,6 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
         foreach ($account->getFoldersTowatch() as $folderToWatch) {
             $table->addRow([$folderToWatch]);
         }
-
         $table->render();
     }
 
@@ -188,7 +187,6 @@ trait ZugferdMailConsoleHandlesMailAccountOptions
         foreach ($account->getMimeTypesToWatch() as $mimeTypeToWatch) {
             $table->addRow([$mimeTypeToWatch]);
         }
-
         $table->render();
     }
 }

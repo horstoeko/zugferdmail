@@ -51,16 +51,16 @@ class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         try {
             $moveToFolder = $this->parsePlaceholdersByZugferdDocumentReader($document, $this->getMoveToFolder());
             $this->addLogMessageToMessageBag(sprintf('Moving mail to %s', $moveToFolder));
             $message->move($moveToFolder);
             $this->addLogMessageToMessageBag(sprintf('Successfully moved mail to %s', $moveToFolder));
-        } catch (Throwable $throwable) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to move mail: %s', $throwable->getMessage()));
-            throw $throwable;
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to move mail: %s', $e->getMessage()));
+            throw $e;
         }
     }
 
@@ -82,7 +82,7 @@ class ZugferdMailHandlerMoveMessage extends ZugferdMailHandlerAbstract
      */
     public function setMoveToFolder(string $moveToFolder): ZugferdMailHandlerMoveMessage
     {
-        if ($moveToFolder === '' || $moveToFolder === '0') {
+        if (empty($moveToFolder)) {
             throw new InvalidArgumentException("The destination folder must not be empty");
         }
 

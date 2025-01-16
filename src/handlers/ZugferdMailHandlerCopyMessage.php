@@ -51,16 +51,16 @@ class ZugferdMailHandlerCopyMessage extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         try {
             $copyToFolder = $this->parsePlaceholdersByZugferdDocumentReader($document, $this->getCopyToFolder());
             $this->addLogMessageToMessageBag(sprintf('Copying mail to %s', $copyToFolder));
             $message->copy($copyToFolder);
             $this->addLogMessageToMessageBag(sprintf('Successfully copied mail to %s', $copyToFolder));
-        } catch (Throwable $throwable) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to copy mail: %s', $throwable->getMessage()));
-            throw $throwable;
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to copy mail: %s', $e->getMessage()));
+            throw $e;
         }
     }
 
@@ -82,7 +82,7 @@ class ZugferdMailHandlerCopyMessage extends ZugferdMailHandlerAbstract
      */
     public function setCopyToFolder(string $copyToFolder): ZugferdMailHandlerCopyMessage
     {
-        if ($copyToFolder === '' || $copyToFolder === '0') {
+        if (empty($copyToFolder)) {
             throw new InvalidArgumentException("The destination folder must not be empty");
         }
 

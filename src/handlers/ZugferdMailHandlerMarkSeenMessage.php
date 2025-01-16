@@ -30,15 +30,15 @@ class ZugferdMailHandlerMarkSeenMessage extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         try {
             $this->addLogMessageToMessageBag(sprintf('Marking mail %s as seen', $message->getUid()));
             $message->setFlag('Seen');
             $this->addLogMessageToMessageBag(sprintf('Successfully marked mail %s as seen', $message->getUid()));
-        } catch (Throwable $throwable) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to mark mail as seen: %s', $throwable->getMessage()));
-            throw $throwable;
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to mark mail as seen: %s', $e->getMessage()));
+            throw $e;
         }
     }
 }

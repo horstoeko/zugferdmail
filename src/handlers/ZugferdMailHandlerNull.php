@@ -29,7 +29,7 @@ class ZugferdMailHandlerNull extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         // Do nothing here...
     }

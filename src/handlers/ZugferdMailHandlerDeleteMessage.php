@@ -30,15 +30,15 @@ class ZugferdMailHandlerDeleteMessage extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         try {
             $this->addLogMessageToMessageBag(sprintf('Deleting message with %s', $message->getUid()));
             $message->delete();
             $this->addLogMessageToMessageBag(sprintf('Successfully deleted message with %s', $message->getUid()));
-        } catch (Throwable $throwable) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to delete message with id %s: %s', $message->getUid(), $throwable->getMessage()));
-            throw $throwable;
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to delete message with id %s: %s', $message->getUid(), $e->getMessage()));
+            throw $e;
         }
     }
 }

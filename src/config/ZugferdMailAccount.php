@@ -155,7 +155,7 @@ class ZugferdMailAccount
      */
     public function setIdentifier(string $identifier = ''): ZugferdMailAccount
     {
-        if (in_array(trim($identifier), ['', '0'], true)) {
+        if (empty(trim($identifier))) {
             $identifier = $this->createGuidForIdentifier();
         }
 
@@ -182,7 +182,7 @@ class ZugferdMailAccount
      */
     public function setHost(string $host): ZugferdMailAccount
     {
-        if ($host === '' || $host === '0') {
+        if (empty($host)) {
             throw new InvalidArgumentException("The host must not be empty");
         }
 
@@ -313,7 +313,7 @@ class ZugferdMailAccount
      */
     public function setUsername(string $username): ZugferdMailAccount
     {
-        if ($username === '' || $username === '0') {
+        if (empty($username)) {
             throw new InvalidArgumentException("The username must be not empty");
         }
 
@@ -340,7 +340,7 @@ class ZugferdMailAccount
      */
     public function setPassword(string $password): ZugferdMailAccount
     {
-        if ($password === '' || $password === '0') {
+        if (empty($password)) {
             throw new InvalidArgumentException("The password must be not empty");
         }
 
@@ -367,7 +367,7 @@ class ZugferdMailAccount
      */
     public function setAuthentication(?string $authentication): ZugferdMailAccount
     {
-        if (!is_null($authentication) && $authentication !== "oauth") {
+        if (!is_null($authentication) && $authentication != "oauth") {
             throw new InvalidArgumentException("The authentication method must be one of null (NUL), oauth");
         }
 
@@ -434,7 +434,7 @@ class ZugferdMailAccount
      */
     public function addFolderToWatch(string $folderPath): ZugferdMailAccount
     {
-        if ($folderPath === '' || $folderPath === '0') {
+        if (empty($folderPath)) {
             throw new InvalidArgumentException("Path must not be empty");
         }
 
@@ -474,7 +474,7 @@ class ZugferdMailAccount
      */
     public function addMimeTypeToWatch(string $mimeTypesToWatch): ZugferdMailAccount
     {
-        if ($mimeTypesToWatch === '' || $mimeTypesToWatch === '0') {
+        if (empty($mimeTypesToWatch)) {
             throw new InvalidArgumentException("Mimetype must not be empty");
         }
 
@@ -506,12 +506,17 @@ class ZugferdMailAccount
     /**
      * Sets multiuple handlers to run when a document was found
      *
-     * @param  array<int, ZugferdMailHandlerAbstract> $handlers
+     * @param  array<ZugferdMailHandlerAbstract> $handlers
      * @return ZugferdMailAccount
      */
     public function setHandlers(array $handlers): ZugferdMailAccount
     {
-        $this->handlers = $handlers;
+        $this->handlers = array_filter(
+            $handlers,
+            function ($handler) {
+                return $handler instanceof ZugferdMailHandlerAbstract;
+            }
+        );
 
         return $this;
     }
@@ -524,7 +529,12 @@ class ZugferdMailAccount
      */
     public function setCallbacks(array $callbacks): ZugferdMailAccount
     {
-        $this->callBacks = $callbacks;
+        $this->callBacks = array_filter(
+            $callbacks,
+            function ($callback) {
+                return is_callable($callback);
+            }
+        );
 
         return $this;
     }

@@ -52,7 +52,6 @@ trait ZugferdMailReceivesMessagesFromMessageBag
     {
         return ZugferdMailMessageBag::factory()->hasLogMessages();
     }
-
     /**
      * Returns an array of all log messages
      *

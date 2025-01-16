@@ -92,24 +92,25 @@ class ZugferdMailPlaceholderHelperTest extends TestCase
         $testString = "{test}_{test2}_{test3_ymd}_{test4_a}_{test4_b}";
         $parsedstring = $placeholderHelper->parseString($testString);
 
-        $this->assertSame(sprintf("_A_%s_aa_bb", $dateTime->format("Ymd")), $parsedstring);
+        $this->assertEquals(sprintf("_A_%s_aa_bb", $dateTime->format("Ymd")), $parsedstring);
 
         $testString = "{test2}_{test3_ymd}_{test4_a}_{test4_b}";
         $parsedstring = $placeholderHelper->parseString($testString);
 
-        $this->assertSame(sprintf("A_%s_aa_bb", $dateTime->format("Ymd")), $parsedstring);
+        $this->assertEquals(sprintf("A_%s_aa_bb", $dateTime->format("Ymd")), $parsedstring);
 
         $testString = "{test4_a}_{test4_b}";
         $parsedstring = $placeholderHelper->parseString($testString);
 
-        $this->assertSame("aa_bb", $parsedstring);
+        $this->assertEquals("aa_bb", $parsedstring);
     }
 
     public function testCreateFromZugferdDocumentReaderEn16931(): void
     {
-        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_en16931.xml");
+        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(dirname(__FILE__) . "/../assets/fx_en16931.xml");
 
-            $this->assertSame(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
+        $this->assertNotNull($documentReader);
+        $this->assertEquals(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
 
         $placeholderHelper = ZugferdMailPlaceholderHelper::fromZugferdDocumentReader($documentReader);
 
@@ -144,9 +145,10 @@ class ZugferdMailPlaceholderHelperTest extends TestCase
 
     public function testCreateFromZugferdDocumentReaderExtended(): void
     {
-        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_extended.xml");
+        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(dirname(__FILE__) . "/../assets/fx_extended.xml");
 
-        $this->assertSame(ZugferdProfiles::PROFILE_EXTENDED, $documentReader->getProfileId());
+        $this->assertNotNull($documentReader);
+        $this->assertEquals(ZugferdProfiles::PROFILE_EXTENDED, $documentReader->getProfileId());
 
         $placeholderHelper = ZugferdMailPlaceholderHelper::fromZugferdDocumentReader($documentReader);
 

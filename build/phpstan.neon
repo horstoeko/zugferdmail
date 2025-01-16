@@ -6,4 +6,3 @@ parameters:
     treatPhpDocTypesAsCertain: false
     excludePaths:
         - ../src/entities/*
-        - ../tests/helpers/TestOutputInterface.php

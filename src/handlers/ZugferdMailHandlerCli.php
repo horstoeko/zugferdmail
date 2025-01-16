@@ -29,9 +29,9 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
-        if (PHP_SAPI !== 'cli') {
+        if (php_sapi_name() !== 'cli') {
             return;
         }
 
@@ -54,7 +54,7 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
         $this->addLogMessageToMessageBag(sprintf(" - Document name      %s", $documentname));
         $this->addLogMessageToMessageBag(sprintf(" - Document language  %s", $documentlanguage));
 
-        if ($effectiveSpecifiedPeriod instanceof \DateTime) {
+        if ($effectiveSpecifiedPeriod) {
             $this->addLogMessageToMessageBag(sprintf(" - Period             %s", $effectiveSpecifiedPeriod->format("d.m.Y")));
         }
     }

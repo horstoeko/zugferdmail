@@ -13,25 +13,29 @@ class ZugferdMailConcernParsesPlaceholdersTest extends TestCase
 
     public function testParsePlaceholdersByZugferdDocumentReaderEn16931(): void
     {
-        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_en16931.xml");
+        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(dirname(__FILE__) . "/../assets/fx_en16931.xml");
 
-        $this->assertSame(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
+        $this->assertNotNull($documentReader);
+        $this->assertEquals(ZugferdProfiles::PROFILE_EN16931, $documentReader->getProfileId());
 
         $testString = "Invoice_{documentno}_{documentsellername}";
         $parsedString = $this->parsePlaceholdersByZugferdDocumentReader($documentReader, $testString);
 
-        $this->assertSame("Invoice_471102_Lieferant GmbH", $parsedString);
+        $this->assertIsString($parsedString);
+        $this->assertEquals("Invoice_471102_Lieferant GmbH", $parsedString);
     }
 
     public function testParsePlaceholdersByZugferdDocumentReaderExtended(): void
     {
-        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(__DIR__ . "/../assets/fx_extended.xml");
+        $documentReader = ZugferdDocumentReader::readAndGuessFromFile(dirname(__FILE__) . "/../assets/fx_extended.xml");
 
-        $this->assertSame(ZugferdProfiles::PROFILE_EXTENDED, $documentReader->getProfileId());
+        $this->assertNotNull($documentReader);
+        $this->assertEquals(ZugferdProfiles::PROFILE_EXTENDED, $documentReader->getProfileId());
 
         $testString = "Invoice_{documentno}_{documentsellername}";
         $parsedString = $this->parsePlaceholdersByZugferdDocumentReader($documentReader, $testString);
 
-        $this->assertSame("Invoice_471102_Lieferant GmbH", $parsedString);
+        $this->assertIsString($parsedString);
+        $this->assertEquals("Invoice_471102_Lieferant GmbH", $parsedString);
     }
 }

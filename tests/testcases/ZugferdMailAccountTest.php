@@ -16,17 +16,18 @@ class ZugferdMailAccountTest extends TestCase
     {
         $mailAccount = new ZugferdMailAccount();
 
+        $this->assertNotNull($mailAccount);
         $this->assertNotEmpty($mailAccount->getIdentifier());
-        $this->assertMatchesRegularExpression("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier());
-        $this->assertSame("", $mailAccount->getHost());
-        $this->assertSame(0, $mailAccount->getPort());
-        $this->assertSame("imap", $mailAccount->getProtocol());
+        $this->assertTrue(preg_match("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier()) === 1);
+        $this->assertEquals("", $mailAccount->getHost());
+        $this->assertEquals(0, $mailAccount->getPort());
+        $this->assertEquals("imap", $mailAccount->getProtocol());
         $this->assertEquals("ssl", $mailAccount->getEncryption());
         $this->assertEquals(true, $mailAccount->getValidateCert());
-        $this->assertSame("", $mailAccount->getUsername());
-        $this->assertSame("", $mailAccount->getPassword());
+        $this->assertEquals("", $mailAccount->getUsername());
+        $this->assertEquals("", $mailAccount->getPassword());
         $this->assertNull($mailAccount->getAuthentication());
-        $this->assertSame(30, $mailAccount->getTimeout());
+        $this->assertEquals(30, $mailAccount->getTimeout());
         $this->assertEmpty($mailAccount->getFoldersTowatch());
         $this->assertEmpty($mailAccount->getMimeTypesToWatch());
         $this->assertEmpty($mailAccount->getHandlers());
@@ -39,7 +40,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setIdentifier("");
 
-        $this->assertMatchesRegularExpression("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier());
+        $this->assertEquals(1, preg_match("/^(\{)?[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}(?(1)\})$/i", $mailAccount->getIdentifier()));
     }
 
     public function testMailAccountSetIdValid(): void
@@ -47,7 +48,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setIdentifier("id");
 
-        $this->assertSame("id", $mailAccount->getIdentifier());
+        $this->assertEquals("id", $mailAccount->getIdentifier());
     }
 
     public function testMailAccountSetHostInvalid(): void
@@ -63,7 +64,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setHost("127.0.0.1");
 
-        $this->assertSame("127.0.0.1", $mailAccount->getHost());
+        $this->assertEquals("127.0.0.1", $mailAccount->getHost());
     }
 
     public function testMailAccountSetPortInvalid(): void
@@ -79,13 +80,13 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setPort(25);
 
-        $this->assertSame(25, $mailAccount->getPort());
+        $this->assertEquals(25, $mailAccount->getPort());
     }
 
     public function testMailAccountSetProtocolInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("The protocol must be one of imap, legacy-imap, pop3 or nntp, unknown given");
+        $this->expectExceptionMessage(sprintf("The protocol must be one of imap, legacy-imap, pop3 or nntp, unknown given"));
 
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setProtocol("unknown");
@@ -96,7 +97,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setProtocol("pop3");
 
-        $this->assertSame("pop3", $mailAccount->getProtocol());
+        $this->assertEquals("pop3", $mailAccount->getProtocol());
     }
 
     public function testMailAccountSetEncryptionInvalid(): void
@@ -136,7 +137,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setUsername("demouser");
 
-        $this->assertSame("demouser", $mailAccount->getUsername());
+        $this->assertEquals("demouser", $mailAccount->getUsername());
     }
 
     public function testMailAccountSetPasswordInvalid(): void
@@ -152,7 +153,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setPassword("demopwd");
 
-        $this->assertSame("demopwd", $mailAccount->getPassword());
+        $this->assertEquals("demopwd", $mailAccount->getPassword());
     }
 
     public function testMailAccountSetAuthenticationInvalid(): void
@@ -168,7 +169,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setAuthentication("oauth");
 
-        $this->assertSame("oauth", $mailAccount->getAuthentication());
+        $this->assertEquals("oauth", $mailAccount->getAuthentication());
     }
 
     public function testMailAccountSetTimeoutInvalid(): void
@@ -184,7 +185,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setTimeout(60);
 
-        $this->assertSame(60, $mailAccount->getTimeout());
+        $this->assertEquals(60, $mailAccount->getTimeout());
     }
 
     public function testMailAccountSetFoldersToWatchEmptyArray(): void
@@ -192,6 +193,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setFoldersToWatch(['', '']);
 
+        $this->assertIsArray($mailAccount->getFoldersTowatch());
         $this->assertEmpty($mailAccount->getFoldersTowatch());
     }
 
@@ -203,7 +205,7 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertNotEmpty($mailAccount->getFoldersTowatch());
         $this->assertArrayNotHasKey(0, $mailAccount->getFoldersTowatch());
         $this->assertArrayHasKey(1, $mailAccount->getFoldersTowatch());
-        $this->assertSame('INBOX', $mailAccount->getFoldersTowatch()[1]);
+        $this->assertEquals('INBOX', $mailAccount->getFoldersTowatch()[1]);
     }
 
     public function testMailAccountSetFoldersToWatchAllNotEmptyArray(): void
@@ -215,8 +217,8 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertArrayHasKey(0, $mailAccount->getFoldersTowatch());
         $this->assertArrayHasKey(1, $mailAccount->getFoldersTowatch());
         $this->assertArrayNotHasKey(2, $mailAccount->getFoldersTowatch());
-        $this->assertSame('SOMEFOLDER', $mailAccount->getFoldersTowatch()[0]);
-        $this->assertSame('INBOX', $mailAccount->getFoldersTowatch()[1]);
+        $this->assertEquals('SOMEFOLDER', $mailAccount->getFoldersTowatch()[0]);
+        $this->assertEquals('INBOX', $mailAccount->getFoldersTowatch()[1]);
     }
 
     public function testMailAccountAddFoldersToWatchEmpty(): void
@@ -250,6 +252,7 @@ class ZugferdMailAccountTest extends TestCase
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setMimeTypesToWatch(['', '']);
 
+        $this->assertIsArray($mailAccount->getMimeTypesToWatch());
         $this->assertEmpty($mailAccount->getMimeTypesToWatch());
     }
 
@@ -261,7 +264,7 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertNotEmpty($mailAccount->getMimeTypesToWatch());
         $this->assertArrayNotHasKey(0, $mailAccount->getMimeTypesToWatch());
         $this->assertArrayHasKey(1, $mailAccount->getMimeTypesToWatch());
-        $this->assertSame('text/xml', $mailAccount->getMimeTypesToWatch()[1]);
+        $this->assertEquals('text/xml', $mailAccount->getMimeTypesToWatch()[1]);
     }
 
     public function testMailAccountSetMimeTypesToWatchAllNotEmptyArray(): void
@@ -273,8 +276,8 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertArrayHasKey(0, $mailAccount->getMimeTypesToWatch());
         $this->assertArrayHasKey(1, $mailAccount->getMimeTypesToWatch());
         $this->assertArrayNotHasKey(2, $mailAccount->getMimeTypesToWatch());
-        $this->assertSame('application/pdf', $mailAccount->getMimeTypesToWatch()[0]);
-        $this->assertSame('text/xml', $mailAccount->getMimeTypesToWatch()[1]);
+        $this->assertEquals('application/pdf', $mailAccount->getMimeTypesToWatch()[0]);
+        $this->assertEquals('text/xml', $mailAccount->getMimeTypesToWatch()[1]);
     }
 
     public function testMailAccountAddMimeTypesToWatchEmpty(): void
@@ -301,6 +304,16 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertArrayNotHasKey(2, $mailAccount->getMimeTypesToWatch());
         $this->assertEquals('application/pdf', $mailAccount->getMimeTypesToWatch()[0]);
         $this->assertEquals('text/xml', $mailAccount->getMimeTypesToWatch()[1]);
+    }
+
+    public function testMailAccountSetHandlersOneInvalid(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setHandlers([new ZugferdMailMessageBagType(), new ZugferdMailHandlerNull()]);
+
+        $this->assertArrayNotHasKey(0, $mailAccount->getHandlers());
+        $this->assertArrayHasKey(1, $mailAccount->getHandlers());
+        $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccount->getHandlers()[1]);
     }
 
     public function testMailAccountSetHandlersAllValid(): void
@@ -336,7 +349,7 @@ class ZugferdMailAccountTest extends TestCase
     {
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setCallbacks(
-            [function (): void {
+            [null, function () {
             }]
         );
 
@@ -349,8 +362,8 @@ class ZugferdMailAccountTest extends TestCase
     {
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setCallbacks(
-            [function (): void {
-            }, function (): void {
+            [function () {
+            }, function () {
             }]
         );
 
@@ -364,7 +377,7 @@ class ZugferdMailAccountTest extends TestCase
     {
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->addCallback(
-            function (): void {
+            function () {
             }
         );
 
@@ -373,7 +386,7 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[0]);
 
         $mailAccount->addCallback(
-            function (): void {
+            function () {
             }
         );
 
@@ -418,6 +431,7 @@ class ZugferdMailAccountTest extends TestCase
 
         $mailAccountDefinition = $mailAccount->getAccountDefinition();
 
+        $this->assertIsArray($mailAccountDefinition);
         $this->assertArrayHasKey("host", $mailAccountDefinition);
         $this->assertArrayHasKey("port", $mailAccountDefinition);
         $this->assertArrayHasKey("protocol", $mailAccountDefinition);

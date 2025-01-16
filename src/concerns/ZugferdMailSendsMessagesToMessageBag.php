@@ -134,7 +134,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMessageToMessageBagIf(bool $condition, string $type, string $message, array $additionalData = [])
     {
-        return $condition ? $this->addMessageToMessageBag($type, $message, $additionalData) : $this;
+        return $condition === true ? $this->addMessageToMessageBag($type, $message, $additionalData) : $this;
     }
 
     /**
@@ -147,7 +147,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addLogMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
     {
-        return $condition ? $this->addLogMessageToMessageBag($message, $additionalData) : $this;
+        return $condition === true ? $this->addLogMessageToMessageBag($message, $additionalData) : $this;
     }
 
     /**
@@ -159,7 +159,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addLogSecondaryMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
     {
-        return $condition ? $this->addLogSecondaryMessageToMessageBag($message, $additionalData) : $this;
+        return $condition === true ? $this->addLogSecondaryMessageToMessageBag($message, $additionalData) : $this;
     }
 
     /**
@@ -172,7 +172,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addWarningMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
     {
-        return $condition ? $this->addWarningMessageToMessageBag($message, $additionalData) : $this;
+        return $condition === true ? $this->addWarningMessageToMessageBag($message, $additionalData) : $this;
     }
 
     /**
@@ -185,7 +185,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addErrorMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
     {
-        return $condition ? $this->addErrorMessageToMessageBag($message, $additionalData) : $this;
+        return $condition === true ? $this->addErrorMessageToMessageBag($message, $additionalData) : $this;
     }
 
     /**
@@ -198,7 +198,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addSuccessMessageToMessageBagIf(bool $condition, string $message, array $additionalData = [])
     {
-        return $condition ? $this->addSuccessMessageToMessageBag($message, $additionalData) : $this;
+        return $condition === true ? $this->addSuccessMessageToMessageBag($message, $additionalData) : $this;
     }
 
     /**
@@ -211,7 +211,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addThrowableToMessageBagIf(bool $condition, Throwable $throwable, array $additionalData = [])
     {
-        return $condition ? $this->addThrowableToMessageBag($throwable, $additionalData) : $this;
+        return $condition === true ? $this->addThrowableToMessageBag($throwable, $additionalData) : $this;
     }
 
     /**
@@ -226,7 +226,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($type, $additionalData): void {
+            function ($message) use ($type, $additionalData) {
                 $this->addMessageToMessageBag($type, $message, $additionalData);
             }
         );
@@ -245,7 +245,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData): void {
+            function ($message) use ($additionalData) {
                 $this->addLogMessageToMessageBag($message, $additionalData);
             }
         );
@@ -264,7 +264,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData): void {
+            function ($message) use ($additionalData) {
                 $this->addLogSecondaryMessageToMessageBag($message, $additionalData);
             }
         );
@@ -283,7 +283,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData): void {
+            function ($message) use ($additionalData) {
                 $this->addWarningMessageToMessageBag($message, $additionalData);
             }
         );
@@ -302,7 +302,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData): void {
+            function ($message) use ($additionalData) {
                 $this->addErrorMessageToMessageBag($message, $additionalData);
             }
         );
@@ -321,7 +321,7 @@ trait ZugferdMailSendsMessagesToMessageBag
     {
         array_walk(
             $messages,
-            function ($message) use ($additionalData): void {
+            function ($message) use ($additionalData) {
                 $this->addSuccessMessageToMessageBag($message, $additionalData);
             }
         );
@@ -340,7 +340,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMultipleMessagesToMessageBagIf(bool $condition, string $type, array $messages, array $additionalData = [])
     {
-        return $condition ? $this->addMultipleMessagesToMessageBag($type, $messages, $additionalData) : $this;
+        return $condition === true ? $this->addMultipleMessagesToMessageBag($type, $messages, $additionalData) : $this;
     }
 
     /**
@@ -353,7 +353,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMultipleLogMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
     {
-        return $condition ? $this->addMultipleLogMessagesToMessageBag($messages, $additionalData) : $this;
+        return $condition === true ? $this->addMultipleLogMessagesToMessageBag($messages, $additionalData) : $this;
     }
 
     /**
@@ -366,7 +366,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMultipleLogSecondaryMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
     {
-        return $condition ? $this->addMultipleLogSecondaryMessagesToMessageBag($messages, $additionalData) : $this;
+        return $condition === true ? $this->addMultipleLogSecondaryMessagesToMessageBag($messages, $additionalData) : $this;
     }
 
     /**
@@ -379,7 +379,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMultipleWarningMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
     {
-        return $condition ? $this->addMultipleWarningMessagesToMessageBag($messages, $additionalData) : $this;
+        return $condition === true ? $this->addMultipleWarningMessagesToMessageBag($messages, $additionalData) : $this;
     }
 
     /**
@@ -392,7 +392,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMultipleErrorMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
     {
-        return $condition ? $this->addMultipleErrorMessagesToMessageBag($messages, $additionalData) : $this;
+        return $condition === true ? $this->addMultipleErrorMessagesToMessageBag($messages, $additionalData) : $this;
     }
 
     /**
@@ -405,7 +405,7 @@ trait ZugferdMailSendsMessagesToMessageBag
      */
     protected function addMultipleSuccessMessagesToMessageBagIf(bool $condition, array $messages, array $additionalData = [])
     {
-        return $condition ? $this->addMultipleSuccessMessagesToMessageBag($messages, $additionalData) : $this;
+        return $condition === true ? $this->addMultipleSuccessMessagesToMessageBag($messages, $additionalData) : $this;
     }
 
     /**

@@ -62,7 +62,7 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
         $messages = collect($this->getAllMessagesFromMessageBag());
 
         $messages = $messages->map(
-            function (array $message, int $messageKey) use ($messages): array {
+            function ($message, int $messageKey) use ($messages) {
                 $result = [];
 
                 if ($message["message"] == "" || $message["message"] == "<T-SEP>") {
@@ -109,9 +109,9 @@ trait ZugferdMailConsoleOutputsMessageBagMessages
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_ERROR) {
             if (isset($message["additionalData"]["errno"])) {
                 return sprintf("<red-text>%s in %s:%s</red-text>", $messageText, $message["additionalData"]["errfile"], $message["additionalData"]["errline"]);
+            } else {
+                return sprintf("<red-text>%s</red-text>", $messageText);
             }
-
-            return sprintf("<red-text>%s</red-text>", $messageText);
         }
 
         if ($message["type"] === ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS) {

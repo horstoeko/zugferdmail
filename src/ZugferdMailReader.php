@@ -46,10 +46,10 @@ use Webklex\PHPIMAP\Exceptions\RuntimeException;
  */
 class ZugferdMailReader
 {
-    use ZugferdMailSendsMessagesToMessageBag;
-    use ZugferdMailReceivesMessagesFromMessageBag;
-    use ZugferdMailClearsMessageBag;
-    use ZugferdMailRaisesExceptions;
+    use ZugferdMailSendsMessagesToMessageBag,
+        ZugferdMailReceivesMessagesFromMessageBag,
+        ZugferdMailClearsMessageBag,
+        ZugferdMailRaisesExceptions;
 
     /**
      * The config
@@ -132,7 +132,7 @@ class ZugferdMailReader
     protected function checkSingleAccount(ZugferdMailAccount $account): void
     {
         $this->clientManager->account($account->getIdentifier())->connect()->getFolders()->each(
-            function (Folder $folder) use ($account): void {
+            function (Folder $folder) use ($account) {
                 $this->checkSingleAccountFolder($account, $folder);
             }
         );
@@ -157,14 +157,14 @@ class ZugferdMailReader
                     return $query->unseen();
                 }
             )->get()->each(
-                function (Message $message) use ($account, $folder): void {
+                function (Message $message) use ($account, $folder) {
                     $this->checkSingleMessage($account, $folder, $message);
                 }
             );
         }
 
         collect($folder->children)->each(
-            function (Folder $subFolder) use ($account): void {
+            function (Folder $subFolder) use ($account) {
                 $this->checkSingleAccountFolder($account, $subFolder);
             }
         );
@@ -181,7 +181,7 @@ class ZugferdMailReader
     protected function checkSingleMessage(ZugferdMailAccount $account, Folder $folder, Message $message): void
     {
         $message->attachments()->each(
-            function (Attachment $attachment) use ($account, $folder, $message): void {
+            function (Attachment $attachment) use ($account, $folder, $message) {
                 $this->checkSingleMessageAttachment($account, $folder, $message, $attachment);
             }
         );
@@ -217,15 +217,17 @@ class ZugferdMailReader
 
         $document = null;
 
-        try {
-            $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
-            $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
-            $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
-            $this->validateDocument($document, $messageAdditionalData);
-            $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
-            $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
-        } catch (Throwable $e) {
-            $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
+        if (is_null($document)) {
+            try {
+                $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
+                $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
+                $this->addSuccessMessageToMessageBag('Mail contains a ZUGFeRD compatible PDF', $messageAdditionalData);
+                $this->validateDocument($document, $messageAdditionalData);
+                $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
+                $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
+            } catch (Throwable $e) {
+                $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
+            }
         }
 
         if (is_null($document)) {

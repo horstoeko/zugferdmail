@@ -33,7 +33,7 @@ trait ZugferdMailRaisesExceptions
      */
     protected function raiseExceptionClassIf(bool $condidition, string $exceptionClass, string $message = ""): void
     {
-        if (!$condidition) {
+        if ($condidition !== true) {
             return;
         }
 

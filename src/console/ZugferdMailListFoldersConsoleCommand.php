@@ -28,9 +28,10 @@ use Webklex\PHPIMAP\Folder;
  */
 class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
-    use ZugferdMailConsoleHandlesConfigOptions;
-    use ZugferdMailConsoleHandlesMailAccountOptions;
-    use ZugferdMailConsoleOutputsMessageBagMessages;
+    use ZugferdMailConsoleHandlesConfigOptions,
+        ZugferdMailConsoleHandlesMailAccountOptions,
+        ZugferdMailConsoleOutputsMessageBagMessages;
+
     /**
      * @inheritDoc
      */
@@ -59,7 +60,7 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 
         $folders = $reader->getAllAvailableRootFolders();
         $folders = array_map(
-            function (Folder $folder): array {
+            function (Folder $folder) {
                 return [
                     $folder->full_name,
                     count($folder->children),

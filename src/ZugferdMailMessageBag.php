@@ -115,7 +115,7 @@ class ZugferdMailMessageBag
      * @param  array  $additionalData
      * @return ZugferdMailMessageBag
      */
-    public function addLogMessage(string $source, string $message, array $additionalData = []): self
+    public function addLogMessage(string $source, string $message, array $additionalData = [])
     {
         $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_LOG, $source, $message, $additionalData);
 
@@ -130,7 +130,7 @@ class ZugferdMailMessageBag
      * @param  array  $additionalData
      * @return ZugferdMailMessageBag
      */
-    public function addLogSecondaryMessage(string $source, string $message, array $additionalData = []): self
+    public function addLogSecondaryMessage(string $source, string $message, array $additionalData = [])
     {
         $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_LOG_SECONDARY, $source, $message, $additionalData);
 
@@ -145,7 +145,7 @@ class ZugferdMailMessageBag
      * @param  array  $additionalData
      * @return ZugferdMailMessageBag
      */
-    public function addWarningMessage(string $source, string $message, array $additionalData = []): self
+    public function addWarningMessage(string $source, string $message, array $additionalData = [])
     {
         $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_WARN, $source, $message, $additionalData);
 
@@ -160,7 +160,7 @@ class ZugferdMailMessageBag
      * @param  array  $additionalData
      * @return ZugferdMailMessageBag
      */
-    public function addErrorMessage(string $source, string $message, array $additionalData = []): self
+    public function addErrorMessage(string $source, string $message, array $additionalData = [])
     {
         $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_ERROR, $source, $message, $additionalData);
 
@@ -175,7 +175,7 @@ class ZugferdMailMessageBag
      * @param  array  $additionalData
      * @return ZugferdMailMessageBag
      */
-    public function addSuccessMessage(string $source, string $message, array $additionalData = []): self
+    public function addSuccessMessage(string $source, string $message, array $additionalData = [])
     {
         $this->addMessage(ZugferdMailMessageBagType::MESSAGETYPE_SUCCESS, $source, $message, $additionalData);
 
@@ -217,7 +217,7 @@ class ZugferdMailMessageBag
     {
         return array_filter(
             $this->messageContainer,
-            function (array $data) use ($messageType): bool {
+            function ($data) use ($messageType) {
                 return $data['type'] == $messageType;
             }
         );
@@ -240,7 +240,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoLogMessages(): bool
     {
-        return $this->getLogMessages() === [];
+        return empty($this->getLogMessages());
     }
 
     /**
@@ -270,7 +270,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoLogSecondaryMessages(): bool
     {
-        return $this->getLogSecondaryMessages() === [];
+        return empty($this->getLogSecondaryMessages());
     }
 
     /**
@@ -300,7 +300,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoWarningMessages(): bool
     {
-        return $this->getWarningMessages() === [];
+        return empty($this->getWarningMessages());
     }
 
     /**
@@ -330,7 +330,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoErrorMessages(): bool
     {
-        return $this->getErrorMessages() === [];
+        return empty($this->getErrorMessages());
     }
 
     /**
@@ -360,7 +360,7 @@ class ZugferdMailMessageBag
      */
     public function hasNoSuccessMessages(): bool
     {
-        return $this->getSuccessMessages() === [];
+        return empty($this->getSuccessMessages());
     }
 
     /**
@@ -390,6 +390,6 @@ class ZugferdMailMessageBag
      */
     public function hasAnyMessage(): bool
     {
-        return $this->getAllMessages() !== [];
+        return !empty($this->getAllMessages());
     }
 }

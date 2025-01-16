@@ -369,7 +369,7 @@ class ZugferdMailConfig
     {
         $this->accounts = array_filter(
             $this->accounts,
-            function ($account) use ($identifier): bool {
+            function ($account) use ($identifier) {
                 return strcasecmp($account->getIdentifier(), $identifier) != 0;
             }
         );
@@ -560,7 +560,7 @@ class ZugferdMailConfig
     {
         $result = true;
 
-        $schemaJson = file_get_contents(__DIR__ . "/schema.json");
+        $schemaJson = file_get_contents(dirname(__FILE__) . "/schema.json");
 
         try {
             Schema::import(
@@ -568,7 +568,7 @@ class ZugferdMailConfig
             )->in(
                 $jsonObject,
             );
-        } catch (Throwable $throwable) {
+        } catch (Throwable $e) {
             $result = false;
         }
 

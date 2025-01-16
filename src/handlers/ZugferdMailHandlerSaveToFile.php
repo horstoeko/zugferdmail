@@ -68,16 +68,16 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType): void
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
     {
         try {
             $finalFilename = $this->buildFileNameFrom($document, $attachment);
             $this->addLogMessageToMessageBag(sprintf('Saving attachment to %s%s', $this->getFilePath(), $finalFilename));
             $attachment->save($this->getFilePath(), $finalFilename);
             $this->addLogMessageToMessageBag(sprintf('Successfully saved attachment to %s%s', $this->getFilePath(), $finalFilename));
-        } catch (Throwable $throwable) {
-            $this->addErrorMessageToMessageBag(sprintf('Failed to save attachment: %s', $throwable->getMessage()));
-            throw $throwable;
+        } catch (Throwable $e) {
+            $this->addErrorMessageToMessageBag(sprintf('Failed to save attachment: %s', $e->getMessage()));
+            throw $e;
         }
     }
 
@@ -158,7 +158,7 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
 
         $parsedFilename = preg_replace('/_+/', '_', $parsedFilename);
 
-        $parsedFilename = $fileExtension !== '' && $fileExtension !== '0' ? FileUtils::combineFilenameWithFileextension($parsedFilename, $fileExtension) : $parsedFilename;
+        $parsedFilename = $fileExtension ? FileUtils::combineFilenameWithFileextension($parsedFilename, $fileExtension) : $parsedFilename;
 
         return $parsedFilename;
     }

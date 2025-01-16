@@ -19,8 +19,9 @@ class ZugferdMailConfigTest extends TestCase
     {
         $config = new ZugferdMailConfig();
 
-        $this->assertSame("d-M-Y", $config->getDateFormatIdentifier());
-        $this->assertSame("list", $config->getMessageKeyIdentifier());
+        $this->assertNotNull($config);
+        $this->assertEquals("d-M-Y", $config->getDateFormatIdentifier());
+        $this->assertEquals("list", $config->getMessageKeyIdentifier());
         $this->assertEquals(false, $config->getUblSupportEnabled());
         $this->assertEquals(false, $config->getSymfonyValidationEnabled());
         $this->assertEquals(false, $config->getSymfonyValidationEnabled());
@@ -43,7 +44,7 @@ class ZugferdMailConfigTest extends TestCase
         $config = new ZugferdMailConfig();
         $config->setDateFormatIdentifier("d M y");
 
-        $this->assertSame("d M y", $config->getDateFormatIdentifier());
+        $this->assertEquals("d M y", $config->getDateFormatIdentifier());
     }
 
     public function testMailConfigSetMessageKeyInvalid(): void
@@ -60,7 +61,7 @@ class ZugferdMailConfigTest extends TestCase
         $config = new ZugferdMailConfig();
         $config->setMessageKeyIdentifier("id");
 
-        $this->assertSame("id", $config->getMessageKeyIdentifier());
+        $this->assertEquals("id", $config->getMessageKeyIdentifier());
     }
 
     public function testMailConfigActivateUblSupport(): void
@@ -174,11 +175,13 @@ class ZugferdMailConfigTest extends TestCase
 
         $clientManagher = $config->makeClientManager();
 
+        $this->assertNotNull($clientManagher);
         $this->assertInstanceOf(ClientManager::class, $clientManagher);
+        $this->assertNotNull($clientManagher->account("test"));
         $this->assertInstanceOf(Client::class, $clientManagher->account("test"));
-        $this->assertSame("127.0.0.1", $clientManagher->account("test")->host);
-        $this->assertSame(993, $clientManagher->account("test")->port);
-        $this->assertSame("imap", $clientManagher->account("test")->protocol);
+        $this->assertEquals("127.0.0.1", $clientManagher->account("test")->host);
+        $this->assertEquals(993, $clientManagher->account("test")->port);
+        $this->assertEquals("imap", $clientManagher->account("test")->protocol);
     }
 
     public function testMailConfigAddAccount(): void
@@ -192,9 +195,9 @@ class ZugferdMailConfigTest extends TestCase
 
         $mailAccount = $config->getAccounts()[0];
 
-        $this->assertSame("127.0.0.1", $mailAccount->getHost());
-        $this->assertSame(993, $mailAccount->getPort());
-        $this->assertSame("imap", $mailAccount->getProtocol());
+        $this->assertEquals("127.0.0.1", $mailAccount->getHost());
+        $this->assertEquals(993, $mailAccount->getPort());
+        $this->assertEquals("imap", $mailAccount->getProtocol());
     }
 
     public function testMailConfigAddAccountObject(): void
@@ -222,12 +225,12 @@ class ZugferdMailConfigTest extends TestCase
 
         $mailAccount = $config->getAccounts()[0];
 
-        $this->assertSame("127.0.0.1", $mailAccount->getHost());
-        $this->assertSame(993, $mailAccount->getPort());
-        $this->assertSame("imap", $mailAccount->getProtocol());
+        $this->assertEquals("127.0.0.1", $mailAccount->getHost());
+        $this->assertEquals(993, $mailAccount->getPort());
+        $this->assertEquals("imap", $mailAccount->getProtocol());
         $this->assertEquals("tls", $mailAccount->getEncryption());
-        $this->assertSame("demouser", $mailAccount->getUsername());
-        $this->assertSame("demopassword", $mailAccount->getPassword());
+        $this->assertEquals("demouser", $mailAccount->getUsername());
+        $this->assertEquals("demopassword", $mailAccount->getPassword());
     }
 
     public function testMailConfigRemoveAccount(): void
@@ -257,12 +260,12 @@ class ZugferdMailConfigTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        ZugferdMailConfig::loadFromFile(__DIR__ . '/../assets/unknown.json');
+        ZugferdMailConfig::loadFromFile(dirname(__FILE__) . '/../assets/unknown.json');
     }
 
     public function testLoadConfigWithContentWhichIsNoJson(): void
     {
-        $configFilename = __DIR__ . '/../assets/config.nojson.json';
+        $configFilename = dirname(__FILE__) . '/../assets/config.nojson.json';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf('The file %s does not seem to be a valid json.', $configFilename));
@@ -272,7 +275,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testLoadConfigWithContentWhichIsInvalidJson(): void
     {
-        $configFilename = __DIR__ . '/../assets/config.invalid.json';
+        $configFilename = dirname(__FILE__) . '/../assets/config.invalid.json';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf('The file %s could not be identified as a valid JSON file', $configFilename));
@@ -282,13 +285,14 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testLoadConfigWithValidJson(): void
     {
-        $configFilename = __DIR__ . '/../assets/config.valid.json';
+        $configFilename = dirname(__FILE__) . '/../assets/config.valid.json';
 
         $config = ZugferdMailConfig::loadFromFile($configFilename);
 
+        $this->assertNotNull($config);
         $this->assertInstanceOf(ZugferdMailConfig::class, $config);
-        $this->assertSame("d-M-Y", $config->getDateFormatIdentifier());
-        $this->assertSame("id", $config->getMessageKeyIdentifier());
+        $this->assertEquals("d-M-Y", $config->getDateFormatIdentifier());
+        $this->assertEquals("id", $config->getMessageKeyIdentifier());
         $this->assertTrue($config->getUblSupportEnabled());
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());
@@ -344,7 +348,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testSaveConfigToInvalidFilename(): void
     {
-        $configFilename = __DIR__ . '/../somefolder/config.save.json';
+        $configFilename = dirname(__FILE__) . '/../somefolder/config.save.json';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf('Directory of file %s does not exist.', $configFilename));
@@ -370,7 +374,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testSaveConfigToValidFilename(): void
     {
-        $configFilename = __DIR__ . '/../assets/config.save.json';
+        $configFilename = dirname(__FILE__) . '/../assets/config.save.json';
 
         $mailAccount = new ZugferdMailAccount();
         $mailAccount->setHost("127.0.0.1");
@@ -396,7 +400,7 @@ class ZugferdMailConfigTest extends TestCase
 
     public function testSaveAndLoadConfigSameFile(): void
     {
-        $configFilename = __DIR__ . '/../assets/config.save.json';
+        $configFilename = dirname(__FILE__) . '/../assets/config.save.json';
 
         // Create config and save to config file
 
@@ -425,9 +429,10 @@ class ZugferdMailConfigTest extends TestCase
 
         $config = ZugferdMailConfig::loadFromFile($configFilename);
 
+        $this->assertNotNull($config);
         $this->assertInstanceOf(ZugferdMailConfig::class, $config);
-        $this->assertSame("d-M-Y", $config->getDateFormatIdentifier());
-        $this->assertSame("list", $config->getMessageKeyIdentifier());
+        $this->assertEquals("d-M-Y", $config->getDateFormatIdentifier());
+        $this->assertEquals("list", $config->getMessageKeyIdentifier());
         $this->assertFalse($config->getUblSupportEnabled());
         $this->assertTrue($config->getSymfonyValidationEnabled());
         $this->assertTrue($config->getXsdValidationEnabled());

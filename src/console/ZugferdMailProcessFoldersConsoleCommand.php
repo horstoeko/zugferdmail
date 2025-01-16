@@ -26,9 +26,9 @@ use Symfony\Component\Console\Command\Command;
  */
 class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
 {
-    use ZugferdMailConsoleHandlesConfigOptions;
-    use ZugferdMailConsoleHandlesMailAccountOptions;
-    use ZugferdMailConsoleOutputsMessageBagMessages;
+    use ZugferdMailConsoleHandlesConfigOptions,
+        ZugferdMailConsoleHandlesMailAccountOptions,
+        ZugferdMailConsoleOutputsMessageBagMessages;
 
     /**
      * @inheritDoc

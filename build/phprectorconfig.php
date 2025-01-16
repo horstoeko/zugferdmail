@@ -2,41 +2,38 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\Config\RectorConfig;
-use Rector\Set\ValueObject\SetList;
-use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
-use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
-use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
+use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
-use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Set\ValueObject\SetList;
 
 return RectorConfig::configure()
     ->withPaths([
+        __DIR__ . '/../examples',
+        __DIR__ . '/../make',
         __DIR__ . '/../src',
         __DIR__ . '/../tests',
     ])
     ->withSkip([
-        __DIR__ . '/../examples',
-        __DIR__ . '/../make',
+        RemoveUselessParamTagRector::class,
+        RemoveUselessReturnTagRector::class,
     ])
-    ->withSkip([
-        //ClassPropertyAssignToConstructorPromotionRector::class
+    ->withPhp73Sets()
+    ->withSets([
+        SetList::DEAD_CODE,
+        SetList::CODE_QUALITY,
+        SetList::CODING_STYLE,
     ])
-    ->withPhpSets(php73: true)
     ->withConfiguredRule(EncapsedStringsToSprintfRector::class, [
         'always' => true,
     ])
-    ->withPreparedSets(
-        codeQuality: true,
-        codingStyle: true,
-        deadCode: false,
-        typeDeclarations: true,
-        privatization: true,
-        naming: false,
-        instanceOf: true,
-        earlyReturn: true,
-        strictBooleans: true,
-        phpunitCodeQuality: true
-    );
+    ->withRules([
+        RenamePropertyToMatchTypeRector::class,
+        RenameParamToMatchTypeRector::class,
+        RenameVariableToMatchNewTypeRector::class,
+    ])
+    ->withTypeCoverageLevel(0);

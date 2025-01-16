@@ -102,7 +102,7 @@ class ZugferdMailPlaceholderHelper
      */
     public function addPlaceholder(string $placeholderName, $placeHolderValue): ZugferdMailPlaceholderHelper
     {
-        if ($placeholderName === '' || $placeholderName === '0' || empty($placeHolderValue)) {
+        if (empty($placeholderName) || empty($placeHolderValue)) {
             return $this;
         }
 
@@ -118,7 +118,6 @@ class ZugferdMailPlaceholderHelper
                 foreach ($placeHolderValue as $placeHolderValueKey => $placeHolderValueData) {
                     $this->addPlaceholder(sprintf("%s_%s", $placeholderName, $placeHolderValueKey), $placeHolderValueData);
                 }
-
                 break;
             default:
                 break;
@@ -137,9 +136,9 @@ class ZugferdMailPlaceholderHelper
     {
         return preg_replace_callback(
             '/\{(\w+)\}/',
-            function (array $placeholderMatch) {
+            function ($placeholderMatch) {
                 $placeHolderName = $placeholderMatch[1];
-                $placeHolderValhe = $this->mappingTable[$placeHolderName] ?? "";
+                $placeHolderValhe = isset($this->mappingTable[$placeHolderName]) ? $this->mappingTable[$placeHolderName] : "";
                 return $placeHolderValhe;
             },
             $subject
