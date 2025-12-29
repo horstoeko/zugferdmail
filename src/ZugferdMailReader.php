@@ -216,8 +216,9 @@ class ZugferdMailReader
         $this->addLogMessageToMessageBag(sprintf("Valid Mimetype %s found", $attachment->getMimeType()));
 
         $document = null;
+        $documentIsValid = false;
 
-        if (is_null($document)) {
+        if ($documentIsValid === false) {
             try {
                 $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible PDF', $messageAdditionalData);
                 $document = ZugferdDocumentPdfReader::readAndGuessFromContent($attachment->getContent());
@@ -225,12 +226,13 @@ class ZugferdMailReader
                 $this->validateDocument($document, $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
                 $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_PDF_CII);
+                $documentIsValid = true;
             } catch (Throwable $e) {
                 $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible PDF found (%s)", $e->getMessage()), $messageAdditionalData);
             }
         }
 
-        if (is_null($document)) {
+        if ($documentIsValid === false) {
             try {
                 $this->addLogMessageToMessageBag('Checking for ZUGFeRD compatible XML', $messageAdditionalData);
                 $document = ZugferdDocumentReader::readAndGuessFromContent($attachment->getContent());
@@ -238,12 +240,13 @@ class ZugferdMailReader
                 $this->validateDocument($document, $messageAdditionalData);
                 $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
                 $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_CII);
+                $documentIsValid = true;
             } catch (Throwable $e) {
                 $this->addWarningMessageToMessageBag(sprintf("No ZUGFeRD compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
             }
         }
 
-        if (is_null($document)) {
+        if ($documentIsValid === false) {
             if ($this->config->getUblSupportEnabled() === true) {
                 try {
                     $this->addLogMessageToMessageBag('Checking for UBL compatible XML', $messageAdditionalData);
@@ -254,12 +257,19 @@ class ZugferdMailReader
                     $this->validateDocument($document, $messageAdditionalData);
                     $this->triggerHandlers($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
                     $this->triggerCallbacks($account, $folder, $message, $attachment, $document, ZugferdMailReaderRecognitionType::ZFMAIL_RECOGNITION_TYPE_XML_UBL);
+                    $documentIsValid = true;
                 } catch (Throwable $e) {
                     $this->addWarningMessageToMessageBag(sprintf("No UBL compatible XML found (%s)", $e->getMessage()), $messageAdditionalData);
                 }
             } else {
                 $this->addLogSecondaryMessageToMessageBag("UBL support disabled", $messageAdditionalData);
             }
+        }
+
+        if ($documentIsValid === false) {
+            $this->addLogMessageToMessageBag('No valid attachment was found...', $messageAdditionalData);
+            $this->triggerHandlersNoDocumentFound($account, $folder, $message, $attachment);
+            $this->triggerCallbacksNoDocumentFound($account, $folder, $message, $attachment);
         }
 
         $this->addLogMessageToMessageBag('');
@@ -342,6 +352,49 @@ class ZugferdMailReader
         foreach ($account->getCallbacks() as $callback) {
             try {
                 $returnValue = call_user_func($callback, $account, $folder, $message, $attachment, $document, $recognitionType);
+                if ($returnValue === false) {
+                    break;
+                }
+            } catch (Throwable $e) {
+                $this->addThrowableToMessageBag($e);
+            }
+        }
+    }
+
+    /**
+     * Internal trigger a handler when attachment was found
+     *
+     * @param  ZugferdMailAccount    $account
+     * @param  Folder                $folder
+     * @param  Message               $message
+     * @param  Attachment            $attachment
+     * @return void
+     */
+    protected function triggerHandlersNoDocumentFound(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment): void
+    {
+        foreach ($account->getHandlersNoDocumentFound() as $handler) {
+            try {
+                $handler->handleDocument($account, $folder, $message, $attachment, null, null);
+            } catch (Throwable $e) {
+                $this->addThrowableToMessageBag($e);
+            }
+        }
+    }
+
+    /**
+     * Internal trigger a callback when attachment was found
+     *
+     * @param  ZugferdMailAccount    $account
+     * @param  Folder                $folder
+     * @param  Message               $message
+     * @param  Attachment            $attachment
+     * @return void
+     */
+    protected function triggerCallbacksNoDocumentFound(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment): void
+    {
+        foreach ($account->getCallbacksNoDocumentFound() as $callback) {
+            try {
+                $returnValue = call_user_func($callback, $account, $folder, $message, $attachment);
                 if ($returnValue === false) {
                     break;
                 }

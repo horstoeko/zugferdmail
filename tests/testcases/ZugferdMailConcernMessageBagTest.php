@@ -362,7 +362,7 @@ class ZugferdMailConcernMessageBagTest extends TestCase
         $this->assertArrayHasKey("errline", $message['additionalData']);
         $this->assertArrayHasKey("errtrace", $message['additionalData']);
         $this->assertEquals(0, $message['additionalData']["errno"]);
-        $this->assertStringContainsString("tests/testcases/ZugferdMailConcernMessageBagTest.php", $message['additionalData']["errfile"]);
+        $this->assertStringContainsString(sprintf('tests%1$stestcases%1$sZugferdMailConcernMessageBagTest.php', DIRECTORY_SEPARATOR), $message['additionalData']["errfile"]);
         $this->assertEquals(313, $message['additionalData']["errline"]);
         $this->assertNotEquals('', $message['additionalData']["errtrace"]);
         $this->assertNotNull($message['datetime']);

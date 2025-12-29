@@ -26,13 +26,13 @@ abstract class ZugferdMailHandlerAbstract
      * The method will be call when a document was found. This method can perform
      * anything you want
      *
-     * @param  ZugferdMailAccount    $account
-     * @param  Folder                $folder
-     * @param  Message               $message
-     * @param  Attachment            $attachment
-     * @param  ZugferdDocumentReader $document
-     * @param  integer               $recognitionType
-     * @return void
+     * @param ZugferdMailAccount $account
+     * @param Folder $folder
+     * @param Message $message
+     * @param Attachment $attachment
+     * @param null|ZugferdDocumentReader $document
+     * @param null|int $recognitionType
+     * @return mixed
      */
-    abstract public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType);
+    abstract public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ?ZugferdDocumentReader $document, ?int $recognitionType);
 }

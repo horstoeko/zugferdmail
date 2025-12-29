@@ -31,7 +31,9 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertEmpty($mailAccount->getFoldersTowatch());
         $this->assertEmpty($mailAccount->getMimeTypesToWatch());
         $this->assertEmpty($mailAccount->getHandlers());
+        $this->assertEmpty($mailAccount->getHandlersNoDocumentFound());
         $this->assertEmpty($mailAccount->getCallbacks());
+        $this->assertEmpty($mailAccount->getCallbacksNoDocumentFound());
         $this->assertFalse($mailAccount->getUnseenMessagesOnlyEnabled());
     }
 
@@ -395,6 +397,45 @@ class ZugferdMailAccountTest extends TestCase
         $this->assertArrayNotHasKey(2, $mailAccount->getCallbacks());
         $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[0]);
         $this->assertInstanceOf(Closure::class, $mailAccount->getCallbacks()[1]);
+    }
+
+    public function testMailAccountSetHandlersNoDocumentFoundOneInvalid(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setHandlersNoDocumentFound([new ZugferdMailMessageBagType(), new ZugferdMailHandlerNull()]);
+
+        $this->assertArrayNotHasKey(0, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertArrayHasKey(1, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccount->getHandlersNoDocumentFound()[1]);
+    }
+
+    public function testMailAccountSetHandlersNoDocumentFoundAllValid(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->setHandlersNoDocumentFound([new ZugferdMailHandlerCli(), new ZugferdMailHandlerNull()]);
+
+        $this->assertArrayHasKey(0, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertArrayHasKey(1, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertInstanceOf(ZugferdMailHandlerCli::class, $mailAccount->getHandlersNoDocumentFound()[0]);
+        $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccount->getHandlersNoDocumentFound()[1]);
+    }
+
+    public function testMailAccountAddHandlersNoDocumentFound(): void
+    {
+        $mailAccount = new ZugferdMailAccount();
+        $mailAccount->addHandlerNoDocumentFound(new ZugferdMailHandlerCli());
+
+        $this->assertArrayHasKey(0, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertArrayNotHasKey(1, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertInstanceOf(ZugferdMailHandlerCli::class, $mailAccount->getHandlersNoDocumentFound()[0]);
+
+        $mailAccount->addHandlerNoDocumentFound(new ZugferdMailHandlerNull());
+
+        $this->assertArrayHasKey(0, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertArrayHasKey(1, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertArrayNotHasKey(2, $mailAccount->getHandlersNoDocumentFound());
+        $this->assertInstanceOf(ZugferdMailHandlerCli::class, $mailAccount->getHandlersNoDocumentFound()[0]);
+        $this->assertInstanceOf(ZugferdMailHandlerNull::class, $mailAccount->getHandlersNoDocumentFound()[1]);
     }
 
     public function testSetUnseenMessagesOnlyEnabled(): void

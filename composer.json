@@ -34,48 +34,69 @@
         "horstoeko/zugferd": "^1",
         "horstoeko/zugferdublbridge": "^1",
         "swaggest/json-schema": "^0.12.42",
-        "symfony/console": "^5|^6|^7",
-        "symfony/mime": "^5|^6|^7",
+        "symfony/console": "^5|^6|^7|^8",
+        "symfony/mime": "^5|^6|^7|^8",
         "vlucas/phpdotenv": "^5",
-        "webklex/php-imap": "^4|^5"
+        "webklex/php-imap": "^4|^5|^6"
     },
     "require-dev": {
         "nette/php-generator": "*",
+        "nikic/php-parser": "^5.4",
         "pdepend/pdepend": "^2",
         "phpdocumentor/reflection-docblock": "^5",
-        "phploc/phploc": "^7",
-        "phpmd/phpmd": "^2",
         "phpstan/phpstan": "^1|^2",
         "phpunit/phpunit": "^9",
         "rector/rector": "*",
-        "sebastian/phpcpd": "^6",
         "squizlabs/php_codesniffer": "^3"
     },
     "bin": [
         "src/bin/ZugferdMailConsole"
     ],
     "scripts": {
-        "tests": "./vendor/bin/phpunit ./tests/",
-        "testsreal": "./vendor/bin/phpunit --configuration ./build/phpunit.xml",
-        "phpcs": "./vendor/bin/phpcs --standard=./build/phpcsrules.xml --extensions=php --ignore=autoload.php ./src ./tests",
-        "phpcs12": "./vendor/bin/phpcs --standard=./build/phpcsrules_psr12.xml --extensions=php --ignore=autoload.php ./src ./tests",
-        "phpcbf": "./vendor/bin/phpcbf -q ./src ./tests",
-        "phpcbf1": "./vendor/bin/phpcbf --standard=./build/phpcsrules_psr1.xml -q ./src ./tests",
-        "phpcbf2": "./vendor/bin/phpcbf --standard=./build/phpcsrules_psr2.xml -q ./src ./tests",
-        "phpcbf12": "./vendor/bin/phpcbf --standard=./build/phpcsrules_psr12.xml -q ./src ./tests",
-        "phpcbfsq": "./vendor/bin/phpcbf --standard=./build/phpcsrules_squiz.xml -q ./src ./tests",
-        "phpstan": "./vendor/bin/phpstan analyze -c ./build/phpstan.neon --autoload-file=vendor/autoload.php --no-interaction --no-progress --xdebug",
-        "phpstan_cs": "./vendor/bin/phpstan analyze -c ./build/phpstan.neon --autoload-file=vendor/autoload.php --no-interaction --no-progress --error-format=checkstyle --xdebug",
-        "makedoc": "phing -f ./build.xml projectdoc",
+        "post-autoload-dump": [
+            "horstoeko\\invoicesuite\\utils\\InvoiceSuiteClassFinder::clearCache"
+        ],
+        "tests": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/phpunit ./tests/"
+        ],
+        "testsreal": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/phpunit --configuration ./build/phpunit.xml"
+        ],
+        "testsrealquick": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/phpunit --configuration ./build/phpunitquick.xml"
+        ],
+        "phpcs": "@phpcs12",
+        "phpcs12": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/phpcs --standard=./build/phpcsrules_psr12.xml --extensions=php --ignore=autoload.php ./src ./tests"
+        ],
+        "phpcbf": "@phpcbf12",
+        "phpcbf12": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/phpcbf --standard=./build/phpcsrules_psr12.xml -q ./src ./tests"
+        ],
+        "phpstan": "@phpstan12",
+        "phpstan12": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/phpstan analyze -c ./build/phpstan.neon --autoload-file=vendor/autoload.php --no-interaction --no-progress"
+        ],
+        "phpstancache": "@phpstan12cache",
+        "phpstan12cache": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/phpstan clear-result-cache"
+        ],
+        "rector": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/rector --config=./build/phprectorconfig.php --clear-cache"
+        ],
         "checkstyle": [
             "Composer\\Config::disableProcessTimeout",
-            "vendor/bin/phploc --count-tests --log-csv build/logs/phploc.csv --log-xml build/logs/phploc.xml src tests",
-            "vendor/bin/pdepend --jdepend-xml=build/logs/jdepend.xml --jdepend-chart=build/pdepend/dependencies.svg --overview-pyramid=build/pdepend/overview-pyramid.svg src",
-            "vendor/bin/phpmd src xml build/phpmd.xml --reportfile build/logs/pmd.xml --exclude src/entities/",
-            "vendor/bin/phpcs --report=checkstyle --report-file=build/logs/checkstyle.xml --standard=build/phpcsrules.xml --extensions=php --ignore=autoload.php src tests",
-            "vendor/bin/phpstan analyze -c build/phpstan.neon --autoload-file=vendor/autoload.php --no-interaction --no-progress --error-format=checkstyle > build/logs/checkstyle_phpstan.xml",
-            "vendor/bin/phpcpd --log-pmd build/logs/pmd-cpd.xml --exclude src/entities/ src"
-        ],
-        "rector": "vendor/bin/rector --config=./build/phprectorconfig.php"
+            "@phpcs",
+            "@phpstan",
+            "@rector"
+        ]
     }
 }

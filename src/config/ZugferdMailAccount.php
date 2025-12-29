@@ -122,6 +122,20 @@ class ZugferdMailAccount
     protected $callBacks = [];
 
     /**
+     * Handler for the case when no documents were found
+     *
+     * @var array<ZugferdMailHandlerAbstract>
+     */
+    protected $handlersNoDocumentFound = [];
+
+    /**
+     * Callbacks for the case when no documents were found
+     *
+     * @var array
+     */
+    protected $callBacksNoDocumentFound = [];
+
+    /**
      * Look for unseen messages only
      *
      * @var boolean
@@ -504,6 +518,26 @@ class ZugferdMailAccount
     }
 
     /**
+     * Returns a list of handlers which are called in case when no documents were found
+     *
+     * @return array<ZugferdMailHandlerAbstract>
+     */
+    public function getHandlersNoDocumentFound(): array
+    {
+        return $this->handlersNoDocumentFound;
+    }
+
+    /**
+     * Returns a list of callbacks which are called in case when no documents were found
+     *
+     * @return array<callable>
+     */
+    public function getCallbacksNoDocumentFound(): array
+    {
+        return $this->callBacksNoDocumentFound;
+    }
+
+    /**
      * Sets multiuple handlers to run when a document was found
      *
      * @param  array<ZugferdMailHandlerAbstract> $handlers
@@ -561,6 +595,68 @@ class ZugferdMailAccount
     public function addCallback(callable $callback): ZugferdMailAccount
     {
         $this->callBacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Sets multiuple handlers which are called in the case when no documents were found
+     *
+     * @param  array<ZugferdMailHandlerAbstract> $handlers
+     * @return ZugferdMailAccount
+     */
+    public function setHandlersNoDocumentFound(array $handlers): ZugferdMailAccount
+    {
+        $this->handlersNoDocumentFound = array_filter(
+            $handlers,
+            function ($handler) {
+                return $handler instanceof ZugferdMailHandlerAbstract;
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Sets multiple callbacks which are called in the case when no documents were found
+     *
+     * @param  array<callable> $callbacks
+     * @return ZugferdMailAccount
+     */
+    public function setCallbacksNoDocumentFound(array $callbacks): ZugferdMailAccount
+    {
+        $this->callBacksNoDocumentFound = array_filter(
+            $callbacks,
+            function ($callback) {
+                return is_callable($callback);
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Addd a handler to call in the case when no documents were found
+     *
+     * @param  ZugferdMailHandlerAbstract $handler
+     * @return ZugferdMailAccount
+     */
+    public function addHandlerNoDocumentFound(?ZugferdMailHandlerAbstract $handler): ZugferdMailAccount
+    {
+        $this->handlersNoDocumentFound[] = $handler;
+
+        return $this;
+    }
+
+    /**
+     * Add a callback to call in the case when no documents were found
+     *
+     * @param  callable $callback
+     * @return ZugferdMailAccount
+     */
+    public function addCallbackNoDocumentFound(callable $callback): ZugferdMailAccount
+    {
+        $this->callBacksNoDocumentFound[] = $callback;
 
         return $this;
     }

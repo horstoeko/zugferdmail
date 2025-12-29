@@ -467,6 +467,11 @@ class ZugferdMailConfig
                 $account->addHandler($reflection->newInstanceArgs(array_values(get_object_vars($accountHandlerDefinition->properties))));
             }
 
+            foreach ($accountDefinition->handlersNoDocumentFound as $accountHandlerDefinition) {
+                $reflection = new \ReflectionClass($accountHandlerDefinition->classname);
+                $account->addHandlerNoDocumentFound($reflection->newInstanceArgs(array_values(get_object_vars($accountHandlerDefinition->properties))));
+            }
+
             $config->addAccountObject($account);
         }
 
@@ -507,6 +512,7 @@ class ZugferdMailConfig
             $jsonAccountObject->mimeTypesToWatch = $account->getMimeTypesToWatch();
             $jsonAccountObject->unseenMessagesOnlyEnabled = $account->getUnseenMessagesOnlyEnabled();
             $jsonAccountObject->handlers = [];
+            $jsonAccountObject->handlersNoDocumentFound = [];
 
             foreach ($account->getHandlers() as $handler) {
                 $jsonAccountHandlerObject = new stdClass;
@@ -530,6 +536,30 @@ class ZugferdMailConfig
                 }
 
                 $jsonAccountObject->handlers[] = $jsonAccountHandlerObject;
+            }
+
+            foreach ($account->getHandlersNoDocumentFound() as $handler) {
+                $jsonAccountHandlerObject = new stdClass;
+                $jsonAccountHandlerObject->classname = get_class($handler);
+                $jsonAccountHandlerObject->properties = new stdClass;
+
+                $reflection = new \ReflectionClass($handler);
+                $reflectionConstructor = $reflection->getConstructor();
+
+                if (!is_null($reflectionConstructor)) {
+                    foreach ($reflectionConstructor->getParameters() as $reflectionConstructorParameter) {
+                        $argumentName = $reflectionConstructorParameter->getName();
+                        $argumentGetterMethodName = "get" . ucFirst($argumentName);
+
+                        if (!$reflection->hasMethod($argumentGetterMethodName)) {
+                            throw new RuntimeException(sprintf("No method %s for property %s found", $argumentGetterMethodName, $argumentName));
+                        }
+
+                        $jsonAccountHandlerObject->properties->$argumentName = $handler->$argumentGetterMethodName();
+                    };
+                }
+
+                $jsonAccountObject->handlersNoDocumentFound[] = $jsonAccountHandlerObject;
             }
 
             $jsonObject->accounts[] = $jsonAccountObject;
