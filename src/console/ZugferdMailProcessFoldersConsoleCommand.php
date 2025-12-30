@@ -33,7 +33,7 @@ class ZugferdMailProcessFoldersConsoleCommand extends ZugferdMailBaseConsoleComm
     /**
      * @inheritDoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('zfmail:processmailboxfolders')
