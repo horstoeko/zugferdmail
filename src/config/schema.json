@@ -150,6 +150,20 @@
                             }
                         }
                     },
+                    "handlersNoDocumentFound": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "classname": {
+                                    "type": "string"
+                                },
+                                "properties": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "unseenMessagesOnlyEnabled": {
                         "type": "boolean"
                     }

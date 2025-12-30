@@ -63,6 +63,14 @@ class TestOutputInterface implements OutputInterface
     /**
      * @inheritDoc
      */
+    public function isSilent(): bool
+    {
+        return $this->verbosity != 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function isQuiet(): bool
     {
         return self::VERBOSITY_QUIET === $this->verbosity;

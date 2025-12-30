@@ -35,7 +35,7 @@ class ZugferdMailListFoldersConsoleCommand extends ZugferdMailBaseConsoleCommand
     /**
      * @inheritDoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('zfmail:listmailboxfolders')
