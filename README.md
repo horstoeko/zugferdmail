@@ -85,6 +85,12 @@ $account1->addHandler(new ZugferdMailHandlerMoveMessage('Invoice/Incoming'));
 $account1->addHandler(new ZugferdMailHandlerSaveToFile('/tmp', 'invoice.att'));
 ```
 
+If you wanna use a handler in the case when no valid document was found you can use
+
+```php
+$account1->addHandlerNoDocumentFound(new SomeHandler())
+```
+
 You can also define callbacks to call when a document was found. If such a callback function returns the value false, then all remaining callback functions are not called:
 
 ```php
@@ -94,6 +100,15 @@ $account1->addCallback(function(ZugferdMailAccount $account, Folder $folder, Mes
     echo "Document No. ..... " . $documentno . PHP_EOL;
 });
 ```
+
+If you wanna use a callback in the case when no valid document was found you can use
+
+```php
+$account1->addCallbackNoDocumentFound(function(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment) {
+    // Do something when no document was found
+});
+```
+
 Please note that the callbacks are neither loaded from a configuration file nor saved in one.
 
 ### Check mail accounts for matching mails:
@@ -128,10 +143,12 @@ public function handleDocument(
     Folder $folder,
     Message $message,
     Attachment $attachment,
-    ZugferdDocumentReader $document,
-    int $recognitionType
+    ?ZugferdDocumentReader $document,
+    ?int $recognitionType
 );
 ```
+
+The ``$document`` and ``$recognitionType`` can be null in the case when no valid attachment was found.
 
 An example:
 
@@ -150,8 +167,8 @@ class MyOwnHandler extends ZugferdMailHandlerAbstract
         Folder $folder,
         Message $message,
         Attachment $attachment,
-        ZugferdDocumentReader $document,
-        int $recognitionType)
+        ?ZugferdDocumentReader $document,
+        ?int $recognitionType)
     {
         // Do some stuff
     }
