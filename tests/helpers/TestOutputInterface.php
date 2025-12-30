@@ -65,7 +65,7 @@ class TestOutputInterface implements OutputInterface
      */
     public function isSilent(): bool
     {
-        return false;
+        return $this->verbosity != 0;
     }
 
     /**
