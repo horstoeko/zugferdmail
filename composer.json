@@ -15,7 +15,12 @@
     ],
     "config": {
         "optimize-autoloader": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "audit": {
+            "ignore":{
+                "PKSA-nhqw-xk85-x2jn": "Cant use a version higher due PHP version requirements"
+            }
+        }
     },
     "autoload": {
         "psr-4": {
