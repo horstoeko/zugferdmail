@@ -68,7 +68,7 @@ class ZugferdMailHandlerSaveToFile extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ?ZugferdDocumentReader $document, ?int $recognitionType)
     {
         try {
             $finalFilename = $this->buildFileNameFrom($document, $attachment);

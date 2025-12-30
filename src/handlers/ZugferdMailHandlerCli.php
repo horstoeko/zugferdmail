@@ -9,6 +9,7 @@
 
 namespace horstoeko\zugferdmail\handlers;
 
+use DateTimeInterface;
 use horstoeko\zugferd\ZugferdDocumentReader;
 use horstoeko\zugferdmail\config\ZugferdMailAccount;
 use Webklex\PHPIMAP\Attachment;
@@ -29,7 +30,7 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
     /**
      * @inheritDoc
      */
-    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ZugferdDocumentReader $document, int $recognitionType)
+    public function handleDocument(ZugferdMailAccount $account, Folder $folder, Message $message, Attachment $attachment, ?ZugferdDocumentReader $document, ?int $recognitionType)
     {
         if (php_sapi_name() !== 'cli') {
             return;
@@ -46,7 +47,13 @@ class ZugferdMailHandlerCli extends ZugferdMailHandlerAbstract
             $effectiveSpecifiedPeriod
         );
 
-        $this->addLogMessageToMessageBag(sprintf("Found an document (%s) with number %s by date %s", $documenttypecode, $documentno, $documentdate->format("d.m.Y")));
+        if (!($documentdate instanceof DateTimeInterface)) {
+            $documentdateFormatted = '';
+        } else {
+            $documentdateFormatted = $documentdate->format("d.m.Y");
+        }
+
+        $this->addLogMessageToMessageBag(sprintf("Found an document (%s) with number %s by date %s", $documenttypecode, $documentno, $documentdateFormatted));
 
         $this->addLogMessageToMessageBag(sprintf(" - Profile            %s", $document->getProfileDefinitionParameter('name')));
         $this->addLogMessageToMessageBag(sprintf(" - Invoice currency   %s", $invoiceCurrency));
