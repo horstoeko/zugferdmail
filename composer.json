@@ -33,7 +33,7 @@
         }
     },
     "require": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "horstoeko/mimedb": "^1",
         "horstoeko/stringmanagement": "^1.0",
         "horstoeko/zugferd": "^1",
